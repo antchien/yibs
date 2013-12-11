@@ -14,10 +14,19 @@ module SessionsHelper
   end
 
   def require_current_user!
-    redirect_to new_session_url if current_user.nil?
+    render :json => "Error: Requires login", status: 422 if current_user.nil?
   end
 
   def require_no_current_user!
-    redirect_to user_url(current_user) unless current_user.nil?
+    render :json => "Error: Expected new user", status: 422 unless current_user.nil?
   end
+
+  def require_admin_access!
+    if params[:user_id]
+      render :json => "Error: Requires admin access", status: 422 if params[:user_id].to_i != current_user.id
+    elsif params[:id]
+      render :json => "Error: Requires admin access", status: 422 if params[:id].to_i != current_user.id
+    end
+  end
+
 end

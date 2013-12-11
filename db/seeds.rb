@@ -1,7 +1,12 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+User.create(first_name: "Anthony", last_name: "Chien", username: "antchien@gmail.com", password: "123456")
+User.create(first_name: "Emil", last_name: "Lee", username: "uciehlee@gmail.com", password: "123456")
+User.create(first_name: "Kevin", last_name: "Li", username: "evilkartman@gmail.com", password: "123456")
+User.create(first_name: "Brian", last_name: "Deane", username: "beane@gmail.com", password: "123456")
+Friendship.create(out_friend_id: 1, in_friend_id: 2)
+Friendship.create(out_friend_id: 1, in_friend_id: 3)
+Friendship.create(out_friend_id: 1, in_friend_id: 4)
+Friendship.create(out_friend_id: 2, in_friend_id: 1)
+Friendship.create(out_friend_id: 3, in_friend_id: 1)
+Friendship.create(out_friend_id: 2, in_friend_id: 3)
+Friendship.create(out_friend_id: 2, in_friend_id: 4)
+Friendship.create(out_friend_id: 3, in_friend_id: 2)

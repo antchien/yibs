@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :username, :password
+  attr_accessible :username, :password, :first_name, :last_name
   attr_reader :password
 
   validates :password_digest, :presence => { :message => "Password can't be blank" }
@@ -8,6 +8,26 @@ class User < ActiveRecord::Base
   validates :username, :presence => true
 
   after_initialize :ensure_session_token
+
+  has_many(
+  :outbound_friendships,
+  class_name: "Friendship",
+  foreign_key: :out_friend_id,
+  primary_key: :id,
+  dependent: :destroy
+  )
+
+  has_many(
+  :inbound_friendships,
+  class_name: "Friendship",
+  foreign_key: :in_friend_id,
+  primary_key: :id,
+  dependent: :destroy
+  )
+
+  has_many :friends, through: :outbound_friendships, source: :in_friend, :conditions => ['Friendships.pending_flag = ?', false]
+  has_many :outbound_pending_friends, through: :outbound_friendships, source: :in_friend, :conditions => ['Friendships.pending_flag = ?', true]
+  has_many :inbound_pending_friends, through: :inbound_friendships, source: :out_friend, :conditions => ['Friendships.pending_flag = ?', true]
 
   def self.find_by_credentials(username, password)
     user = User.find_by_username(username)
@@ -33,6 +53,10 @@ class User < ActiveRecord::Base
   def reset_session_token!
     self.session_token = self.class.generate_session_token
     self.save!
+  end
+
+  def find_friendship(friend)
+    Friendship.find_by_out_friend_id_and_in_friend_id(self.id, friend.id)
   end
 
   private

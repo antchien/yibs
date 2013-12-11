@@ -12,10 +12,27 @@
      type="hidden"
      value="<%= form_authenticity_token %>">
 
+  <label for="user_first_name">First Name</label>
+  <input
+    id="user_first_name"
+    name="user[first_name]"
+    value="<%= user.first_name %>"
+    type="text">
+  <br>
+
+  <label for="user_last_name">Last Name</label>
+  <input
+    id="user_last_name"
+    name="user[last_name]"
+    value="<%= user.last_name %>"
+    type="text">
+  <br>
+
   <label for="user_username">Username</label>
   <input
      id="user_username"
      name="user[username]"
+     value="<%= user.username %>"
      type="text">
   <br>
 

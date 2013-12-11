@@ -1,0 +1,13 @@
+<h1>Friendship Index</h1>
+
+<h2>All Users</h2>
+<%= render "list_users", :users => @users %>
+
+<h2>Existing Friends</h2>
+<%= render "list_users", :users => @friends %>
+
+<h2>Outbound Pending Friends</h2>
+<%= render "list_users", :users => @outbound_pending_friends %>
+
+<h2>Inbound Pending Friends</h2>
+<%= render "list_users", :users => @inbound_pending_friends %>

@@ -1,0 +1,18 @@
+<ul>
+<% users.each do |user| %>
+  <% unless user.id == current_user.id %>
+    <li>
+    <%= user.first_name %> <%= user.last_name %>: <%= user.username %>
+    <% if @friends.include?(user) %>
+       <%= button_to "Unfriend", user_friendship_url(current_user.id, current_user.find_friendship(user).id), method: :delete %>
+       <% elsif @outbound_pending_friends.include?(user) %>
+       Friendship Pending...
+       <% elsif @inbound_pending_friends.include?(user) %>
+         <%= render "add_friendship_button", :message => "Confirm Friend", :user => user %>
+       <% else %>
+         <%= render "add_friendship_button", :message => "Request Friendship", :user => user %>
+         <% end %>
+    </li>
+    <% end %>
+  <% end %>
+</ul>
