@@ -35,14 +35,34 @@ class BetsController < ApplicationController
 
   def community
     @user = current_user
-    @bets = current_user.bets
+    @bets = current_user.bets.where( status: 'in play' )
     @user.friends.each do |friend|
-      @bets.concat( friend.bets.select { |bet| !@bets.include?(bet) } )
+      @bets.concat( friend.bets.where(status:'in play').select { |bet| !@bets.include?(bet) } )
     end
 
     @bets.sort_by { |bet| Time.now()-bet.updated_at }
     render :feed
   end
 
+  def pending
+    @user = current_user
+    @bets = current_user.bets.where( status: 'pending' )
+    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+    render :feed
+  end
+
+  def inplay
+    @user = current_user
+    @bets = current_user.bets.where( status: 'in play' )
+    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+    render :feed
+  end
+
+  def completed
+    @user = current_user
+    @bets = current_user.bets.where( status: 'completed' )
+    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+    render :feed
+  end
 
 end
