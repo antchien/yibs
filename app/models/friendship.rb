@@ -1,7 +1,7 @@
 class Friendship < ActiveRecord::Base
   attr_accessible :in_friend_id, :out_friend_id, :pending_flag
   validates :in_friend, :out_friend, presence: true
-  # validates_uniqueness_of :in_friend_id, :out_friend_id
+  validates :in_friend_id, :uniqueness => {:scope => :out_friend_id}
 
   before_save :check_recip_friendship
 

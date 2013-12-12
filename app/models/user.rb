@@ -24,10 +24,28 @@ class User < ActiveRecord::Base
   primary_key: :id,
   dependent: :destroy
   )
-
+  
   has_many :friends, through: :outbound_friendships, source: :in_friend, :conditions => ['Friendships.pending_flag = ?', false]
   has_many :outbound_pending_friends, through: :outbound_friendships, source: :in_friend, :conditions => ['Friendships.pending_flag = ?', true]
   has_many :inbound_pending_friends, through: :inbound_friendships, source: :out_friend, :conditions => ['Friendships.pending_flag = ?', true]
+  
+  
+  has_many(
+  :authored_bets,
+  class_name: "Bet",
+  foreign_key: :user_id,
+  primary_key: :id
+  )
+  
+  has_many(
+  :bet_participations,
+  class_name: "BetParticipation",
+  foreign_key: :user_id,
+  primary_key: :id
+  )
+
+  has_many :bets, through: :bet_participations, source: :bet
+  has_many :inbound_pending_bets, through: :bet_participations, source: :bet, :conditions => ['bet_participations.status = ?', 'Pending']
 
   def self.find_by_credentials(username, password)
     user = User.find_by_username(username)

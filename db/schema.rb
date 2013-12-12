@@ -11,7 +11,30 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131211213027) do
+ActiveRecord::Schema.define(:version => 20131212042916) do
+
+  create_table "bet_participations", :force => true do |t|
+    t.integer  "bet_id",     :null => false
+    t.integer  "user_id",    :null => false
+    t.string   "status",     :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "bet_participations", ["bet_id"], :name => "index_bet_participations_on_bet_id"
+  add_index "bet_participations", ["user_id"], :name => "index_bet_participations_on_user_id"
+
+  create_table "bets", :force => true do |t|
+    t.integer  "user_id",                           :null => false
+    t.text     "terms",                             :null => false
+    t.text     "wager"
+    t.string   "status",     :default => "pending", :null => false
+    t.boolean  "private",    :default => false,     :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
+  add_index "bets", ["user_id"], :name => "index_bets_on_user_id"
 
   create_table "friendships", :force => true do |t|
     t.integer  "out_friend_id",                   :null => false
