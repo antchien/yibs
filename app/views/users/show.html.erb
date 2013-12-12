@@ -1,3 +1,12 @@
 <h1><%= @user.username %>'s show page</h1>
 
+<p>Here are bets that need action from you:<br>
+  <%= render "/bets/display_bets", :bets => @inbound_pending_bets %>
+</p>
+
+<p>Here are the other bets you're part of:<br>
+  <%= render "/bets/display_bets", :bets => @bets %>
+</p>
+
+<p><%= link_to "Add new bet!", new_user_bet_url(@user) %></p>
 <p><%= link_to "See this user's friendships", user_friendships_url(@user) %></p>

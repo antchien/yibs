@@ -9,11 +9,11 @@
 <body>
 
 <% if !current_user.nil? %>
-  <ul>
-    <li>Hello <%= current_user.first_name %> <%= current_user.last_name %>!</li>
-    <li><%= button_to "Logout", session_url, :method => :delete %></li>
-  </ul>
-<% end %>
+  Hello <%= current_user.first_name %> <%= current_user.last_name %>!
+    <%= button_to "Logout", session_url, :method => :delete %>
+<% else %>
+  <%= link_to "Sign In", new_session_url %>
+  <% end %>
 
 <%= yield %>
 

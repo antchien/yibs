@@ -1,0 +1,36 @@
+<form action="<%= user_bets_url %>" method="post">
+  <input
+     name="authenticity_token"
+     type="hidden"
+     value="<%= form_authenticity_token %>">
+
+  <%= current_user.first_name %> <%= current_user.last_name[0] %>. bets
+  <br>
+  <% current_user.friends.each do |friend| %>
+    <input
+      id="bet_participant_id_<%= friend.id %>"
+      name="bet_participation[user_id][]"
+      value="<%= friend.id %>"
+      type="checkbox">
+    <label for="bet_participant_id_<%= friend.id %>"><%= friend.first_name %> <%= friend.last_name %></label>
+    <br>
+    <% end %>
+    <br>
+    that...
+    <br>
+  <textarea name="bet[terms]">he can program chess faster</textarea>
+  <br>
+  <br>
+  Loser has to...
+  <br>
+  <textarea name="bet[wager]">eat everything in the App Academy mini-fridge</textarea>
+  <br>
+  <input
+    id="bet_private"
+    name="bet[private]"
+    value=true
+    type="checkbox">
+  <label for="bet_private">Private</label>
+  <br><br>
+  <input type="submit" value="Send Challenge">
+</form>

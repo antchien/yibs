@@ -1,0 +1,2 @@
+module BetParticipationsHelper
+end

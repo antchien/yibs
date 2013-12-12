@@ -1,0 +1,17 @@
+<form action="<%= user_bet_participation_url(current_user.id, current_user.find_bet_participation(bet)) %>" method="post">
+ <input
+    name="authenticity_token"
+    type="hidden"
+    value="<%= form_authenticity_token %>">
+
+  <input
+     name="_method"
+     type="hidden"
+     value="put">
+
+ <input
+    type="hidden"
+    name="bet_participation[status]"
+    value="accepted">
+ <input type="submit" value="Accept">
+</form>

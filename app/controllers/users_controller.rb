@@ -21,6 +21,8 @@ class UsersController < ApplicationController
   def show
     if params.include?(:id)
       @user = User.find(params[:id])
+      @bets = @user.bets.select { |bet| !@user.inbound_pending_bets.include?(bet) }
+      @inbound_pending_bets = @user.inbound_pending_bets
     else
       redirect_to user_url(current_user)
     end
