@@ -17,3 +17,6 @@ end
 gem 'bcrypt-ruby', :require => 'bcrypt'
 gem 'jquery-rails'
 gem 'pg'
+gem 'paperclip'
+gem 'aws-sdk'
+gem 'figaro'

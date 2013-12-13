@@ -2,7 +2,7 @@
 <% method = (user.persisted? ? "put" : "post") %>
 <% message = (user.persisted? ? "Update user" : "Create user") %>
 
-<form action="<%= action %>" method="post">
+<form action="<%= action %>" enctype="multipart/form-data" method="post">
   <input
      name="_method"
      type="hidden"
@@ -42,6 +42,9 @@
      name="user[password]"
      type="password">
   <br>
+  <br>
+  <label for="user_profile_pic">Upload Profile Picture</label>
+  <input type="file" id="user_profile_pic" name="user[profile_pic]">
 
   <input type="submit" value="<%= message %>">
 </form>

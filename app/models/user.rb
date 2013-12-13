@@ -1,5 +1,7 @@
+require 'open-uri'
+
 class User < ActiveRecord::Base
-  attr_accessible :username, :password, :first_name, :last_name
+  attr_accessible :username, :password, :first_name, :last_name, :profile_pic
   attr_reader :password
 
   validates :password_digest, :presence => { :message => "Password can't be blank" }
@@ -8,6 +10,11 @@ class User < ActiveRecord::Base
   validates :username, :presence => true
 
   after_initialize :ensure_session_token
+
+  has_attached_file :profile_pic, :styles => {
+    :large => "500x500#",
+    :small => "80x80#"
+  }
 
   has_many(
   :outbound_friendships,
