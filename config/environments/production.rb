@@ -9,7 +9,7 @@ NewAuthDemo::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = false
+  config.serve_static_assets = true
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
@@ -64,7 +64,7 @@ NewAuthDemo::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
-  
+
   config.paperclip_defaults = {
         :storage => :s3,
         :s3_credentials => {
@@ -74,5 +74,5 @@ NewAuthDemo::Application.configure do
           :s3_host_name => 's3.amazonaws.com' # or whatever your region host name is
         }
       }
-  
+
 end
