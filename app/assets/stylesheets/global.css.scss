@@ -1,0 +1,46 @@
+h1, h2, h3, h4, body, head, header, div, span, ul, li {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: 95%;
+}
+
+ul, li {
+  list-style: none;
+}
+
+.group:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+body {
+  background-color: white;
+}
+
+.container {
+  display: block;
+  width: 600px;
+  margin: auto;
+  padding: 10px 25px 0px 25px;
+  background-color: #EEEEEE;
+}
+
+.main_header {
+  padding: 10px;
+  border-bottom: 2px solid darkgray;
+}
+
+#signout_button {
+  float: right;
+}
+
+#profile_pic {
+  border-radius: 4px;
+}
+
+.content {
+  margin: 5px;
+  padding: 5px 5px 20px 5px;
+}

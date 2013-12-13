@@ -1,13 +1,39 @@
-<form action="<%= user_bets_url %>" method="post">
+<% action = (bet.persisted? ? bet_url(bet) : user_bets_url(current_user)) %>
+<% method = (bet.persisted? ? "put" : "post") %>
+<% message = (bet.persisted? ? "Update Bet" : "Create Bet") %>
+
+
+<form action="<%= action %>" method="post">
   <input
      name="authenticity_token"
      type="hidden"
      value="<%= form_authenticity_token %>">
+  <input
+     name="_method"
+     type="hidden"
+     value="<%= method %>">
 
   <%= current_user.first_name %> <%= current_user.last_name[0] %>. bets
   <br>
+
+  <input type="hidden" name="bet_participation[user_id][]" value="">
+   <% if bet.persisted? %>
+   <% bet.participants.each do |participant| %>
+     <input
+       checked
+       id="bet_participant_id_<%= participant.id %>"
+       name="bet_participation[user_id][]"
+       value="<%= participant.id %>"
+       type="checkbox">
+     <label for="bet_participant_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
+     <br>
+     <% end %>
+     <% end %>
+
   <% current_user.friends.each do |friend| %>
+  <% next if bet.participants.include?(friend) %>
     <input
+      <%= "checked" if bet.participants.include?(friend) %>
       id="bet_participant_id_<%= friend.id %>"
       name="bet_participation[user_id][]"
       value="<%= friend.id %>"
@@ -18,19 +44,20 @@
     <br>
     that...
     <br>
-  <textarea name="bet[terms]">he can program chess faster</textarea>
+  <textarea name="bet[terms]"><%= bet.persisted? ? bet.terms : "he can program chess faster" %></textarea>
   <br>
   <br>
   Loser has to...
   <br>
-  <textarea name="bet[wager]">eat everything in the App Academy mini-fridge</textarea>
+  <textarea name="bet[wager]"><%= bet.persisted? ? bet.wager : "eat everything in the App Academy mini-fridge" %></textarea>
   <br>
   <input
+    <%= "checked" if bet.private %>
     id="bet_private"
     name="bet[private]"
     value=true
     type="checkbox">
   <label for="bet_private">Private</label>
   <br><br>
-  <input type="submit" value="Send Challenge">
+  <input type="submit" value="<%= message %>">
 </form>

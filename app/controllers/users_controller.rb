@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
     if @user.save
       self.current_user = @user
-      redirect_to user_url(@user)
+      redirect_to root_url
     else
       render :json => @user.errors.full_messages
     end
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
       @user = current_user
       @user.update_attributes(params[:user])
       if @user.save
-        redirect_to user_url(@user)
+        redirect_to root_url
       else
         render :json => @user.errors.full_messages
       end

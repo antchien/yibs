@@ -14,7 +14,7 @@ module SessionsHelper
   end
 
   def require_current_user!
-    render :json => "Error: Requires login", status: 422 if current_user.nil?
+    redirect_to new_session_url if current_user.nil?
   end
 
   def require_no_current_user!

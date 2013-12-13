@@ -12,5 +12,5 @@ NewAuthDemo::Application.routes.draw do
     get 'inplay', on: :collection
     get 'completed', on: :collection
   end
-  root :to => "users#show"
+  root :to => "bets#community"
 end

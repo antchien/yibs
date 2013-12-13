@@ -11,13 +11,12 @@ class BetParticipationsController < ApplicationController
     end
     @bet_participation.bet.save
 
-
-    redirect_to user_url(current_user)
+    redirect_to bet_url(@bet_participation.bet)
   end
 
   def destroy
     @bet_participation = BetParticipation.find(params[:id]).destroy
-    redirect_to user_url(current_user)
+    redirect_to bet_url(@bet_participation.bet)
   end
 
 end

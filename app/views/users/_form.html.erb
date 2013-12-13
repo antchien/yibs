@@ -43,8 +43,13 @@
      type="password">
   <br>
   <br>
-  <label for="user_profile_pic">Upload Profile Picture</label>
+  Current Profile Picture:<br>
+  <% if user.profile_pic.present? %>
+    <%= image_tag user.profile_pic.url(:small) %><br>
+  <% end %>
+  <label for="user_profile_pic">Upload New Picture</label><br>
   <input type="file" id="user_profile_pic" name="user[profile_pic]">
-
+  <br>
+  <br>
   <input type="submit" value="<%= message %>">
 </form>

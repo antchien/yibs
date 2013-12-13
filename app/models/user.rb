@@ -10,10 +10,12 @@ class User < ActiveRecord::Base
   validates :username, :presence => true
 
   after_initialize :ensure_session_token
+  before_save :set_default_pic
 
   has_attached_file :profile_pic, :styles => {
-    :large => "500x500#",
-    :small => "80x80#"
+    :large => "600x600#",
+    :small => "50x50#",
+    :thumb => "30x30#"
   }
 
   has_many(
@@ -99,4 +101,11 @@ class User < ActiveRecord::Base
   def ensure_session_token
     self.session_token ||= self.class.generate_session_token
   end
+
+  def set_default_pic
+    if !self.profile_pic.present?
+      self.profile_pic = open("http://www.tenniswood.co.uk/wp-content/uploads/2010/01/design-fetish-no-photo-facebook-1.jpg")
+    end
+  end
+
 end
