@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131213043307) do
+ActiveRecord::Schema.define(:version => 20131215021445) do
 
   create_table "bet_participations", :force => true do |t|
     t.integer  "bet_id",     :null => false
@@ -58,6 +58,16 @@ ActiveRecord::Schema.define(:version => 20131213043307) do
   add_index "friendships", ["in_friend_id", "out_friend_id"], :name => "index_friendships_on_in_friend_id_and_out_friend_id"
   add_index "friendships", ["in_friend_id"], :name => "index_friendships_on_in_friend_id"
   add_index "friendships", ["out_friend_id"], :name => "index_friendships_on_out_friend_id"
+
+  create_table "notifications", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.string   "text",       :null => false
+    t.string   "link"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "username",                 :null => false

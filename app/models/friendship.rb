@@ -2,6 +2,7 @@ class Friendship < ActiveRecord::Base
   attr_accessible :in_friend_id, :out_friend_id, :pending_flag
   validates :in_friend, :out_friend, presence: true
   validates :in_friend_id, :uniqueness => {:scope => :out_friend_id}
+  after_save :create_notifications
 
   before_save :check_recip_friendship
 
@@ -35,6 +36,15 @@ class Friendship < ActiveRecord::Base
       self.pending_flag = false;
     end
     true
+  end
+  
+  def create_notifications
+    if self.pending_flag
+      notification.create(user_id: in_friend.id, text: "#{self.out_friend.first_name} #{self.out_friend.last_name} sent you a friend request!", link: user_friendships_url(in_friend))
+    else
+      notification.create(user_id: in_friend.id, text: "You are now friends with #{self.out_friend.first_name} #{self.out_friend.last_name}!", link: user_url(out_friend))
+            notification.create(user_id: out_friend.id, text: "#{self.in_friend.first_name} #{self.in_friend.last_name} accepted your friend request!", link: user_url(in_friend))
+    end
   end
 
 end

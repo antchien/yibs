@@ -68,7 +68,7 @@ class BetsController < ApplicationController
     end
 
     @bets.sort_by { |bet| Time.now()-bet.updated_at }
-    render :feed
+    render :json => :feed
   end
 
   def pending
