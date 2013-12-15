@@ -3,10 +3,14 @@ class SessionsController < ApplicationController
   before_filter :require_current_user!, :only => [:destroy]
 
   def create
-    user = User.find_by_credentials(
-      params[:user][:username],
-      params[:user][:password]
-    )
+    if auth_hash
+      #check to see if user acct has been created.  if not, create one, then login with auth_hash.
+    else
+      user = User.find_by_credentials(
+        params[:user][:username],
+        params[:user][:password]
+      )
+    end
 
     if user.nil?
       render :json => "Credentials were wrong"
@@ -23,4 +27,11 @@ class SessionsController < ApplicationController
 
   def new
   end
+  
+  private
+  
+  def auth_hash
+    request.env['omniauth.auth']
+  end
+  
 end

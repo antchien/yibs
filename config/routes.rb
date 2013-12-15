@@ -15,5 +15,6 @@ NewAuthDemo::Application.routes.draw do
     get 'inplay', on: :collection
     get 'completed', on: :collection
   end
+  get '/auth/:provider/callback', to: 'sessions#create'
   root :to => "bets#community"
 end
