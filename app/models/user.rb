@@ -1,10 +1,9 @@
 require 'open-uri'
 
 class User < ActiveRecord::Base
-  attr_accessible :username, :password, :first_name, :last_name, :profile_pic
+  attr_accessible :username, :password, :first_name, :last_name, :profile_pic, :provider, :uid
   attr_reader :password
 
-  validates :password_digest, :presence => { :message => "Password can't be blank" }
   validates :password, :length => { :minimum => 6, :allow_nil => true }
   validates :session_token, :presence => true
   validates :username, :presence => true
@@ -43,14 +42,16 @@ class User < ActiveRecord::Base
   :authored_bets,
   class_name: "Bet",
   foreign_key: :user_id,
-  primary_key: :id
+  primary_key: :id,
+  dependent: :destroy
   )
 
   has_many(
   :bet_participations,
   class_name: "BetParticipation",
   foreign_key: :user_id,
-  primary_key: :id
+  primary_key: :id,
+  dependent: :destroy
   )
 
   has_many :bets, through: :bet_participations, source: :bet
@@ -60,14 +61,16 @@ class User < ActiveRecord::Base
   :authored_comments,
   class_name: "Comment",
   foreign_key: :user_id,
-  primary_key: :id
+  primary_key: :id,
+  dependent: :destroy
   )
   
   has_many(
   :notifications,
   class_name: "Notification",
   foreign_key: :user_id,
-  primary_key: :id
+  primary_key: :id,
+  dependent: :destroy
   )
 
   def self.find_by_credentials(username, password)
@@ -83,6 +86,8 @@ class User < ActiveRecord::Base
   end
 
   def is_password?(password)
+    #this line was inserted to account for users that login via 3rd party FB/Twitter accts, for which they dont' have a yibs pw
+    return false if !self.password_digest
     BCrypt::Password.new(self.password_digest).is_password?(password)
   end
 
@@ -105,7 +110,7 @@ class User < ActiveRecord::Base
   end
   
   def abbrev_name
-    return "#{self.first_name} #{self.last_name[0]}"
+    return "#{self.first_name} #{self.last_name[0] if self.last_name}"
   end
 
   private
