@@ -12,6 +12,7 @@ class FriendshipsController < ApplicationController
     @friendship = Friendship.new(params[:friendship])
     @friendship.out_friend_id = current_user.id
     if @friendship.save
+      check_recip_friendship_and_send_notifications(@friendship)
       redirect_to user_friendships_url(current_user)
     else
       render :json => "Can not save friendship"
@@ -26,6 +27,17 @@ class FriendshipsController < ApplicationController
       redirect_to user_friendships_url(current_user)
     else
       render :json => "Can not find friendship"
+    end
+  end
+
+  def check_recip_friendship_and_send_notifications(friendship)
+    recip_friendship = friendship.find_recip_friendship
+    if recip_friendship && recip_friendship.pending_flag
+      Notification.create(user_id: friendship.in_friend.id, text: "#{friendship.out_friend.first_name} #{friendship.out_friend.last_name} accepted your friend request!", link: user_url(friendship.in_friend))
+      friendship.update_attribute(:pending_flag, false)
+      recip_friendship.update_attribute(:pending_flag, false)
+    else
+      Notification.create(user_id: friendship.in_friend.id, text: "#{friendship.out_friend.first_name} #{friendship.out_friend.last_name} sent you a friend request!", link: user_friendships_url(friendship.in_friend))
     end
   end
 

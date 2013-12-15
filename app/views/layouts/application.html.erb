@@ -13,6 +13,7 @@
         <span id="signout_button"><%= button_to "Logout", session_url, :method => :delete %></span>
         <%= render "/users/user_dashboard", :user => current_user %>
         <%= render "/bets/feeds_header" %>
+		<%= link_to "notifications", notifications_user_url(current_user) %>
     <% else %>
       <%= link_to "Sign In", new_session_url %>
       <% end %>

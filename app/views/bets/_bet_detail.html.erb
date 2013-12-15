@@ -1,7 +1,7 @@
 Bet Status: (<%= bet.status %>) - Last updated <%= bet.time_since_last_update %>
 <br>
 <br>
-<%= bet.author.first_name %> <%= bet.author.last_name[0] %>. bets:
+<%= bet.author.abbrev_name %>. bets:
   <br>
   <% bet.participations.each do |participation| %>
     <% unless participation.participant == bet.author %>

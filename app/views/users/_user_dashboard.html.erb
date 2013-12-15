@@ -1,7 +1,7 @@
 <section class="user_dashboard group">
   <%= image_tag user.profile_pic.url(:small), :id => "profile_pic" %>
   <div class="profile">
-    <span id="name"><%= user.first_name %> <%= user.last_name[0] %>.</span>
+    <span id="name"><%= user.abbrev_name %>.</span>
     <a href="<%= edit_user_url(user) %>" id="name_support">modify profile</a>
     <%= button_to "Add Bet", new_user_bet_url(user), method: 'get' %>
     <%= button_to "Update Friends", user_friendships_url(user), method: 'get' %>

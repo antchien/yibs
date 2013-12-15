@@ -8,7 +8,9 @@ class BetsController < ApplicationController
     if @bet.save
       BetParticipation.create(bet_id: @bet.id, user_id: current_user.id, status: "accepted")
       params[:bet_participation][:user_id].each do |participant_id|
+        next if participant_id == ""
         BetParticipation.create(bet_id: @bet.id, user_id: participant_id.to_i, status: "pending")
+        Notification.create(user_id: participant_id.to_i, text: "#{@bet.author.abbrev_name}. has challenged you to a bet!", link: bet_url(@bet))
       end
     else
       render :json => "Unable to save bet"
@@ -43,6 +45,7 @@ class BetsController < ApplicationController
       @bet.participants.each do |participant|
         if !participant_ids.include?(participant.id.to_s) && participant.id != @bet.author.id
           BetParticipation.find_by_bet_id_and_user_id(@bet.id, participant.id).destroy
+          Notification.create(user_id: participant.id, text: "You have been removed from a bet", link: bet_url(@bet))
         end
       end
       #then make any more participations that aren't present in the database
@@ -50,6 +53,7 @@ class BetsController < ApplicationController
         next if new_participant_id == ""
         if @bet.participants.select { |participant| participant.id == new_participant_id.to_i }.empty?
           BetParticipation.create(bet_id: @bet.id, user_id: new_participant_id.to_i, status: "pending")
+          Notification.create(user_id: participant_id.to_i, text: "#{@bet.author.abbrev_name}. has challenged you to a new bet!", link: bet_url(@bet))
         end
       end
     else
@@ -68,7 +72,7 @@ class BetsController < ApplicationController
     end
 
     @bets.sort_by { |bet| Time.now()-bet.updated_at }
-    render :json => :feed
+    render :feed
   end
 
   def pending

@@ -31,6 +31,7 @@ class Bet < ActiveRecord::Base
   primary_key: :id
   )
 
+  has_many :commenters, :through => :comments, source: :author, :uniq => true
 
   def all_participants_accepted?
     participations.all? { |participation| participation.status == "accepted" }
@@ -53,5 +54,4 @@ class Bet < ActiveRecord::Base
       self.status = "pending"
     end
   end
-
 end

@@ -50,4 +50,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def notifications
+    @user = current_user
+    @notifications = @user.notifications
+    render :notifications
+  end
+
 end

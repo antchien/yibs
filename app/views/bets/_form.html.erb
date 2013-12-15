@@ -13,7 +13,7 @@
      type="hidden"
      value="<%= method %>">
 
-  <%= current_user.first_name %> <%= current_user.last_name[0] %>. bets
+  <%= current_user.abbrev_name%>. bets
   <br>
 
   <input type="hidden" name="bet_participation[user_id][]" value="">

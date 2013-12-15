@@ -1,5 +1,8 @@
 NewAuthDemo::Application.routes.draw do
   resources :users, :only => [:create, :new, :show, :update, :edit] do
+    member do
+      get 'notifications'
+    end
     resources :friendships, :only => [:index, :create, :update, :destroy]
     resources :bets, :only => [:create, :new, :index]
     resources :bet_participations, :only => [:update, :destroy]
