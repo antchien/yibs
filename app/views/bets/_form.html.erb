@@ -59,5 +59,12 @@
     type="checkbox">
   <label for="bet_private">Private</label>
   <br><br>
+  
+  <% if bet.persisted? %>
+  <label for="bet_status">Status</label>
+  <input type="text" id="bet_status" name="bet[status]" value="<%= bet.status %>"></input>
+
+  <% end %>
+  
   <input type="submit" value="<%= message %>">
 </form>

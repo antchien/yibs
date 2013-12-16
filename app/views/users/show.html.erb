@@ -1,15 +1,16 @@
-
-<!-- <h1><%= @user.username %>'s show page</h1>
+<h1><%= @user.abbrev_name %>.'s show page</h1>
+<section class="user_details">
 <%= image_tag @user.profile_pic.url(:small) %>
-
-<p>Here are bets that need action from you:<br>
-  <%= render "/bets/display_bets", :bets => @inbound_pending_bets %>
-</p>
-
-<p>Here are the other bets you're part of:<br>
-  <%= render "/bets/display_bets", :bets => @bets %>
-</p>
-
-<p><%= link_to "Add new bet!", new_user_bet_url(@user) %></p>
-<p><%= link_to "See this user's friendships", user_friendships_url(@user) %></p> -->
-
+<ul class="user_details">
+	<li>Username: <%= @user.username %></li>
+	<li>Name: <%= @user.first_name %> <%= @user.last_name %></li>
+	<li>Total Bets: <%= @user.bets.count %></li>
+</ul>
+</section>
+<% if @user.friends.include?(current_user) %>
+	<section class="user_bets">
+		<p>
+		  <%= render "/bets/display_bets", :bets => @bets %>
+		</p>
+	</section>
+<% end %>

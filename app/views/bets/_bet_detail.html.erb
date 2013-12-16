@@ -16,8 +16,10 @@ Bet Status: (<%= bet.status %>) - Last updated <%= bet.time_since_last_update %>
   <br>
   <br>
   This bet is <%= bet.private ? "Private" : "Public" %> <br>
-  <%= link_to "Edit Bet", edit_bet_url(bet) %>
+  <% if bet.participants.include?(current_user) %>
+  	<%= link_to "Edit Bet", edit_bet_url(bet) %>
   <br>
+  <% end %>
   <% if current_user.inbound_pending_bets.include?(bet) %>
     <%= render "/bets/accept_button", :bet => bet %> <%= render "/bets/decline_button", :bet => bet %>
     <br>

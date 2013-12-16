@@ -2,7 +2,7 @@
 <% users.each do |user| %>
   <% unless user.id == current_user.id %>
     <li>
-    <%= user.first_name %> <%= user.last_name %>: <%= user.username %>
+    <%= link_to "#{user.first_name} #{user.last_name}: #{user.username}", user_url(user) %>
     <% if @friends.include?(user) %>
        <%= button_to "Unfriend", user_friendship_url(current_user.id, current_user.find_friendship(user).id), method: :delete %>
        <% elsif @outbound_pending_friends.include?(user) %>
