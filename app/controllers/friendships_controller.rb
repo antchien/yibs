@@ -30,6 +30,24 @@ class FriendshipsController < ApplicationController
     end
   end
 
+  def invite
+    new_user = User.find_by_username(params[:email])
+    if new_user
+      flash[:error] = "User already exists"
+      redirect_to user_friendships_url(current_user)
+    else
+      new_user = User.new(username: params[:email])
+      invite_email = UserMailer.invite_email(new_user, current_user)
+      if invite_email.deliver
+        flash[:notice] = "Invitation sent!"
+      else
+        flash[:error] = "Error in sending invitation email"
+      end
+    end
+
+    redirect_to user_friendships_url(current_user)
+  end
+
   def check_recip_friendship_and_send_notifications(friendship)
     recip_friendship = friendship.find_recip_friendship
     if recip_friendship && recip_friendship.pending_flag

@@ -21,6 +21,7 @@ class Bet < ActiveRecord::Base
   )
 
   has_many :participants, :through => :participations, source: :participant
+  #has_many :participants_ex_author, :through => :participations, source: :participant, :conditions => ['users.id = ?', '#{self.user_id}']
   has_many :accepted_participants, :through => :participations, source: :participant, :conditions => ['bet_participations.status = ?', 'accepted']
   has_many :pending_participants, :through => :participations, source: :participant, :conditions => ['bet_participations.status = ?', 'pending']
 
@@ -33,8 +34,35 @@ class Bet < ActiveRecord::Base
 
   has_many :commenters, :through => :comments, source: :author, :uniq => true
 
+  has_many(
+  :winning_entries,
+  class_name: "WinnerEntry",
+  foreign_key: :bet_id,
+  primary_key: :id,
+  dependent: :destroy
+  )
+
+  has_many(
+  :losing_entries,
+  class_name: "LoserEntry",
+  foreign_key: :bet_id,
+  primary_key: :id,
+  dependent: :destroy
+  )
+
+  has_many :winners, :through => :winning_entries, source: :winner
+  has_many :losers, :through => :losing_entries, source: :loser
+
   def all_participants_accepted?
     participations.all? { |participation| participation.status == "accepted" }
+  end
+
+  def participants_ex_author
+    participants.select { |participant| participant != self.author }
+  end
+
+  def participations_ex_author
+    participations.select { |participation| participation.user_id != self.author.id }
   end
 
   def time_since_last_update

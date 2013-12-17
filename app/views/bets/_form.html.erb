@@ -41,6 +41,9 @@
     <label for="bet_participant_id_<%= friend.id %>"><%= friend.first_name %> <%= friend.last_name %></label>
     <br>
     <% end %>
+    <label for="new_users">Invite other friends:</label><br>
+    <textarea placeholder="example@gmail.com, example2@gmail.com, ..." id="new_users" name="new_user_emails"></textarea>
+
     <br>
     that...
     <br>
@@ -59,12 +62,42 @@
     type="checkbox">
   <label for="bet_private">Private</label>
   <br><br>
-  
+
   <% if bet.persisted? %>
   <label for="bet_status">Status</label>
-  <input type="text" id="bet_status" name="bet[status]" value="<%= bet.status %>"></input>
+  <select id="bet_status" name="bet[status]">
+    <option value="pending">Pending</option>
+    <option value="in play">In Play</option>
+    <option value="completed">Completed</option>
+    <option value="cancelled">Cancelled</option>
+  </select>
+
+  Results:<br>
+  Select Winner(s):<br>
+  <input type="hidden" name="bet_winner[user_id][]" value="">
+   <% bet.participants.each do |participant| %>
+     <input
+       id="bet_winner_id_<%= participant.id %>"
+       name="bet_winner[user_id][]"
+       value="<%= participant.id %>"
+       type="checkbox">
+     <label for="bet_winner_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
+     <br>
+     <% end %>
+
+   Select Loser(s):<br>
+   <% bet.participants.each do |participant| %>
+   <input type="hidden" name="bet_loser[user_id][]" value="">
+     <input
+       id="bet_loser_id_<%= participant.id %>"
+       name="bet_loser[user_id][]"
+       value="<%= participant.id %>"
+       type="checkbox">
+     <label for="bet_loser_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
+     <br>
+     <% end %>
 
   <% end %>
-  
+
   <input type="submit" value="<%= message %>">
 </form>

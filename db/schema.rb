@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131215194655) do
+ActiveRecord::Schema.define(:version => 20131216161808) do
 
   create_table "bet_participations", :force => true do |t|
     t.integer  "bet_id",     :null => false
@@ -59,6 +59,16 @@ ActiveRecord::Schema.define(:version => 20131215194655) do
   add_index "friendships", ["in_friend_id"], :name => "index_friendships_on_in_friend_id"
   add_index "friendships", ["out_friend_id"], :name => "index_friendships_on_out_friend_id"
 
+  create_table "loser_entries", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.integer  "bet_id",     :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "loser_entries", ["bet_id"], :name => "index_loser_entries_on_bet_id"
+  add_index "loser_entries", ["user_id"], :name => "index_loser_entries_on_user_id"
+
   create_table "notifications", :force => true do |t|
     t.integer  "user_id",    :null => false
     t.string   "text",       :null => false
@@ -87,5 +97,15 @@ ActiveRecord::Schema.define(:version => 20131215194655) do
 
   add_index "users", ["session_token"], :name => "index_users_on_session_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
+
+  create_table "winner_entries", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.integer  "bet_id",     :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "winner_entries", ["bet_id"], :name => "index_winner_entries_on_bet_id"
+  add_index "winner_entries", ["user_id"], :name => "index_winner_entries_on_user_id"
 
 end

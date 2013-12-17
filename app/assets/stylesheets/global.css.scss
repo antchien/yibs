@@ -1,4 +1,4 @@
-h1, h2, h3, h4, body, head, header, div, span, ul, li {
+h1, h2, h3, h4, body, head, header, div, span, ul, li, p {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
@@ -21,7 +21,7 @@ body {
 
 .container {
   display: block;
-  width: 600px;
+  width: 400px;
   margin: auto;
   padding: 10px 25px 0px 25px;
   background-color: #EEEEEE;

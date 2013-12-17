@@ -25,4 +25,12 @@ class BetParticipation < ActiveRecord::Base
     end
   end
 
+  def participant_name_and_status
+    if participant.first_name && participant.last_name
+      return "#{participant.first_name} #{participant.last_name}(#{status[0]})"
+    else
+      return "#{participant.username}(#{status[0]})"
+    end
+  end
+
 end

@@ -3,7 +3,11 @@ NewAuthDemo::Application.routes.draw do
     member do
       get 'notifications'
     end
-    resources :friendships, :only => [:index, :create, :update, :destroy]
+    resources :friendships, :only => [:index, :create, :update, :destroy] do
+      collection do
+        post 'invite'
+      end
+    end
     resources :bets, :only => [:create, :new, :index]
     resources :bet_participations, :only => [:update, :destroy]
   end

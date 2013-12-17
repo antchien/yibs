@@ -1,8 +1,14 @@
-<ul>
+<ul class="comments_list">
 <% bet.comments.each do |comment| %>
-<li>
-<%= image_tag comment.author.profile_pic.url(:thumb), :id => "profile_pic" %> <%= comment.author.abbrev_name %>: <br>
-<%= comment.text %><br>
+<li class="comment group">
+  <div class="comment_thumbnail"><%= image_tag comment.author.profile_pic.url(:thumb), :id => "profile_pic" %>
+  </div>
+  <div class="comment_content">
+    <p>
+      <%= comment.author.abbrev_name %>: <%= comment.text %><br>
+      <time><%= comment.updated_at %></time>
+    </p>
+  </div>
 </li>
 <% end %>
 </ul>

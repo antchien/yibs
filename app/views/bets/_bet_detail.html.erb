@@ -1,25 +1,44 @@
-Bet Status: (<%= bet.status %>) - Last updated <%= bet.time_since_last_update %>
+<% bet.participants.each do |participant| %>
+<%= image_tag participant.profile_pic.url(:thumb), :id => "profile_pic" %>
+<% end %>
 <br>
-<br>
-<%= bet.author.abbrev_name %>. bets:
-  <br>
-  <% bet.participations.each do |participation| %>
-    <% unless participation.participant == bet.author %>
-    <%= participation.participant.first_name %> <%= participation.participant.last_name %> (<%= participation.status %>)
-    <br>
+<%= bet.author.full_name %> bets
+<% case bet.participations_ex_author.count %>
+  <% when 0..1 %>
+  <% bet.participations_ex_author.each do |participation| %>
+    <%= participation.participant_name_and_status %>
+    <% end %>
+    <% when 2 %>
+    <%= bet.participations_ex_author.first.participant_name_and_status %> and <%= bet.participations_ex_author.last.participant_name_and_status %>
+    <% else %>
+  <% bet.participations_ex_author.each_with_index do |participation, index| %>
+    <%= "and " if index == bet.participations_ex_author.count-1 %><%= participation.participant_name_and_status %><%= index == bet.participations_ex_author.count-1 ? " " : ", " %>
     <% end %>
     <% end %>
-    <br>
-    that <%= bet.terms %>
+    that <%= bet.terms %>.  Loser(s) has to <%= bet.wager %>.
   <br>
-  Loser(s) has to <%= bet.wager %>
+  <br>
+  Bet Status: (<%= bet.status %>) - Last updated <%= bet.time_since_last_update %>
+  <br>
+  <% if bet.status == 'completed' %>
+    <span class="winner_header">Winners:</span>
+      <% bet.winners.each_with_index do |winner, index| %>
+        <%= winner.abbrev_name %>.<%= ", " unless index == bet.winners.count-1 %>
+      <% end %>
+      <br>
+    <span class="loser_header">Losers:</span>
+      <% bet.losers.each_with_index do |loser, index| %>
+        <%= loser.abbrev_name %>.<%= ", " unless index == bet.losers.count-1 %>
+      <% end %>
+  <% end %>
   <br>
   <br>
   This bet is <%= bet.private ? "Private" : "Public" %> <br>
+  <br>
   <% if bet.participants.include?(current_user) %>
   	<%= link_to "Edit Bet", edit_bet_url(bet) %>
   <br>
-  <% end %>
+  <% end %><br>
   <% if current_user.inbound_pending_bets.include?(bet) %>
     <%= render "/bets/accept_button", :bet => bet %> <%= render "/bets/decline_button", :bet => bet %>
     <br>

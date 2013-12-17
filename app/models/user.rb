@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
   primary_key: :id,
   dependent: :destroy
   )
-  
+
   has_many(
   :notifications,
   class_name: "Notification",
@@ -72,6 +72,25 @@ class User < ActiveRecord::Base
   primary_key: :id,
   dependent: :destroy
   )
+
+  has_many(
+  :winning_entries,
+  class_name: "WinnerEntry",
+  foreign_key: :user_id,
+  primary_key: :id,
+  dependent: :destroy
+  )
+
+  has_many(
+  :losing_entries,
+  class_name: "LoserEntry",
+  foreign_key: :user_id,
+  primary_key: :id,
+  dependent: :destroy
+  )
+
+  has_many :bets_won, :through => :winning_entries, source: :bet
+  has_many :bets_lost, :through => :losing_entries, source: :bet
 
   def self.find_by_credentials(username, password)
     user = User.find_by_username(username)
@@ -108,7 +127,11 @@ class User < ActiveRecord::Base
   def find_bet_participation(bet)
     BetParticipation.find_by_user_id_and_bet_id(self.id, bet.id)
   end
-  
+
+  def full_name
+    return "#{self.first_name} #{self.last_name}"
+  end
+
   def abbrev_name
     return "#{self.first_name} #{self.last_name[0] if self.last_name}"
   end

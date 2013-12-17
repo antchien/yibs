@@ -1,0 +1,15 @@
+<form action="<%= invite_user_friendships_url(current_user) %>" method="post">
+  <input
+     name="authenticity_token"
+     type="hidden"
+     value="<%= form_authenticity_token %>">
+
+     <label for="user_email">Invite a Friend: </label>
+     <input
+     type="text"
+     name="email"
+     id="user_email"
+     placeholder="example@gmail.com">
+
+     <input type="submit" value="Send Invite">
+  </form>

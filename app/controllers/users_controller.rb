@@ -4,13 +4,22 @@ class UsersController < ApplicationController
   before_filter :require_admin_access!, :only => [:edit, :update]
 
   def create
-    @user = User.new(params[:user])
-
-    if @user.save
-      self.current_user = @user
-      redirect_to root_url
+    @user = User.find_by_username(params[:user][:username])
+    if @user && !@user.password_digest && !@user.provider
+      if @user.update_attributes(params[:user])
+        self.current_user = @user
+        redirect_to root_url
+      else
+        render :json => @user.errors.full_messages
+      end
     else
-      render :json => @user.errors.full_messages
+      @user = User.new(params[:user])
+      if @user.save
+        self.current_user = @user
+        redirect_to root_url
+      else
+        render :json => @user.errors.full_messages
+      end
     end
   end
 
@@ -21,7 +30,7 @@ class UsersController < ApplicationController
   def show
     if params.include?(:id)
       @user = User.find(params[:id])
-      if @user == current_user 
+      if @user == current_user
         @bets = @user.bets
       else
         @bets = @user.bets.where(private: false)

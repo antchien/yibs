@@ -51,6 +51,8 @@ NewAuthDemo::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
+  config.action_mailer.default_url_options = { host: 'yibs.co' }
+  config.action_mailer.delivery_method = :letter_opener
   # Enable threaded mode
   # config.threadsafe!
 
