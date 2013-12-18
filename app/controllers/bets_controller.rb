@@ -40,10 +40,13 @@ class BetsController < ApplicationController
   end
 
   def show
-    @bet = Bet.find(params[:id])
-    require_bet_participant! if @bet.private
+    @bets = []
+    @bets << Bet.find(params[:id])
+    require_bet_participant! if @bets.first.private
 
     @user = current_user
+    render '/users/index'
+
   end
 
   def edit
@@ -76,30 +79,46 @@ class BetsController < ApplicationController
     @user.friends.each do |friend|
       @bets.concat( friend.bets.where(status:'in play').select { |bet| !@bets.include?(bet) && !bet.private } )
     end
-
     @bets.sort_by { |bet| Time.now()-bet.updated_at }
-    render :feed
+
+    if request.xhr?
+      render partial: 'bets/display_bets', locals: {bets: @bets}
+    else
+      render :feed
+    end
   end
 
   def pending
     @user = current_user
     @bets = current_user.bets.where( status: 'pending' )
     @bets.sort_by { |bet| Time.now()-bet.updated_at }
-    render :feed
+    if request.xhr?
+      render partial: 'bets/display_bets', locals: {bets: @bets}
+    else
+      render :feed
+    end
   end
 
   def inplay
     @user = current_user
     @bets = current_user.bets.where( status: 'in play' )
     @bets.sort_by { |bet| Time.now()-bet.updated_at }
-    render :feed
+    if request.xhr?
+      render partial: 'bets/display_bets', locals: {bets: @bets}
+    else
+      render :feed
+    end
   end
 
   def completed
     @user = current_user
     @bets = current_user.bets.where( status: 'completed' )
     @bets.sort_by { |bet| Time.now()-bet.updated_at }
-    render :feed
+    if request.xhr?
+      render partial: 'bets/display_bets', locals: {bets: @bets}
+    else
+      render :feed
+    end
   end
 
   private

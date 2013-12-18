@@ -1,4 +1,4 @@
-<% if notifications.empty? %>
+<% if !notifications || notifications.empty? %>
   <li><%= "No Notifications" %></li>
 <% else %>
   <% notifications.each do |notification| %>

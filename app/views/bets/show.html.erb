@@ -1,3 +1,12 @@
 <h2>Bet show page</h2>
-
-<%= render "/bets/bet_detail", :bet => @bet %>
+<div class="content group">
+<div class="content-main">
+  <div class="bets">
+    <header class="group">
+      <ul class="bets-list">
+          <%= render "/bets/bet_detail", :bet => @bet %>
+      </ul>
+    </header>
+  </div>
+</div>
+</div>

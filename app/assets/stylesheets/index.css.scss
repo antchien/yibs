@@ -102,6 +102,7 @@ div.hover-menu > ul > li:hover {
   margin: auto;
   padding: 15px;
   background-color: rgba(255, 255, 255, 0.2);
+  position: relative;
 }
 
 //USER DASHBOARD
@@ -124,9 +125,6 @@ div.profile-name {
   padding-top: 5px;
 }
 
-div.profile-name:hover {
-  color: #69A94C;
-};
 
 div.profile-name .edit-profile {
   font-size: 80%;
@@ -135,7 +133,7 @@ div.profile-name .edit-profile {
 
 div.profile-name:hover .edit-profile {
   font-size: 80%;
-  color: #595959;
+  color: #69A94C;
 }
 
 .profile-info {
@@ -213,19 +211,65 @@ div.add-bet-button {
   border-radius: 5px;
 }
 
+.bet-pending{
+  color: #707070;
+  font-style: italic;
+}
+
+.bet-cancelled{
+  font-weight: bold;
+  color: #920F0F;
+}
+
+.bet-inplay{
+  font-weight: bold;
+  color: #69A94C;
+}
+
+.bet-completed{
+  font-weight: bold;
+  color: black;
+}
+
+.user-accepted {
+  font-weight: bold;
+}
+
+.user-pending {
+  color: #535353;
+  font-weight: bold;
+  font-style: italic;
+}
+
 .bets-list {
   margin: 5px 5px 5px 5px;
   padding-top: 5px;
 }
 
+.bets-list > li {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #E8E8E8;
+}
+
+.bets-list > li:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
 .bet-header {
+  margin-top: 0px;
   margin-left: 60px;
 }
 
 .bet-header > img {
   float: left;
-  border: 1px solid #E8E8E8;
   margin-left: 5px;
+}
+
+.bet-header > img.vs-pic {
+  margin-top: 8px;
 }
 
 .bet-header > img:first-child {
@@ -233,16 +277,25 @@ div.add-bet-button {
 }
 
 .bet-status {
-  float: left;
+  float: right;
   margin-top: 8px;
-  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 75%;
+}
+
+.bet-privacy {
+  float: right;
+  font-size: 75%;
+  margin-right: 45px;
+  margin-top: 8px;
+  color: #ACACAC;
 }
 
 .bet-private {
-  float: right;
-  font-size: 75%;
-  margin-right: 25px;
-  margin-top: 8px;
+  color: #920F0F;
+}
+
+.bet-public {
   color: #ACACAC;
 }
 
@@ -252,12 +305,16 @@ div.add-bet-button {
 }
 
 .bet-terms {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .bet-content {
   margin-left: 60px;
   padding-right: 45px;
+}
+
+.pre-feeds-title {
+  font-weight: bold;
 }
 
 .bet-options {
@@ -268,7 +325,7 @@ div.add-bet-button {
   float: left;
   margin-left: 10px;
   color: #5D7BC7;
-  font-size: 75%;
+  font-size: 85%;
 }
 
 .bet-options > ul > li:first-child {
@@ -297,13 +354,76 @@ div.uparrow-comments {
   background-color: #E8E8E8;
   border-radius: 5px;
   padding: 5px;
+  font-size: 95%;
 }
 
-.comment-thumbnail {
+.comments-list > li {
+  padding: 3px 0;
+  border-top: 1px solid white;
+}
+
+.comments-list > li:first-child {
+  border-top: 0;
+}
+
+.comment-thumb {
   float: left;
 }
 
 .comment-content {
   padding-top: 2px;
+  margin-left: 38px;
+}
+
+.comment-time {
+  display: block;
+  margin-top: 5px;
+  font-size: 90%;
+  color: #535353;
+}
+
+.new-comment {
+  padding: 3px 0;
+  border-top: 1px solid white;
+}
+
+.new-comment-thumb {
+ float: left;
+}
+
+.new-comment > form {
   margin-left: 35px;
 }
+
+//Bet show page
+.bet-show {
+  float: left;
+  width: 600px;
+  background-color: #FFFFFF;
+  padding: 10px;
+  margin-left: 20px;
+  border-radius: 5px;
+}
+
+//LIGHT BOX
+//user-edit-form
+.user-edit-form {
+  display: block;
+  width: 500px 500px;
+  position: absolute;
+  padding: 10px;
+  background-color: white;
+  top: 200px;
+  left: 330px;
+  margin: auto;
+  border: 5px solid #323232;
+  z-index: 1;
+}
+
+.user-edit-form.hidden {
+  display: none;
+}
+
+
+
+

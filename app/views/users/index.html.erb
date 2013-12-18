@@ -1,5 +1,28 @@
+<script>
 
+$(document).ready(function(event) {
 
+  //changes feeds
+  $("#feeds-list").on("ajax:success", "a", function(event, data) {
+    console.log(data);
+    $("#bets-feed").html(data);
+  });
+
+  $("#profile-name").on("click", "a", function(event) {
+    event.preventDefault();
+    console.log(event)
+    $('.user-edit-form').removeClass("hidden");
+  });
+
+  $("#profile-picture").on("click", "a", function(event) {
+    event.preventDefault();
+    console.log(event)
+    $('.user-edit-form').removeClass("hidden");
+  });
+
+});
+
+</script>
 <header class="header">
   <div class="header-wrap group">
     <h1 class="header-logo">
@@ -38,16 +61,17 @@
 </header>
 
 <div class="content group">
+  <%= render '/users/edit' %>
   <section class="user-dashboard">
 
     <div class="profile-picture">
-      <a href='<%= edit_user_url(current_user)%>'>
+      <a href='#'>
      <%= image_tag @user.profile_pic.url(:small), :id => "profile_pic" %>
      </a>
     </div>
 
-    <div class="profile-name">
-      <a href='<%= edit_user_url(current_user)%>'>
+    <div class="profile-name" id="profile-name">
+      <a href=''>
       <p>
         <span class="name-profile"><%= @user.first_name %> <%= @user.last_name %></span></br>
         <span class="edit-profile">Edit Account<span>
@@ -76,77 +100,20 @@
   <div class="content-main">
     <header class="content-header group">
       <div class="pre-feeds-title">Bets: </div>
-      <ul class="feeds-list">
-        <li class="feeds-list-item"><a href="#">Community</a></li>
-        <li class="feeds-list-item"><a href="#">In Play</a></li>
-        <li class="feeds-list-item"><a href="#">Pending</a></li>
-        <li class="feeds-list-item"><a href="#">Completed</a></li>
+      <ul class="feeds-list" id="feeds-list">
+        <li class="feeds-list-item"><a href="<%= community_bets_url %>" data-remote="true">Community</a></li>
+        <li class="feeds-list-item"><a href="<%= inplay_bets_url %>" data-remote="true">In Play</a></li>
+        <li class="feeds-list-item"><a href="<%= pending_bets_url %>" data-remote="true">Pending</a></li>
+        <li class="feeds-list-item"><a href="<%= completed_bets_url %>" data-remote="true">Completed</a></li>
       </ul>
     </header>
 
     <div class="bets">
       <header class="group">
 
-
-
-        <ul class="bets-list">
-              <li class="bets_list_item">
-            <div class="bet-header group">
-              <img alt="Stringio" id="profile_pic" src="http://s3.amazonaws.com/yibs-dev/users/profile_pics/000/000/007/thumb/stringio.txt?1387296953">
-
-              <img alt="Stringio" id="profile_pic" src="http://s3.amazonaws.com/yibs-dev/users/profile_pics/000/000/007/thumb/stringio.txt?1387296953">
-              <div class="bet-status">Status: Pending</div>
-              <div class="bet-private">Public</div>
-            </div>
-
-
-            <div class="bet-author-pic">
-              <img alt="Open-uri20131217-39002-gjhasu?1387318745" id="profile_pic" src="http://s3.amazonaws.com/yibs-dev/users/profile_pics/000/000/002/small/open-uri20131217-39002-gjhasu?1387318745">
-            </div>
-            <div class="bet-content">
-              <div class="bet-terms">
-                Emil Lee bets Brian Deane(a) that he can erase Brian's project by the end of the day without him noticing.  Loser(s) has to wrestle tommy.
-              </div>
-
-              <div class="bet-options group">
-                <ul>
-                  <li><a href="http://localhost:3000/bets/3/edit">Edit Bet</a></li>
-                  <li><a href="#">Share</a></li>
-                  <li><a href="#">Comment</a></li>
-                  <li>Last updated 5 hours ago</li>
-                </ul>
-              </div>
-              <div class="comments-section">
-                <div class="uparrow-comments"></div>
-                <ul class="comments-list">
-                <li class="comment group">
-                  <div class="comment-thumbnail"><img alt="Stringio" id="profile_pic" src="http://s3.amazonaws.com/yibs-dev/users/profile_pics/000/000/007/thumb/stringio.txt?1387296953">
-                  </div>
-                  <div class="comment-content">
-
-                      <div class="comment-text">Arnold S: fdsafdsafdffsda fl;dsaj flksda jfsadklf adsjklf dsalkfdsaj fkljweiof jwqiof wajofewaj ifoa jfladsj fiewaof jawiof;j awiof jwaeiofawjf osadifj ewoif waeofasafds</div>
-                      <time class="comment-time">2013-12-17 16:15:57 UTC</time>
-                  </div>
-                </li>
-                </ul>
-
-                <form action="http://localhost:3000/bets/3/comments" method="post">
-                  <input name="authenticity_token" type="hidden" value="b2yWfwO3942mgBqGRlQ2kB77cZjKs0JAxiRob8LQ1NY=">
-
-                  <textarea name="comment[text]" placeholder="write a comment"></textarea>
-
-                  <input type="submit" value="Add Comment">
-                </form>
-
-
-                    </li>
-                </ul>
-              </div>
-            </div>
-
-
-
-
+        <ul class="bets-list" id="bets-feed">
+          <%= render "bets/display_bets", :bets => @community_bets %>
+        </ul>
 
       </header>
     </div>

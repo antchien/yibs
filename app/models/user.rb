@@ -138,9 +138,9 @@ class User < ActiveRecord::Base
   end
 
   def community_bets
-    @bets = self.bets.where( status: 'in play' )
+    @bets = self.bets
     self.friends.each do |friend|
-      @bets.concat( friend.bets.where(status:'in play').select { |bet| !@bets.include?(bet) && !bet.private } )
+      @bets.concat( friend.bets.select { |bet| !@bets.include?(bet) && !bet.private } )
     end
 
     @bets.sort_by { |bet| Time.now()-bet.updated_at }

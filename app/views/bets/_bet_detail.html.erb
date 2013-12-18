@@ -1,26 +1,42 @@
-<% bet.participants.each do |participant| %>
-<%= image_tag participant.profile_pic.url(:small), :id => "profile_pic" %>
-<% end %>
-<br>
-<%= bet.author.full_name %> bets
-<% case bet.participations_ex_author.count %>
-  <% when 0..1 %>
-  <% bet.participations_ex_author.each do |participation| %>
-    <%= participation.participant_name_and_status %>
+<div class="bet-header group">
+  <% bet.participants.each_with_index do |participant, index| %>
+    <% unless index == 0 %>
+      <%= image_tag("15px-sword-vs.png", class: "vs-pic") %>
     <% end %>
-    <% when 2 %>
-    <%= bet.participations_ex_author.first.participant_name_and_status %> and <%= bet.participations_ex_author.last.participant_name_and_status %>
-    <% else %>
-  <% bet.participations_ex_author.each_with_index do |participation, index| %>
-    <%= "and " if index == bet.participations_ex_author.count-1 %><%= participation.participant_name_and_status %><%= index == bet.participations_ex_author.count-1 ? " " : ", " %>
-    <% end %>
-    <% end %>
-    that <%= bet.terms %>.  Loser(s) has to <%= bet.wager %>.
-  <br>
-  <br>
-  Bet Status: (<%= bet.status %>) - Last updated <%= bet.time_since_last_update %>
-  <br>
+    <%= image_tag participant.profile_pic.url(:thumb), :id => "participant-pic" %>
+  <% end %>
+
+  <div class='bet-privacy bet-<%= bet.private ? 'private' : 'public' %>'><%= bet.private ? 'Private' : 'Public' %></div>
+  <div class="bet-status">Status: <span class="bet-<%= bet.status.delete(' ') %>"><%= bet.status.split.map(&:capitalize).join(' ') %></span></div>
+
+</div>
+
+<div class="bet-author-pic">
+  <%= image_tag bet.author.profile_pic.url(:small), :id => "bet-author-pic" %>
+</div>
+
+<div class="bet-content">
+  <div class="bet-terms">
+    <span class="link-name user-<%= bet.participation_author.first.status %>"><a href="<%= user_url(bet.author) %>"><%= bet.author.full_name %></a></span> bets
+    <% case bet.participations_ex_author.count %>
+      <% when 0..1 %>
+      <% bet.participations_ex_author.each do |participation| %>
+        <span class="link-name user-<%= participation.status %>"><a href="<%= user_url(participation.user_id) %>"><%= participation.participant_full_name %></a></span>
+        <% end %>
+        <% when 2 %>
+        <span class="link-name user-<%= bet.participations_ex_author.first.status %>"><a href="<%= user_url(bet.participations_ex_author.first.user_id) %>"><%= bet.participations_ex_author.first.participant_full_name %></a></span> and <span class="link-name user-<%= bet.participations_ex_author.last.status %>"><a href="<%= user_url(bet.participations_ex_author.last.user_id) %>"><%= bet.participations_ex_author.last.participant_full_name %></a></span>
+        <% else %>
+      <% bet.participations_ex_author.each_with_index do |participation, index| %>
+        <%= "and " if index == bet.participations_ex_author.count-1 %><span class="link-name user-<%= participation.status %>"><a href="<%= user_url(participation.user_id) %>"><%= participation.participant_full_name %></a></span><%= index == bet.participations_ex_author.count-1 ? " " : ", " %>
+        <% end %>
+        <% end %>
+        that <%= bet.terms %>.<br>
+        <br>
+        Loser(s) has to <%= bet.wager %>.
+  </div>
+
   <% if bet.status == 'completed' %>
+  <div class="winners-losers-section">
     <span class="winner_header">Winners:</span>
       <% bet.winners.each_with_index do |winner, index| %>
         <%= winner.abbrev_name %>.<%= ", " unless index == bet.winners.count-1 %>
@@ -30,18 +46,23 @@
       <% bet.losers.each_with_index do |loser, index| %>
         <%= loser.abbrev_name %>.<%= ", " unless index == bet.losers.count-1 %>
       <% end %>
+  </div>
   <% end %>
-  <br>
-  <br>
-  This bet is <%= bet.private ? "Private" : "Public" %> <br>
-  <br>
-  <% if bet.participants.include?(current_user) %>
-  	<%= link_to "Edit Bet", edit_bet_url(bet) %>
-  <br>
-  <% end %><br>
+
   <% if current_user.inbound_pending_bets.include?(bet) %>
     <%= render "/bets/accept_button", :bet => bet %> <%= render "/bets/decline_button", :bet => bet %>
     <br>
     <% end %>
-    Comments:<br>
-    <%= render "/comments/expanded_comments_form", :bet => bet%>
+
+  <div class="bet-options group">
+    <ul>
+      <% if bet.participants.include?(current_user) %>
+      <li><a href="<%= edit_bet_url(bet) %>">Edit Bet</a></li>
+      <% end %>
+      <li><a href="#">Share</a></li>
+      <li><a href="#">Comment</a></li>
+      <li>Last updated <%= bet.time_since_last_update %></li>
+    </ul>
+  </div>
+
+  <%= render "/comments/expanded_comments_form", :bet => bet%>

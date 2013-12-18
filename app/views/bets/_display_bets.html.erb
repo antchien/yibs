@@ -1,7 +1,5 @@
-<ul class="bets_list">
-  <% bets.each do |bet| %>
-    <li class="bets_list_item">
+<% bets.each do |bet| %>
+    <li class="bets-list-item">
       <%= render "/bets/bet_detail", :bet => bet %>
     </li>
-  <%end%>
-</ul>
+<%end%>

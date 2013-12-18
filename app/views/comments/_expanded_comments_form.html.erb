@@ -1,25 +1,30 @@
-<ul class="comments_list">
-<% bet.comments.each do |comment| %>
-<li class="comment group">
-  <div class="comment_thumbnail"><%= image_tag comment.author.profile_pic.url(:thumb), :id => "profile_pic" %>
-  </div>
-  <div class="comment_content">
-    <p>
-      <%= comment.author.abbrev_name %>: <%= comment.text %><br>
-      <time><%= comment.updated_at %></time>
-    </p>
-  </div>
-</li>
-<% end %>
-</ul>
+<div class="comments-section">
+  <div class="uparrow-comments"></div>
+  <ul class="comments-list">
+  <% bet.comments.each do |comment| %>
+  <li class="comment group">
+    <div class="comment-thumb"><%= image_tag comment.author.profile_pic.url(:thumb), :id => "comment-pic" %>
+    </div>
 
-<form action="<%= bet_comments_url(bet.id) %>" method="post">
-  <input
-     name="authenticity_token"
-     type="hidden"
-     value="<%= form_authenticity_token %>">
+    <div class="comment-content">
+      <div class="comment-text"><span class="link-name"><a href="<%= user_url(comment.user_id) %>"><%= comment.author.full_name %></a></span>: <%= comment.text %></div>
+      <time class="comment-time"><%= comment.time_since_last_update %></time>
+    </div>
+  </li>
+  <% end %>
+  </ul>
 
-  <textarea name="comment[text]">add some text here</textarea>
+  <div class="new-comment">
+    <div class="new-comment-thumb"><%= image_tag current_user.profile_pic.url(:thumb), :id => "comment-pic" %></div>
+      <form action="<%= bet_comments_url(bet.id) %>" method="post">
+    <input
+       name="authenticity_token"
+       type="hidden"
+       value="<%= form_authenticity_token %>">
 
-  <input type="submit" value="Add Comment">
-</form>
+    <textarea rows="1" cols="40" name="comment[text]" placeholder="write a comment" ></textarea>
+
+    <input type="submit" value="Add Comment">
+  </form>
+
+</div>

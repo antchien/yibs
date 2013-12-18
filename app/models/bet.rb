@@ -57,6 +57,10 @@ class Bet < ActiveRecord::Base
     participations.all? { |participation| participation.status == "accepted" }
   end
 
+  def participation_author
+    participations.select { |participation| participation.user_id == self.author.id }
+  end
+
   def participants_ex_author
     participants.select { |participant| participant != self.author }
   end
@@ -67,9 +71,12 @@ class Bet < ActiveRecord::Base
 
   def time_since_last_update
     age = Time.now()-self.updated_at
-
-    if age > 86400
+    if age > 259200
+      return self.updated_at.strftime("on %B %e, %Y at %-I:%M%P")
+    elsif age > 172800
       return (age / 86400).floor.to_s + " days ago"
+    elsif age > 86400
+      return self.updated_at.strftime("yesterday at %-I:%M%P")
     elsif age > 3600
       return (age / 3600).floor.to_s + " hours ago"
     else age
