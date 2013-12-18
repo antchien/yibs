@@ -1,30 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NewAuthDemo</title>
+  <title>Yibs</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <link rel="stylesheet" type="text/css" href="assets/index.css">
 </head>
 <body>
-  <div class="container">
-    <header class="main_header group">
-    <% if !current_user.nil? %>
-        <span id="signout_button"><%= button_to "Logout", session_url, :method => :delete %></span>
-        <%= render "/users/user_dashboard", :user => current_user %>
-        <%= render "/bets/feeds_header" %>
-		<%= link_to "notifications", notifications_user_url(current_user) %>
-    <% else %>
-      <%= link_to "Sign In", new_session_url %>
-      <% end %>
-    </header>
 
-    <section class="content">
 
-    <%= yield %>
+ <%= yield %>
 
-    </section>
 
-  </div>
+
+
+
+
+
+
+
+
 </body>
 </html>

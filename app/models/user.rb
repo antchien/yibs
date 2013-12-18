@@ -55,6 +55,7 @@ class User < ActiveRecord::Base
   )
 
   has_many :bets, through: :bet_participations, source: :bet
+  has_many :inplay_bets, through: :bet_participations, source: :bet, :conditions => ['bets.status = ?', 'in play']
   has_many :inbound_pending_bets, through: :bet_participations, source: :bet, :conditions => ['bet_participations.status = ? AND bets.status = ?', 'pending', 'pending']
 
   has_many(
@@ -134,6 +135,30 @@ class User < ActiveRecord::Base
 
   def abbrev_name
     return "#{self.first_name} #{self.last_name[0] if self.last_name}"
+  end
+
+  def community_bets
+    @bets = self.bets.where( status: 'in play' )
+    self.friends.each do |friend|
+      @bets.concat( friend.bets.where(status:'in play').select { |bet| !@bets.include?(bet) && !bet.private } )
+    end
+
+    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+  end
+
+  def pending_bets
+    @bets = self.bets.where( status: 'pending' )
+    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+  end
+
+  def inplay_bets
+    @bets = self.bets.where( status: 'in play' )
+    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+  end
+
+  def completed_bets
+    @bets = self.bets.where( status: 'completed' )
+    @bets.sort_by { |bet| Time.now()-bet.updated_at }
   end
 
   private

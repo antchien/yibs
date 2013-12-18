@@ -1,5 +1,5 @@
 <% bet.participants.each do |participant| %>
-<%= image_tag participant.profile_pic.url(:thumb), :id => "profile_pic" %>
+<%= image_tag participant.profile_pic.url(:small), :id => "profile_pic" %>
 <% end %>
 <br>
 <%= bet.author.full_name %> bets

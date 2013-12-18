@@ -1,0 +1,9 @@
+<% if notifications.empty? %>
+  <li><%= "No Notifications" %></li>
+<% else %>
+  <% notifications.each do |notification| %>
+  	<li>
+  		<a href="<%= notification.link %>"><%= notification.text %></a>
+  	</li>
+    <% end %>
+<% end %>

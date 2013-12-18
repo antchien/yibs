@@ -1,0 +1,309 @@
+//TOP NAV BAR
+
+.header {
+  width: 100%;
+  background: #323232;
+}
+
+
+.header-wrap {
+  margin: auto;
+  width: 900px;
+  color: #ACACAC;
+}
+
+.header-logo {
+  float: left;
+}
+
+.header-logo > a {
+  display: block;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+
+.header-nav {
+  float:right;
+}
+
+.header-nav > ul > li {
+  float: left;
+  position: relative;
+}
+
+.header-nav > ul > li > a {
+  display: block;
+  padding: 10px;
+}
+
+.header-nav > ul > li > div.hover-menu {
+  display: none;
+  position: absolute;
+  background-color: #FFFFFF;
+  padding: 5px;
+  color: #323232;
+  border-radius: 3px;
+}
+
+li.settings-label:hover > div.hover-menu {
+  display: block;
+  width: 150px;
+  top: 40px;
+  left: -80px;
+}
+
+li.notifications-label:hover > div.hover-menu {
+  display: block;
+  width: 300px;
+  top: 40px;
+  left: -129px;
+}
+
+div.menu-title {
+  padding: 5px 10px 5px 10px;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+div.hover-menu > ul > li {
+  border-top: 1px solid #E8E8E8;
+  padding: 5px 10px 5px 10px;
+}
+
+div.hover-menu > ul > li:first-child {
+  border-top: 0;
+}
+
+div.uparrow {
+  position: absolute;
+  border-top: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #FFFFFF;
+  border-left: 10px solid transparent;
+}
+
+li.settings-label > div.hover-menu > div.uparrow {
+  top: -20px;
+  left: 105px;
+}
+
+li.notifications-label > div.hover-menu > div.uparrow {
+  top: -20px;
+  left: 170px;
+}
+
+div.hover-menu > ul > li:hover {
+  background-color: #ACACAC;
+}
+
+
+//GENERAL CONTENT  AKA-AFTER HEADER
+.content {
+  width: 870px;
+  margin: auto;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+//USER DASHBOARD
+.user-dashboard {
+  float: left;
+  width: 210px;
+  background-color: #FFFFFF;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.profile-picture {
+  float: left;
+  margin-bottom: 3px;
+}
+
+div.profile-name {
+  float: left;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+
+div.profile-name:hover {
+  color: #69A94C;
+};
+
+div.profile-name .edit-profile {
+  font-size: 80%;
+  color: #595959;
+}
+
+div.profile-name:hover .edit-profile {
+  font-size: 80%;
+  color: #595959;
+}
+
+.profile-info {
+  clear: both;
+}
+
+div.profile-info > ul {
+  border-top: 1px solid #E8E8E8;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+div.profile-info > ul > li {
+  display: block;
+  float: left;
+  margin: 3px 0 3px 0;
+  padding: 3px 3px 5px 3px;
+  width: 63px;
+  text-align: center;
+  border-left: 1px solid #E8E8E8;
+}
+
+div.profile-info > ul > li:first-child {
+  border-left: 0;
+}
+
+.stat-value {
+  font-size: 90%;
+}
+
+.stat-header {
+  font-size: 75%;
+  color: #595959;
+}
+
+div.add-bet-button {
+  text-align: center;
+  background-color: #193B8B;
+  padding: 3px;
+  margin: auto;
+  margin-top: 10px;
+  color: white;
+  width: 100px;
+  border-radius: 6px;
+  font-size: 90%;
+}
+
+//CONTENT-MAIN
+
+.content-main {
+  float: left;
+  width: 600px;
+  background-color: #FFFFFF;
+  padding: 10px;
+  margin-left: 20px;
+  border-radius: 5px;
+}
+
+.content-header {
+  border-bottom: 1px solid #E8E8E8;
+  padding-bottom: 5px;
+}
+
+.content-header > div.pre-feeds-title {
+  float: left;
+  padding: 5px;
+}
+
+.content-header > ul.feeds-list > li {
+  float: left;
+  padding: 5px;
+}
+
+.content-header > ul.feeds-list > li:hover {
+  color: #69A94C;
+  border-radius: 5px;
+}
+
+.bets-list {
+  margin: 5px 5px 5px 5px;
+  padding-top: 5px;
+}
+
+.bet-header {
+  margin-left: 60px;
+}
+
+.bet-header > img {
+  float: left;
+  border: 1px solid #E8E8E8;
+  margin-left: 5px;
+}
+
+.bet-header > img:first-child {
+  margin-left: 0;
+}
+
+.bet-status {
+  float: left;
+  margin-top: 8px;
+  margin-left: 10px;
+}
+
+.bet-private {
+  float: right;
+  font-size: 75%;
+  margin-right: 25px;
+  margin-top: 8px;
+  color: #ACACAC;
+}
+
+.bet-author-pic {
+  margin-top: 10px;
+  float: left;
+}
+
+.bet-terms {
+  margin-top: 15px;
+}
+
+.bet-content {
+  margin-left: 60px;
+  padding-right: 45px;
+}
+
+.bet-options {
+  margin: 10px 0 10px 0;
+}
+
+.bet-options > ul > li {
+  float: left;
+  margin-left: 10px;
+  color: #5D7BC7;
+  font-size: 75%;
+}
+
+.bet-options > ul > li:first-child {
+  float: left;
+  margin-left: 0;
+}
+
+.bet-options > ul > li:last-child {
+  color: #ACACAC;
+}
+
+//COMMENTS SECTION
+
+div.uparrow-comments {
+  position: absolute;
+  border-top: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #E8E8E8;
+  border-left: 7px solid transparent;
+  top: -14px;
+  left: 115px;
+}
+
+.comments-section {
+  position: relative;
+  background-color: #E8E8E8;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.comment-thumbnail {
+  float: left;
+}
+
+.comment-content {
+  padding-top: 2px;
+  margin-left: 35px;
+}

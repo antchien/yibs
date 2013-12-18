@@ -2,26 +2,3 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.comments_list {
-  background-color: darkgray;
-  width: 375px;
-}
-
-li.comment {
-  width: 375px;
-  margin: auto;
-  border-top: 1px solid white;
-}
-
-.comment_thumbnail {
-  float: left;
-  padding: 3px;
-  width: 33px;
-}
-
-.comment_content {
-  margin-top: 0;
-  padding: 3px 3px 3px 0px;
-  margin-left: 39px;
-  word-wrap: break-word;
-}

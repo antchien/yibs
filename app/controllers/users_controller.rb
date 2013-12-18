@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :require_current_user!, :only => [:show, :edit, :update]
+  before_filter :require_current_user!, :only => [:show, :edit, :update, :index]
   before_filter :require_no_current_user!, :only => [:create, :new]
   before_filter :require_admin_access!, :only => [:edit, :update]
 
@@ -62,10 +62,34 @@ class UsersController < ApplicationController
     end
   end
 
+  def index
+    @user = current_user
+    @notifications = @user.notifications
+    @community_bets = @user.community_bets
+    @pending_bets = @user.pending_bets
+    @inplay_bets = @user.inplay_bets
+    @completed_bets = @user.completed_bets
+    @user_bet_count = @user.bets.count
+    @user_inplay_count = @user.inplay_bets.count
+    @user_win_count = @user.bets_won.count
+  end
+
   def notifications
     @user = current_user
     @notifications = @user.notifications
     render :notifications
   end
+
+  def refresh
+    #can be optimized to utilize only 1 or 2 passes into the database rather than 4-5
+    @user = current_user
+    @notifications = @user.notifications
+    @community_bets = @user.community_bets
+    @pending_bets = @user.pending_bets
+    @inplay_bets = @user.in_play_bets
+    @completed_bets = @user.completed_bets
+  end
+
+
 
 end

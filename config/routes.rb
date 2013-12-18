@@ -1,7 +1,8 @@
 NewAuthDemo::Application.routes.draw do
-  resources :users, :only => [:create, :new, :show, :update, :edit] do
+  resources :users, :only => [:create, :new, :show, :update, :edit, :index] do
     member do
       get 'notifications'
+      get 'refresh'
     end
     resources :friendships, :only => [:index, :create, :update, :destroy] do
       collection do
@@ -20,5 +21,5 @@ NewAuthDemo::Application.routes.draw do
     get 'completed', on: :collection
   end
   get '/auth/:provider/callback', to: 'sessions#create'
-  root :to => "bets#community"
+  root :to => 'users#index'
 end
