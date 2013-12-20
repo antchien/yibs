@@ -9,12 +9,15 @@ class FriendshipsController < ApplicationController
   end
 
   def search
+    puts "********************************************************"
     @user = current_user
     @users = User.search_by_name_and_email(params[:query])
     if request.xhr?
+      puts "++++++++++++++++++++++++++++++++++++++++++++"
       puts "XHR SUCCESS"
       render partial: 'friendships/friendship_detail', locals: {users: @users}
     else
+      puts "---------------------------------------------"
       puts "XHR FAIL"
       render partial: 'friendships/friendship_detail', locals: {users: @users}
     end

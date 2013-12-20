@@ -88,10 +88,12 @@ $(document).ready(function(event) {
       })
     }
   })
-  //
-  // $('search-form').on('ajax:success', '.search-form', function(event, data){
-  //   console.log(data)
-  // })
+
+  $('.search-form').on('ajax:success', function(event, data){
+    $('#friendship-show-content').html(data);
+    $('.friendship-show-form').removeClass('hidden');
+    $('.dimmer').removeClass('hidden');
+  })
 
   // Friends Search-form stuff
   $('.search-form input').focus( function() {
@@ -109,6 +111,7 @@ $(document).ready(function(event) {
         url: url,
         data: {"query": data},
         success: function(data) {
+          console.log(data)
           $(that).siblings('div').html(data)
           $(that).siblings('div').removeClass('hidden');
         }
@@ -116,9 +119,9 @@ $(document).ready(function(event) {
     })
   })
 
-  // $('.search-form input').focusout( function() {
-  //   console.log("out focus!");
-  //   $(this).parent().siblings('div').addClass('hidden');
+  // $('.search-friends-section').focusout( function(event) {
+  //   $(this).children('div.search-drop-down').addClass('hidden')
+  //   // $(this).parent().siblings('div').addClass('hidden');
   // })
 
   $('.search-drop-down').on('ajax:success', 'a', function(event, data) {
