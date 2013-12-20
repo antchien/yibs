@@ -6,6 +6,8 @@ NewAuthDemo::Application.routes.draw do
     end
     resources :friendships, :only => [:index, :create, :update, :destroy] do
       collection do
+        get 'search_friends'
+        get 'search'
         post 'invite'
       end
     end

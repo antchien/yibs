@@ -112,6 +112,7 @@ div.hover-menu > ul > li:hover {
 
 //USER DASHBOARD
 .user-dashboard {
+  position: relative;
   float: left;
   width: 210px;
   background-color: #FFFFFF;
@@ -499,4 +500,16 @@ div.uparrow-comments {
 .bet-show-form {
   width: 550px;
   margin-left: -275px;
+}
+
+//Search form stuff
+
+.friendship-dashboard {
+  position: absolute;
+  top: 180px;
+  width: 210px;
+  background-color: #FFFFFF;
+  padding: 10px;
+  border-radius: 5px;
+
 }

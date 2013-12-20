@@ -28,3 +28,25 @@ body {
 .bet-author-pic {
   border-radius: 3px;
 }
+
+//drop down boxes for search
+.search-form {
+  position: relative;
+}
+
+.search-drop-down {
+  position: absolute;
+  top: 32px;
+  left: 1px;
+  background-color: white;
+  padding: 2px;
+  border: 1px solid #323232;
+}
+
+.search-dropd-won > ul > li {
+  margin: 2px;
+}
+
+.search-drop-down > ul > li:hover {
+  background-color: #B9C5EE;
+}

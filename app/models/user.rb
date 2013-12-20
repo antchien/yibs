@@ -1,6 +1,8 @@
 require 'open-uri'
 
 class User < ActiveRecord::Base
+  include PgSearch
+
   attr_accessible :username, :password, :first_name, :last_name, :profile_pic, :provider, :uid
   attr_reader :password
 
@@ -10,6 +12,8 @@ class User < ActiveRecord::Base
 
   after_initialize :ensure_session_token
   before_save :set_default_pic
+
+  pg_search_scope :search_by_name_and_email, against: [:first_name, :last_name, :username], :using => {:tsearch => {:prefix => true}}
 
   has_attached_file :profile_pic, :styles => {
     :large => "600x600#",

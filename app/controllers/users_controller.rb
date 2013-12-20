@@ -28,6 +28,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    puts "HEERRRRRRRRRRRRRRRRRRRRRRRRRREE"
     @user = User.find(params[:id])
     if @user == current_user
       @bets = @user.bets
@@ -35,8 +36,10 @@ class UsersController < ApplicationController
       @bets = (@user.bets.where(private: false) + @user.bets.select { |bet| bet.participants.include?(current_user) }).uniq
     end
     if request.xhr?
+      puts "request.xhr success"
       render partial: 'users/show_details_lightbox', locals: {user: @user, bets: @bets}
     else
+            puts "request.xhr failed"
       render partial: 'users/show_details_lightbox', locals: {user: @user, bets: @bets}
     end
   end

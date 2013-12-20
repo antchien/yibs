@@ -1,0 +1,18 @@
+<form class="search-form trigger-search-query" action="<%= search_user_friendships_url(current_user.id) %>" data-remote="true" method="get">
+  <input
+     name="authenticity_token"
+     type="hidden"
+     value="<%= form_authenticity_token %>">
+
+     <label for="search-query"></label>
+     <input
+     autocomplete="off"
+     type="text"
+     name="query"
+     id="search-query"
+     placeholder="example@gmail.com">
+
+     <input type="submit" value="Search">
+  </form>
+
+  <div class="search-drop-down hidden"></div>

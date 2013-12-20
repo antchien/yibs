@@ -88,6 +88,46 @@ $(document).ready(function(event) {
       })
     }
   })
+  //
+  // $('search-form').on('ajax:success', '.search-form', function(event, data){
+  //   console.log(data)
+  // })
+
+  // Friends Search-form stuff
+  $('.search-form input').focus( function() {
+    console.log("in focus!");
+    $('.trigger-search-query').keyup(function(event) {
+      var url = $(this).attr('action')
+      url = url + "_friends"
+      console.log(url)
+      var data = $(this).children('input#search-query').val()
+      var that = this
+      console.log(this)
+      console.log(data)
+      $.ajax ({
+        method: "GET",
+        url: url,
+        data: {"query": data},
+        success: function(data) {
+          $(that).siblings('div').html(data)
+          $(that).siblings('div').removeClass('hidden');
+        }
+      })
+    })
+  })
+
+  // $('.search-form input').focusout( function() {
+  //   console.log("out focus!");
+  //   $(this).parent().siblings('div').addClass('hidden');
+  // })
+
+  $('.search-drop-down').on('ajax:success', 'a', function(event, data) {
+    event.preventDefault();
+    $('#user-show-content').html(data);
+    $('.user-show-form').removeClass('hidden');
+    $('.dimmer').removeClass('hidden');
+  })
+
 
   $(document).keyup(function(event) {
     if( event.which == 27 ) {
@@ -154,8 +194,9 @@ $(document).ready(function(event) {
   <%= render '/bets/new_lightbox' %>
   <%= render '/bets/show_lightbox' %>
   <%= render '/users/show_lightbox' %>
-  <section class="user-dashboard">
+  <%= render '/friendships/show_lightbox' %>
 
+  <section class="user-dashboard">
     <div class="profile-picture">
       <a href='#'>
      <%= image_tag @user.profile_pic.url(:small), :id => "profile_pic" %>
@@ -163,10 +204,10 @@ $(document).ready(function(event) {
     </div>
 
     <div class="profile-name trigger-user-edit-form">
-      <a href=''>
+      <a href='#'>
       <p>
-        <span class="name-profile"><%= @user.first_name %> <%= @user.last_name %></span></br>
-        <span class="edit-profile">Edit Account<span>
+        <span class="name-profile"><%= @user.first_name %> <%= @user.last_name %></span><br>
+        <span class="edit-profile">Edit Account</span>
       </p></a>
     </div>
 
@@ -189,6 +230,7 @@ $(document).ready(function(event) {
     </div>
   </section>
 
+
   <div class="content-main">
     <header class="content-header group">
       <div class="pre-feeds-title">Bets: </div>
@@ -210,6 +252,15 @@ $(document).ready(function(event) {
       </header>
     </div>
   </div>
+
+  <section class="friendship-dashboard">
+
+    <div class="search-friends-section">
+      Search Friends:
+      <%= render '/friendships/drop_down_form' %>
+    </div>
+
+  </section>
 
 </div>
 

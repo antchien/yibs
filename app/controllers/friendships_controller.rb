@@ -8,6 +8,18 @@ class FriendshipsController < ApplicationController
     @inbound_pending_friends = current_user.inbound_pending_friends
   end
 
+  def search
+    @user = current_user
+    @users = User.search_by_name_and_email(params[:query])
+    if request.xhr?
+      puts "XHR SUCCESS"
+      render partial: 'friendships/friendship_detail', locals: {users: @users}
+    else
+      puts "XHR FAIL"
+      render partial: 'friendships/friendship_detail', locals: {users: @users}
+    end
+  end
+
   def create
     @friendship = Friendship.new(params[:friendship])
     @friendship.out_friend_id = current_user.id
@@ -29,6 +41,25 @@ class FriendshipsController < ApplicationController
       render :json => "Can not find friendship"
     end
   end
+
+  def find
+
+  end
+
+  def search_friends
+    @user = current_user
+    @users = current_user.friends.search_by_name_and_email(params[:query])
+    puts "XJFIWJAFILAWJFIEOAWJFIOAJSFLSJIFLJAWIFJWAIOEFJ"
+    puts params
+    if request.xhr?
+      puts "XHR SUCCESS"
+      render partial: 'friendships/drop_down_list', locals: {users: @users}
+    else
+      puts "XHR FAIL"
+      render partial: 'friendships/drop_down_list', locals: {users: @users}
+    end
+  end
+
 
   def invite
     new_user = User.find_by_username(params[:email])

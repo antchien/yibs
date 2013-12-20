@@ -1,10 +1,9 @@
+
 <h1>Friendship Index</h1>
+
 
 <%= render "invite_user_form" %>
 
-<h2>All Users</h2>
-<%= render "list_users", :users => @users %>
-<br>
 <h2>Existing Friends</h2>
 <%= render "list_users", :users => @friends %>
 <br>
@@ -13,3 +12,6 @@
 <br>
 <h2>Inbound Pending Friends</h2>
 <%= render "list_users", :users => @inbound_pending_friends %>
+
+<h2>All Users</h2>
+<%= render "list_users", :users => User.all %>
