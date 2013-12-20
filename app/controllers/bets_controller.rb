@@ -40,12 +40,13 @@ class BetsController < ApplicationController
   end
 
   def show
-    @bets = []
-    @bets << Bet.find(params[:id])
-    require_bet_participant! if @bets.first.private
-
-    @user = current_user
-    render '/users/index'
+    @bet = Bet.find(params[:id])
+    require_bet_participant! if @bet.private
+    if request.xhr?
+      render partial: 'bets/show_details_lightbox', locals: {bet: @bet}
+    else
+      render partial: 'bets/show_details_lightbox', locals: {bet: @bet}
+    end
 
   end
 
@@ -75,9 +76,10 @@ class BetsController < ApplicationController
 
   def community
     @user = current_user
-    @bets = current_user.bets.where( status: 'in play' )
+    #@bets = current_user.bets.where( status: 'in play' )
+    @bets = @user.bets
     @user.friends.each do |friend|
-      @bets.concat( friend.bets.where(status:'in play').select { |bet| !@bets.include?(bet) && !bet.private } )
+      @bets = (@bets + friend.bets.where( private: false ) ).uniq
     end
     @bets.sort_by { |bet| Time.now()-bet.updated_at }
 

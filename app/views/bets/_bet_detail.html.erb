@@ -3,7 +3,7 @@
     <% unless index == 0 %>
       <%= image_tag("15px-sword-vs.png", class: "vs-pic") %>
     <% end %>
-    <%= image_tag participant.profile_pic.url(:thumb), :id => "participant-pic" %>
+    <%= image_tag participant.profile_pic.url(:thumb), :class => "participant-pic" %>
   <% end %>
 
   <div class='bet-privacy bet-<%= bet.private ? 'private' : 'public' %>'><%= bet.private ? 'Private' : 'Public' %></div>
@@ -12,22 +12,22 @@
 </div>
 
 <div class="bet-author-pic">
-  <%= image_tag bet.author.profile_pic.url(:small), :id => "bet-author-pic" %>
+  <%= image_tag bet.author.profile_pic.url(:small), :class => "bet-author-pic" %>
 </div>
 
 <div class="bet-content">
   <div class="bet-terms">
-    <span class="link-name user-<%= bet.participation_author.first.status %>"><a href="<%= user_url(bet.author) %>"><%= bet.author.full_name %></a></span> bets
+    <span class="link-name user-<%= bet.participation_author.first.status %>"><a href="<%= user_url(bet.author) %>" data-remote="true"><%= bet.author.full_name %></a></span> bets
     <% case bet.participations_ex_author.count %>
       <% when 0..1 %>
       <% bet.participations_ex_author.each do |participation| %>
-        <span class="link-name user-<%= participation.status %>"><a href="<%= user_url(participation.user_id) %>"><%= participation.participant_full_name %></a></span>
+        <span class="link-name user-<%= participation.status %>"><a href="<%= user_url(participation.user_id) %>" data-remote="true"><%= participation.participant_full_name %></a></span>
         <% end %>
         <% when 2 %>
-        <span class="link-name user-<%= bet.participations_ex_author.first.status %>"><a href="<%= user_url(bet.participations_ex_author.first.user_id) %>"><%= bet.participations_ex_author.first.participant_full_name %></a></span> and <span class="link-name user-<%= bet.participations_ex_author.last.status %>"><a href="<%= user_url(bet.participations_ex_author.last.user_id) %>"><%= bet.participations_ex_author.last.participant_full_name %></a></span>
+        <span class="link-name user-<%= bet.participations_ex_author.first.status %>"><a href="<%= user_url(bet.participations_ex_author.first.user_id) %>" data-remote="true"><%= bet.participations_ex_author.first.participant_full_name %></a></span> and <span class="link-name user-<%= bet.participations_ex_author.last.status %>"><a href="<%= user_url(bet.participations_ex_author.last.user_id) %>" data-remote="true"><%= bet.participations_ex_author.last.participant_full_name %></a></span>
         <% else %>
       <% bet.participations_ex_author.each_with_index do |participation, index| %>
-        <%= "and " if index == bet.participations_ex_author.count-1 %><span class="link-name user-<%= participation.status %>"><a href="<%= user_url(participation.user_id) %>"><%= participation.participant_full_name %></a></span><%= index == bet.participations_ex_author.count-1 ? " " : ", " %>
+        <%= "and " if index == bet.participations_ex_author.count-1 %><span class="link-name user-<%= participation.status %>"><a href="<%= user_url(participation.user_id) %>" data-remote="true"><%= participation.participant_full_name %></a></span><%= index == bet.participations_ex_author.count-1 ? " " : ", " %>
         <% end %>
         <% end %>
         that <%= bet.terms %>.<br>

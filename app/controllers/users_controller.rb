@@ -28,15 +28,16 @@ class UsersController < ApplicationController
   end
 
   def show
-    if params.include?(:id)
-      @user = User.find(params[:id])
-      if @user == current_user
-        @bets = @user.bets
-      else
-        @bets = @user.bets.where(private: false)
-      end
+    @user = User.find(params[:id])
+    if @user == current_user
+      @bets = @user.bets
     else
-      redirect_to user_url(current_user)
+      @bets = (@user.bets.where(private: false) + @user.bets.select { |bet| bet.participants.include?(current_user) }).uniq
+    end
+    if request.xhr?
+      render partial: 'users/show_details_lightbox', locals: {user: @user, bets: @bets}
+    else
+      render partial: 'users/show_details_lightbox', locals: {user: @user, bets: @bets}
     end
   end
 
@@ -64,6 +65,7 @@ class UsersController < ApplicationController
 
   def index
     @user = current_user
+    @bet = Bet.new
     @notifications = @user.notifications
     @community_bets = @user.community_bets
     @pending_bets = @user.pending_bets

@@ -1,0 +1,23 @@
+<section class="user-details">
+  <div class="user-show-pic"><%= image_tag user.profile_pic.url(:medium) %></div>
+<ul class="user-details">
+	<li>Username: <%= user.username %></li>
+	<li>Name: <%= user.first_name %> <%= user.last_name %></li>
+	<li>Total Bets: <%= user.bets.count %></li>
+</ul>
+</section>
+<% if user.friends.include?(current_user) %>
+<div class="bets">
+  <header class="group">
+
+    <% if !bets || bets.empty %>
+    <div class="no-bets">User has No Bets</div>
+    <% else %>
+    <ul class="bets-list" id="user-show-bets-feed">
+      <%= render "bets/display_bets", :bets => bets %>
+    </ul>
+    <% end %>
+
+  </header>
+</div>
+<% end %>

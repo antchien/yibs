@@ -5,7 +5,6 @@
   background: #323232;
 }
 
-
 .header-wrap {
   margin: auto;
   width: 900px;
@@ -50,6 +49,7 @@ li.settings-label:hover > div.hover-menu {
   width: 150px;
   top: 40px;
   left: -80px;
+  z-index: 5;
 }
 
 li.notifications-label:hover > div.hover-menu {
@@ -57,6 +57,7 @@ li.notifications-label:hover > div.hover-menu {
   width: 300px;
   top: 40px;
   left: -129px;
+  z-index: 5;
 }
 
 div.menu-title {
@@ -93,6 +94,10 @@ li.notifications-label > div.hover-menu > div.uparrow {
 
 div.hover-menu > ul > li:hover {
   background-color: #ACACAC;
+}
+
+.sign-out-menu-item {
+
 }
 
 
@@ -178,6 +183,7 @@ div.add-bet-button {
   width: 100px;
   border-radius: 6px;
   font-size: 90%;
+  cursor: pointer;
 }
 
 //CONTENT-MAIN
@@ -238,7 +244,12 @@ div.add-bet-button {
 .user-pending {
   color: #535353;
   font-weight: bold;
+}
+
+.user-declined {
+  color: #535353;
   font-style: italic;
+  text-decoration: line-through;
 }
 
 .bets-list {
@@ -247,8 +258,9 @@ div.add-bet-button {
 }
 
 .bets-list > li {
-  margin-top: 10px;
-  padding-top: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding-top: 15px;
   border-top: 1px solid #E8E8E8;
 }
 
@@ -300,7 +312,7 @@ div.add-bet-button {
 }
 
 .bet-author-pic {
-  margin-top: 10px;
+  margin-top: 3px;
   float: left;
 }
 
@@ -407,23 +419,84 @@ div.uparrow-comments {
 
 //LIGHT BOX
 //user-edit-form
-.user-edit-form {
-  display: block;
-  width: 500px 500px;
-  position: absolute;
-  padding: 10px;
-  background-color: white;
-  top: 200px;
-  left: 330px;
-  margin: auto;
-  border: 5px solid #323232;
-  z-index: 1;
+.dimmer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 10;
 }
 
-.user-edit-form.hidden {
+.dimmer .hidden {
   display: none;
 }
 
+.form-header .x-button {
+  float: right;
+  font-size: 125%;
+  color: #909090;
+  padding: 3px 7px 3px 9px;
+  border-left: 1px solid #909090;
+  margin-top: -5px;
+  cursor: pointer;
+}
 
+.form-header {
+  background-color: #E8E8E8;
+  padding: 0 5px 5px 5px;
+  text-align: center;
+}
 
+.form-header .form-title {
+  font-weight: bold;
+  color: #575757;
+}
 
+.form-header .x-button:hover {
+  color: #575757;
+}
+
+.light-box-form.hidden {
+  display: none;
+}
+
+.light-box-form {
+  display: block;
+  position: absolute;
+  border-radius: 10px;
+  border-top: 10px solid #E8E8E8;
+  background-color: white;
+  left: 50%;
+  top: 75px;
+  z-index: 15;
+}
+
+.user-edit-form {
+  width: 400px;
+  height: 400px;
+  margin-left: -200px;
+}
+
+.new-bet-form {
+  width: 500px;
+  height: 500px;
+  margin-left: -250px;
+}
+
+.user-edit-form .form-content {
+  padding: 10px;
+}
+
+.user-show-form {
+  width: 600px;
+  margin-left: -250px;
+}
+
+.user-show-form .user-details {
+  padding: 10px 0;
+}
+
+.bet-show-form {
+  width: 550px;
+  margin-left: -275px;
+}

@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 
   has_attached_file :profile_pic, :styles => {
     :large => "600x600#",
+    :medium => "250x250#",
     :small => "50x50#",
     :thumb => "30x30#"
   }
@@ -138,11 +139,10 @@ class User < ActiveRecord::Base
   end
 
   def community_bets
-    @bets = self.bets
+  @bets = self.bets
     self.friends.each do |friend|
-      @bets.concat( friend.bets.select { |bet| !@bets.include?(bet) && !bet.private } )
+      @bets = (@bets + friend.bets.where( private: false ) ).uniq
     end
-
     @bets.sort_by { |bet| Time.now()-bet.updated_at }
   end
 

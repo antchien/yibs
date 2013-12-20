@@ -3,11 +3,11 @@
   <ul class="comments-list">
   <% bet.comments.each do |comment| %>
   <li class="comment group">
-    <div class="comment-thumb"><%= image_tag comment.author.profile_pic.url(:thumb), :id => "comment-pic" %>
+    <div class="comment-thumb"><%= image_tag comment.author.profile_pic.url(:thumb), :class => "comment-pic" %>
     </div>
 
     <div class="comment-content">
-      <div class="comment-text"><span class="link-name"><a href="<%= user_url(comment.user_id) %>"><%= comment.author.full_name %></a></span>: <%= comment.text %></div>
+      <div class="comment-text"><span class="link-name"><a href="<%= user_url(comment.user_id) %>" data-remote="true"><%= comment.author.full_name %></a></span>: <%= comment.text %></div>
       <time class="comment-time"><%= comment.time_since_last_update %></time>
     </div>
   </li>
@@ -15,16 +15,14 @@
   </ul>
 
   <div class="new-comment">
-    <div class="new-comment-thumb"><%= image_tag current_user.profile_pic.url(:thumb), :id => "comment-pic" %></div>
-      <form action="<%= bet_comments_url(bet.id) %>" method="post">
+    <div class="new-comment-thumb"><%= image_tag current_user.profile_pic.url(:thumb), :class => "comment-pic" %></div>
+    <form id="new-comment-form" action="<%= bet_comments_url(bet.id) %>" method="post">
     <input
        name="authenticity_token"
        type="hidden"
        value="<%= form_authenticity_token %>">
 
-    <textarea rows="1" cols="40" name="comment[text]" placeholder="write a comment" ></textarea>
-
-    <input type="submit" value="Add Comment">
+    <textarea rows="1" cols="50" name="comment[text]" placeholder="write a comment" ></textarea>
   </form>
 
 </div>

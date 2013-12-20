@@ -3,26 +3,115 @@
 $(document).ready(function(event) {
 
   //changes feeds
-  $("#feeds-list").on("ajax:success", "a", function(event, data) {
-    console.log(data);
-    $("#bets-feed").html(data);
+  $('#feeds-list').on('ajax:success', 'a', function(event, data) {
+    $('#bets-feed').html(data);
   });
 
-  $("#profile-name").on("click", "a", function(event) {
+  //Trigger logout
+  // $('.trigger-log-out').on('click', function(event) {
+  //   event.preventDefault();
+  //   console.log(event.currentTarget);
+  //   console.log(this)
+  //   var url = $(this).children('form').attr("action");
+  //   $.ajax ({
+  //     method: "delete",
+  //     url: url,
+  //     dataType: "html",
+  //     success: function() {
+  //       $(event.currentTarget).siblings('.comments-list').append(data)
+  //       $(event.currentTarget).children('form')[0].reset();
+  //     }
+  //   })
+  // })
+
+  //Trigger edit-user pop-up when relevant clicks made
+  $('.trigger-user-edit-form').on('click', 'a', function(event) {
     event.preventDefault();
-    console.log(event)
-    $('.user-edit-form').removeClass("hidden");
+    $('.user-edit-form').removeClass('hidden');
+    $('.dimmer').removeClass('hidden');
   });
 
-  $("#profile-picture").on("click", "a", function(event) {
+  $('.link-name').on('ajax:success', 'a', function(event, data) {
     event.preventDefault();
-    console.log(event)
-    $('.user-edit-form').removeClass("hidden");
+    $('#user-show-content').html(data);
+    $('.user-show-form').removeClass('hidden');
+    $('.dimmer').removeClass('hidden');
+  })
+
+  //Trigger pop-up for notification
+  $('.notifications-link').on('ajax:success', 'a', function(event, data) {
+    event.preventDefault();
+    link = $(event.currentTarget).attr('href')
+    if ( link.indexOf('bet') != -1 ) {
+      $('#bet-show-content').html(data);
+      $('.bet-show-form').removeClass('hidden');
+      $('.dimmer').removeClass('hidden');
+    } else if ( link.indexOf('user') != -1 ) {
+      $('#user-show-content').html(data);
+      $('.user-show-form').removeClass('hidden');
+      $('.dimmer').removeClass('hidden');
+    }
+  })
+
+  //Trigger new-bet pop-up when relevant clicks made
+  $('.trigger-add-bet-form').on('click', function(event) {
+    event.preventDefault();
+    $('.new-bet-form').removeClass('hidden');
+    $('.dimmer').removeClass('hidden');
   });
+
+  //Remove lightbox and pop-up when user hits 'x' or presses escape
+  $('.form-header').on('click', '.x-button', function(event) {
+    event.preventDefault();
+    $(this).parent().parent().addClass('hidden');
+    $('.dimmer').addClass('hidden');
+  })
+
+  // attach new comment upon pressing enter
+  $('.new-comment').keypress(function(event) {
+    if ( event.which == 13 ) {
+      event.preventDefault();
+
+      var url = $(this).children('form').attr('action')
+      var text = $(this).children('form').children('textarea').val()
+      $.ajax ({
+        method: "POST",
+        url: url,
+        data: {
+          "comment[text]":text
+        },
+        dataType: "html",
+        success: function(data) {
+          $(event.currentTarget).siblings('.comments-list').append(data)
+          $(event.currentTarget).children('form')[0].reset();
+        }
+      })
+    }
+  })
+
+  $(document).keyup(function(event) {
+    if( event.which == 27 ) {
+      event.preventDefault();
+      $('.light-box-form').addClass('hidden');
+      $('.dimmer').addClass('hidden');
+    }
+  })
+
+  // $('body').keypress(function(event) {
+//     console.log("key pressed");
+//     console.log(event.which);
+//     if( event.which == 27 ) {
+//       event.preventDefault();
+//       $('.light-box-form').addClass('hidden');
+//       $('.dimmer').addClass('hidden');
+//     }
+//
+//   })
 
 });
 
 </script>
+<div class="dimmer hidden" id="dimmer"></div>
 <header class="header">
   <div class="header-wrap group">
     <h1 class="header-logo">
@@ -42,18 +131,18 @@ $(document).ready(function(event) {
           </div>
         </li>
 
-        <li class="settings-label">
+        <li class="settings-label trigger-user-edit-form">
           <a href='<%= edit_user_url(current_user) %>'>Settings</a>
           <div class="hover-menu">
             <div class="uparrow"></div>
             <ul class="group">
-              <li><a href="#">Account Settings</a></li>
-              <li><%= button_to "Log Out", session_url, :method => :delete %>Log Out</a></li>
+              <li class="trigger-user-edit-form"><a href="<%= edit_user_url(current_user) %>">Account Settings</a></li>
+              <li class="sign-out-menu-item trigger-log-out"><%= button_to "Sign Out", session_url, method: :delete %></li>
             </ul>
           </div>
         </li>
 
-        <li><a href='<%= new_user_bet_url(current_user) %>'>+</a></li>
+        <li class="trigger-add-bet-form"><a href='<%= new_user_bet_url(current_user) %>'>+</a></li>
       </ul>
     </nav>
 
@@ -61,7 +150,10 @@ $(document).ready(function(event) {
 </header>
 
 <div class="content group">
-  <%= render '/users/edit' %>
+  <%= render '/users/edit_lightbox' %>
+  <%= render '/bets/new_lightbox' %>
+  <%= render '/bets/show_lightbox' %>
+  <%= render '/users/show_lightbox' %>
   <section class="user-dashboard">
 
     <div class="profile-picture">
@@ -70,7 +162,7 @@ $(document).ready(function(event) {
      </a>
     </div>
 
-    <div class="profile-name" id="profile-name">
+    <div class="profile-name trigger-user-edit-form">
       <a href=''>
       <p>
         <span class="name-profile"><%= @user.first_name %> <%= @user.last_name %></span></br>
@@ -93,7 +185,7 @@ $(document).ready(function(event) {
           <div class="stat-header">Won</div>
         </li>
       </ul>
-      <a href='<%= new_user_bet_url(current_user) %>'><div class="add-bet-button">Add New Bet</div></a>
+      <div class="add-bet-button trigger-add-bet-form"><a href='<%= new_user_bet_url(current_user) %>'>Add New Bet</a></div>
     </div>
   </section>
 

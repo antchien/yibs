@@ -1,0 +1,9 @@
+<div class="new-bet-form light-box-form hidden" id="new-bet-form">
+  <div class="form-header group" id="form-header">
+    <span class="form-title">New Bet</span>
+    <div class="x-button" id="x-button">x</div>
+  </div>
+  <div class="form-content group">
+    <%= render "bets/form", :bet => @bet, :user => @user %>
+  </div>
+</div>

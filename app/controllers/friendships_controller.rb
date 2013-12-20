@@ -51,7 +51,7 @@ class FriendshipsController < ApplicationController
   def check_recip_friendship_and_send_notifications(friendship)
     recip_friendship = friendship.find_recip_friendship
     if recip_friendship && recip_friendship.pending_flag
-      Notification.create(user_id: friendship.in_friend.id, text: "#{friendship.out_friend.first_name} #{friendship.out_friend.last_name} accepted your friend request!", link: user_url(friendship.in_friend))
+      Notification.create(user_id: friendship.in_friend.id, text: "#{friendship.out_friend.first_name} #{friendship.out_friend.last_name} accepted your friend request!", link: user_url(friendship.out_friend))
       friendship.update_attribute(:pending_flag, false)
       recip_friendship.update_attribute(:pending_flag, false)
     else

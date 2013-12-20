@@ -1,0 +1,9 @@
+<li class="comment group">
+  <div class="comment-thumb"><%= image_tag comment.author.profile_pic.url(:thumb), :class => "comment-pic" %>
+  </div>
+
+  <div class="comment-content">
+    <div class="comment-text"><span class="link-name"><a href="<%= user_url(comment.user_id) %>"><%= comment.author.full_name %></a></span>: <%= comment.text %></div>
+    <time class="comment-time"><%= comment.time_since_last_update %></time>
+  </div>
+</li>

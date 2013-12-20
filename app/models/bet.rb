@@ -1,5 +1,5 @@
 class Bet < ActiveRecord::Base
-  attr_accessible :private, :status, :terms, :user_id, :wager, :participant_ids
+  attr_accessible :private, :status, :terms, :user_id, :wager, :participant_ids, :participants
   validates :status, :terms, :user_id, presence: true
   validates :status, :inclusion => {:in => ['pending', 'in play', 'completed', 'cancelled']}
   validates :private, :inclusion => {:in => [true, false]}
