@@ -15,11 +15,11 @@ class FriendshipsController < ApplicationController
     if request.xhr?
       puts "++++++++++++++++++++++++++++++++++++++++++++"
       puts "XHR SUCCESS"
-      render partial: 'friendships/friendship_detail', locals: {users: @users}
+      render partial: 'friendships/show_details_lightbox', locals: {users: @users}
     else
       puts "---------------------------------------------"
       puts "XHR FAIL"
-      render partial: 'friendships/friendship_detail', locals: {users: @users}
+      render partial: 'friendships/show_details_lightbox', locals: {users: @users}
     end
   end
 
@@ -28,18 +28,33 @@ class FriendshipsController < ApplicationController
     @friendship.out_friend_id = current_user.id
     if @friendship.save
       check_recip_friendship_and_send_notifications(@friendship)
-      redirect_to user_friendships_url(current_user)
+      if request.xhr?
+        puts "XHR SUCCESS"
+        render partial: 'friendships/friendship_detail', locals: {user: @friendship.in_friend}
+      else
+        puts "XHR FAIL"
+        redirect_to user_friendships_url(current_user)
+      end
+
     else
       render :json => "Can not save friendship"
     end
   end
 
   def destroy
+    puts "HELLOOOO????????????????"
     @friendship = Friendship.find(params[:id])
     if @friendship
+      @other_user = @friendship.in_friend
       @friendship.find_recip_friendship.destroy
       @friendship.destroy
-      redirect_to user_friendships_url(current_user)
+      if request.xhr?
+        puts "XHR SUCCESS"
+        render partial: 'friendships/friendship_detail', locals: {user: @other_user}
+      else
+        puts "XHR FAIL"
+        redirect_to user_friendships_url(current_user)
+      end
     else
       render :json => "Can not find friendship"
     end

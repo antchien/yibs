@@ -89,31 +89,27 @@ $(document).ready(function(event) {
     }
   })
 
-  $('.search-form').on('ajax:success', function(event, data){
-    $('#friendship-show-content').html(data);
-    $('.friendship-show-form').removeClass('hidden');
-    $('.dimmer').removeClass('hidden');
-  })
 
-  // Friends Search-form stuff
-  $('.search-form input').focus( function() {
-    console.log("in focus!");
+  // Users drop-down list
+  $('.search-form input').focus( function() {	
     $('.trigger-search-query').keyup(function(event) {
       var url = $(this).attr('action')
       url = url + "_friends"
-      console.log(url)
       var data = $(this).children('input#search-query').val()
       var that = this
-      console.log(this)
-      console.log(data)
       $.ajax ({
         method: "GET",
         url: url,
         data: {"query": data},
         success: function(data) {
-          console.log(data)
-          $(that).siblings('div').html(data)
-          $(that).siblings('div').removeClass('hidden');
+		if (!data) {
+	        $(that).siblings('div').html(data)
+	        $(that).siblings('div').addClass('hidden');
+			} else {
+	        $(that).siblings('div').html(data)
+	        $(that).siblings('div').removeClass('hidden');
+			$(that).siblings('div').children('ul').children('li:first-child').addClass('selected')
+		}
         }
       })
     })
@@ -126,11 +122,55 @@ $(document).ready(function(event) {
 
   $('.search-drop-down').on('ajax:success', 'a', function(event, data) {
     event.preventDefault();
+	$('.search-drop-down').addClass('hidden');
     $('#user-show-content').html(data);
     $('.user-show-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');
   })
+  
+  $('.search-form').on('ajax:success', function(event, data){
+    $('#friendship-show-content').html(data);
+    $('.friendship-show-form').removeClass('hidden');
+    $('.dimmer').removeClass('hidden');
+  })
 
+//  handle add/delete friend buttons
+  $('#friendship-show-content').on('submit', '.add-friend-button', function(event) {
+  	  event.preventDefault();
+  	  console.log(event.currentTarget);
+  	  console.log("triggered friend request");
+			  console.log($(event.currentTarget).children('input:nth-child(2)').attr('name'))
+  	  var url = $(event.currentTarget).attr('action');
+	  var dataVal = $(event.currentTarget).children('input:nth-child(2)').attr('value')
+	  var dataName = $(event.currentTarget).children('input:nth-child(2)').attr('name')
+	  $.ajax ({
+  		  method: "post",
+  		  data: { "friendship[in_friend_id]": dataVal },
+  		  url: url,
+  		  success: function(data) {
+  			  var $li = $(event.currentTarget).closest('li')
+  			  $li.html(data)
+  		  }
+  	  })
+  })
+
+  $('#friendship-show-content').on('submit', '.unfriend-button', function(event) {
+	  event.preventDefault();
+	  //console.log(data);
+	  var that = this;
+	  console.log("triggered unfriend request");
+	  url = $(event.currentTarget).attr('action');
+	  console.log(event.currentTarget)
+	  console.log($(event.currentTarget).closest('li'))
+      $.ajax ({
+        method: "delete",
+        url: url,
+        success: function(data) {
+ 			var $li = $(event.currentTarget).closest('li')
+ 			$li.html(data)
+ 		}
+  	})
+})
 
   $(document).keyup(function(event) {
     if( event.which == 27 ) {

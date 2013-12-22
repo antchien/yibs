@@ -1,3 +1,23 @@
-<ul class="friendship-list">
-    <%= render "/friendships/friendship_detail", :users => @users %>
+<h3>Current Friends</h3>
+<ul class="current-friends-list group">
+	<% friends = @users.select { |user| current_user.friends.include?(user) } %>
+	<% friends.each do |friend| %>
+	<% unless friend == current_user %>
+	<li class="group">
+	    <%= render "/friendships/friendship_detail", :user => friend %>
+	</li>
+	<% end %>
+	<% end %>
+</ul>
+
+<h3>Other Users</h3>
+<ul class="other-users-list group">
+	<% others = @users.select { |user| !current_user.friends.include?(user) } %>
+	<% others.each do |user| %>
+	<% unless user == current_user %>
+	<li class="group">
+	    <%= render "/friendships/friendship_detail", :user => user %>
+	</li>
+	<% end %>
+	<% end %>
 </ul>

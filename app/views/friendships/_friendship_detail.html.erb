@@ -1,16 +1,31 @@
-<% users.each do |user| %>
-  <% unless user.id == current_user.id %>
-    <li>
-    <%= link_to "#{user.first_name} #{user.last_name}: #{user.username}", user_url(user) %>
-    <% if user.friends.include?(user) %>
-       <%= button_to "Unfriend", user_friendship_url(current_user.id, current_user.find_friendship(user).id), method: :delete %>
-       <% elsif user.outbound_pending_friends.include?(user) %>
-       Friendship Pending...
-       <% elsif user.inbound_pending_friends.include?(user) %>
-         <%= render "add_friendship_button", :message => "Confirm Friend", :user => user %>
-       <% else %>
-         <%= render "add_friendship_button", :message => "Request Friendship", :user => user %>
-         <% end %>
-    </li>
-    <% end %>
-  <% end %>
+<div class="profile-picture">
+	<a href='#'><%= image_tag user.profile_pic.url(:small), :id => "profile_pic" %></a>
+</div>
+
+<div class="profile-name trigger-user-show-form">
+		<p>
+			<span class="link-name"><a href="<%= user_url(user) %>" data-remote="true"><%= user.full_name%>: <%=  user.username %></a></span><br>
+			<span class="friend-button">
+<% if current_user.friends.include?(user) %>
+   <!-- <%= button_to "Unfriend", user_friendship_url(current_user.id, current_user.find_friendship(user).id), remote: true, form_class: "unfriend-button", method: :delete %> -->
+   <form class="unfriend-button" action="<%= user_friendship_url(current_user.id, current_user.find_friendship(user).id) %>" method="post">
+    <input
+       name="authenticity_token"
+       type="hidden"
+       value="<%= form_authenticity_token %>">
+
+	<input name='_method' value='delete' type='hidden'>
+
+    <input type="submit" value="Un-friend">
+   </form>
+   <% elsif current_user.outbound_pending_friends.include?(user) %>
+   Friendship Pending...
+   <% elsif current_user.inbound_pending_friends.include?(user) %>
+     <%= render "add_friendship_button", :message => "Confirm Friend", :user => user %>
+   <% else %>
+     <%= render "add_friendship_button", :message => "Request Friendship", :user => user %>
+     <% end %>
+ </span>
+</p>
+</div>
+  

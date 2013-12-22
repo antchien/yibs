@@ -502,7 +502,40 @@ div.uparrow-comments {
   margin-left: -275px;
 }
 
-//Search form stuff
+.friendship-show-form {
+  width: 500px;
+  margin-left: -250px;
+}
+
+.friendship-show-form .form-content {
+  padding: 30px;
+}
+
+.friendship-show-form .form-content > ul > li {
+  margin-top: 10px;
+}
+
+.friendship-show-form .form-content > ul {
+	margin-top: 5px;
+}
+
+.friendship-show-form .form-content > h3 {
+	margin-top: 20px;
+}
+
+.friendship-show-form .form-content > h3:first-child {
+	margin-top: 0;
+}
+
+ul.current-friends-list > li:first-child {
+  margin-top: 0;
+}
+
+ul.other-users-list > li:first-child {
+  margin-top: 0;
+}
+
+//friendship dashboard
 
 .friendship-dashboard {
   position: absolute;
@@ -513,4 +546,7 @@ div.uparrow-comments {
   border-radius: 5px;
 
 }
+
+
+
 
