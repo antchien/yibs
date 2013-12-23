@@ -18,7 +18,11 @@ class BetParticipationsController < ApplicationController
     end
     @bet_participation.bet.save
 
-    redirect_to bet_url(@bet_participation.bet)
+    if request.xhr?
+      render partial: 'bets/show_details_lightbox', locals: {bet: @bet_participation.bet}
+    else
+      render partial: 'bets/show_details_lightbox', locals: {bet: @bet_participation.bet}
+    end
   end
 
   def destroy

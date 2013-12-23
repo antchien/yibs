@@ -1,5 +1,5 @@
 <% bets.each do |bet| %>
-    <li class="bets-list-item">
+    <li class="bets-list-item" data-id="<%= bet.id %>">
       <%= render "/bets/bet_detail", :bet => bet %>
     </li>
 <%end%>

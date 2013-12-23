@@ -28,8 +28,13 @@ class BetsController < ApplicationController
     else
       render :json => "Unable to save bet"
     end
-
-    redirect_to bet_url(@bet)
+    
+    if request.xhr?
+      render partial: 'bets/show_details_lightbox', locals: {bet: @bet}
+    else
+      render partial: 'bets/show_details_lightbox', locals: {bet: @bet}
+    end
+    
   end
 
   def new
@@ -52,6 +57,11 @@ class BetsController < ApplicationController
 
   def edit
     @bet = Bet.find(params[:id])
+    if request.xhr?
+      render partial: 'bets/form', locals: {bet: @bet}
+    else
+      render partial: 'bets/form', locals: {bet: @bet}
+    end
   end
 
   #need its own permission check, sicne there is no user_id
@@ -70,7 +80,13 @@ class BetsController < ApplicationController
     else
       flash[:error] = "Unable to update bet"
     end
-    redirect_to bet_url(@bet)
+    
+    if request.xhr?
+      render partial: 'bets/bet_detail', locals: {bet: @bet}
+    else
+      render partial: 'bets/bet_detail', locals: {bet: @bet}
+    end
+
   end
 
 

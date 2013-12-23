@@ -50,14 +50,15 @@
   <% end %>
 
   <% if current_user.inbound_pending_bets.include?(bet) %>
-    <%= render "/bets/accept_button", :bet => bet %> <%= render "/bets/decline_button", :bet => bet %>
+    
+	<div class="bet-acceptance-buttons"><%= render "/bets/accept_button", :bet => bet %> <%= render "/bets/decline_button", :bet => bet %></div>
     <br>
     <% end %>
 
   <div class="bet-options group">
     <ul>
       <% if bet.participants.include?(current_user) %>
-      <li><a href="<%= edit_bet_url(bet) %>">Edit Bet</a></li>
+      <li class="trigger-edit-bet-form"><a href="<%= edit_bet_url(bet) %>" data-remote="true">Edit Bet</a></li>
       <% end %>
       <li><a href="#">Share</a></li>
       <li><a href="#">Comment</a></li>

@@ -1,9 +1,27 @@
+<script>
+$(document).ready(function(){
+	if($('#bet_status').val() != 'completed') {
+		$('#bet-results-form').addClass('hidden');
+	} else {
+		$('#bet-results-form').removeClass('hidden');
+	}
+	
+	$('#bet_status').change(function() {
+		if($(this).val() != 'completed') {
+			$('#bet-results-form').addClass('hidden');
+		} else {
+			$('#bet-results-form').removeClass('hidden');
+		}
+	})
+});
+</script>
+
 <% action = (bet.persisted? ? bet_url(bet) : user_bets_url(current_user)) %>
 <% method = (bet.persisted? ? "put" : "post") %>
 <% message = (bet.persisted? ? "Update Bet" : "Create Bet") %>
 
 
-<form action="<%= action %>" method="post">
+<form class="trigger-submit-bet" action="<%= action %>" data-remote="true" data-id="<%= bet.id %>" method="post">
   <input
      name="authenticity_token"
      type="hidden"
@@ -72,6 +90,7 @@
     <option value="cancelled">Cancelled</option>
   </select>
 
+  <div id="bet-results-form">
   Results:<br>
   Select Winner(s):<br>
   <input type="hidden" name="bet_winner[user_id][]" value="">
@@ -96,6 +115,7 @@
      <label for="bet_loser_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
      <br>
      <% end %>
+ </div>
 
   <% end %>
 

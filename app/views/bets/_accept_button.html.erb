@@ -1,4 +1,4 @@
-<form action="<%= user_bet_participation_url(current_user.id, current_user.find_bet_participation(bet)) %>" method="post">
+<form class="trigger-bet-invite-response" action="<%= user_bet_participation_url(current_user.id, current_user.find_bet_participation(bet)) %>" data-remote="true" method="post">
  <input
     name="authenticity_token"
     type="hidden"

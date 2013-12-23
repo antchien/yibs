@@ -1,23 +1,38 @@
+
+<% friends = users.select { |user| current_user.friends.include?(user) } %>
+<% unless friends.empty? %>
 <h3>Current Friends</h3>
 <ul class="current-friends-list group">
-	<% friends = @users.select { |user| current_user.friends.include?(user) } %>
 	<% friends.each do |friend| %>
-	<% unless friend == current_user %>
 	<li class="group">
 	    <%= render "/friendships/friendship_detail", :user => friend %>
 	</li>
 	<% end %>
+</ul>
+<% end %>
+
+
+<% pendings = users.select { |user| current_user.inbound_pending_friends.include?(user) || current_user.outbound_pending_friends.include?(user) } %>
+<% unless pendings.empty? %>
+<h3>Pending Friendshps</h3>
+<ul class="pending-friends-list group">
+	<% pendings.each do |pending| %>
+	<li class="group">
+	    <%= render "/friendships/friendship_detail", :user => pending %>
+	</li>
 	<% end %>
 </ul>
+<% end %>
 
+
+<% others = users.select { |user| !friends.include?(user) && !pendings.include?(user) && (user != current_user) } %>
+<% unless others.empty? %>
 <h3>Other Users</h3>
 <ul class="other-users-list group">
-	<% others = @users.select { |user| !current_user.friends.include?(user) } %>
 	<% others.each do |user| %>
-	<% unless user == current_user %>
 	<li class="group">
 	    <%= render "/friendships/friendship_detail", :user => user %>
 	</li>
 	<% end %>
-	<% end %>
 </ul>
+<% end %>

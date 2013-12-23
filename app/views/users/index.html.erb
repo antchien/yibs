@@ -4,7 +4,10 @@ $(document).ready(function(event) {
 
   //changes feeds
   $('#feeds-list').on('ajax:success', 'a', function(event, data) {
-    $('#bets-feed').html(data);
+	  console.log($(event.currentTarget).parent().attr('data-id'));
+	  var feedType = $(event.currentTarget).parent().attr('data-id')
+	  $('#bets-feed').attr('data-id', feedType)
+      $('#bets-feed').html(data);
   });
 
   //Trigger logout
@@ -46,7 +49,11 @@ $(document).ready(function(event) {
       $('#bet-show-content').html(data);
       $('.bet-show-form').removeClass('hidden');
       $('.dimmer').removeClass('hidden');
-    } else if ( link.indexOf('user') != -1 ) {
+	} else if ( link.indexOf('pending') != -1 ) {
+      $('#friendship-show-content').html(data);
+	  $('.friendship-show-form').removeClass('hidden');
+	  $('.dimmer').removeClass('hidden');
+	} else if ( link.indexOf('user') != -1 ) {
       $('#user-show-content').html(data);
       $('.user-show-form').removeClass('hidden');
       $('.dimmer').removeClass('hidden');
@@ -59,6 +66,49 @@ $(document).ready(function(event) {
     $('.new-bet-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');
   });
+  
+  //Trigger new-bet pop-up when relevant clicks made
+  $('body').on('ajax:success', '.trigger-edit-bet-form', function(event, data) {
+    event.preventDefault();
+	console.log("Triggered Edit Bet Form (in index)")
+	//console.log(data);
+	$('#edit-bet-content').html(data);
+	$('.edit-bet-form').removeClass('hidden');
+	$('.dimmer').removeClass('hidden');
+  });
+  
+  //Submit edit and update feed if relevant
+  $('body').on('ajax:success', '.trigger-submit-bet', function(event, data) {
+    event.preventDefault();
+	console.log("Triggered Submit edit Bet Form")
+	var $form = $(event.currentTarget)
+	var action = $form.children('input[name*="_method"]').val()
+	if (action == 'post') {
+		//console.log("registered new bet!")
+		if ($('#bets-feed').attr('data-id') == 'community' || $('#bets-feed').attr('data-id') == 'pending') {
+			$form[0].reset();
+			var $li = $(data).children('li');
+			$('#bets-feed').prepend($li);
+		}
+		$('.new-bet-form').addClass('hidden');
+		$('.dimmer').addClass('hidden');
+	} else if (action == 'put') {
+		var dataId = $form.attr('data-id')
+		var $li = $('#bets-feed').children('li[data-id*="' + dataId + '"]')
+		$li.remove();
+		$('#bets-feed').prepend($li.html(data));
+		$('.edit-bet-form').addClass('hidden');
+		$('.dimmer').addClass('hidden');
+	}
+  });
+  
+  //
+  $('body').on('ajax:success', '.trigger-bet-invite-response', function(event, data) {
+	  event.preventDefault();
+	  console.log("Triggered Bet Invite Response")
+	  $div = $(event.currentTarget).parent()
+	  $div.remove()
+  })
 
   //Remove lightbox and pop-up when user hits 'x' or presses escape
   $('.form-header').on('click', '.x-button', function(event) {
@@ -90,7 +140,7 @@ $(document).ready(function(event) {
   })
 
 
-  // Users drop-down list
+  // Users drop-down list for main "Search Friends"
   $('.search-form input').focus( function() {	
     $('.trigger-search-query').keyup(function(event) {
       var url = $(this).attr('action')
@@ -114,6 +164,9 @@ $(document).ready(function(event) {
       })
     })
   })
+  
+  //Users-drop-down list for Bet Page
+  
 
   // $('.search-friends-section').focusout( function(event) {
   //   $(this).children('div.search-drop-down').addClass('hidden')
@@ -235,6 +288,7 @@ $(document).ready(function(event) {
 <div class="content group">
   <%= render '/users/edit_lightbox' %>
   <%= render '/bets/new_lightbox' %>
+  <%= render '/bets/edit_lightbox' %>
   <%= render '/bets/show_lightbox' %>
   <%= render '/users/show_lightbox' %>
   <%= render '/friendships/show_lightbox' %>
@@ -278,17 +332,17 @@ $(document).ready(function(event) {
     <header class="content-header group">
       <div class="pre-feeds-title">Bets: </div>
       <ul class="feeds-list" id="feeds-list">
-        <li class="feeds-list-item"><a href="<%= community_bets_url %>" data-remote="true">Community</a></li>
-        <li class="feeds-list-item"><a href="<%= inplay_bets_url %>" data-remote="true">In Play</a></li>
-        <li class="feeds-list-item"><a href="<%= pending_bets_url %>" data-remote="true">Pending</a></li>
-        <li class="feeds-list-item"><a href="<%= completed_bets_url %>" data-remote="true">Completed</a></li>
+        <li class="feeds-list-item" data-id="community"><a href="<%= community_bets_url %>" data-remote="true">Community</a></li>
+        <li class="feeds-list-item" data-id="inplay"><a href="<%= inplay_bets_url %>" data-remote="true">In Play</a></li>
+        <li class="feeds-list-item" data-id="pending"><a href="<%= pending_bets_url %>" data-remote="true">Pending</a></li>
+        <li class="feeds-list-item" data-id="completed"><a href="<%= completed_bets_url %>" data-remote="true">Completed</a></li>
       </ul>
     </header>
 
     <div class="bets">
       <header class="group">
 
-        <ul class="bets-list" id="bets-feed">
+        <ul class="bets-list" id="bets-feed" data-id="community">
           <%= render "bets/display_bets", :bets => @community_bets %>
         </ul>
 

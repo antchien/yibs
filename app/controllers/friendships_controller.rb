@@ -67,7 +67,7 @@ class FriendshipsController < ApplicationController
   def search_friends
     @user = current_user
     @users = current_user.friends.search_by_name_and_email(params[:query])
-    puts "XJFIWJAFILAWJFIEOAWJFIOAJSFLSJIFLJAWIFJWAIOEFJ"
+    puts "XXXXXXXXXXXXXX  Friendship_controller#search_friends XXXXXXXXXXXXX"
     puts params
     if request.xhr?
       puts "XHR SUCCESS"
@@ -75,6 +75,20 @@ class FriendshipsController < ApplicationController
     else
       puts "XHR FAIL"
       render partial: 'friendships/drop_down_list', locals: {users: @users}
+    end
+  end
+  
+  def pendings
+    puts "XXXXXXXXXXXXXX  Friendship_controller#show_pendings XXXXXXXXXXXXX"
+    @pendings = current_user.inbound_pending_friends
+    if request.xhr?
+      puts "++++++++++++++++++++++++++++++++++++++++++++"
+      puts "XHR SUCCESS"
+      render partial: 'friendships/show_details_lightbox', locals: {users: @pendings}
+    else
+      puts "---------------------------------------------"
+      puts "XHR FAIL"
+      render partial: 'friendships/show_details_lightbox', locals: {users: @pendings}
     end
   end
 
@@ -104,7 +118,7 @@ class FriendshipsController < ApplicationController
       friendship.update_attribute(:pending_flag, false)
       recip_friendship.update_attribute(:pending_flag, false)
     else
-      Notification.create(user_id: friendship.in_friend.id, text: "#{friendship.out_friend.first_name} #{friendship.out_friend.last_name} sent you a friend request!", link: user_friendships_url(friendship.in_friend))
+      Notification.create(user_id: friendship.in_friend.id, text: "#{friendship.out_friend.first_name} #{friendship.out_friend.last_name} sent you a friend request!", link: pendings_user_friendships_url(friendship.in_friend))
     end
   end
 

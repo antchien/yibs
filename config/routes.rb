@@ -8,6 +8,7 @@ NewAuthDemo::Application.routes.draw do
       collection do
         get 'search_friends'
         get 'search'
+        get 'pendings'
         post 'invite'
       end
     end

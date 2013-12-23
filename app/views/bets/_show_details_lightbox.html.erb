@@ -1,3 +1,5 @@
 <ul class="bets-list">
-    <%= render "/bets/bet_detail", :bet => @bet %>
+	<li class="bets-list-item" data-id="<%= bet.id %>">
+    	<%= render "/bets/bet_detail", :bet => bet %>
+	</li>
 </ul>
