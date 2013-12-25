@@ -78,28 +78,45 @@ $(document).ready(function(event) {
   });
   
   //Submit edit and update feed if relevant
-  $('body').on('ajax:success', '.trigger-submit-bet', function(event, data) {
+  $('body').on('submit', '.trigger-submit-bet', function(event) {
     event.preventDefault();
-	console.log("Triggered Submit edit Bet Form")
-	var $form = $(event.currentTarget)
+	var $form = $(event.currentTarget);
 	var action = $form.children('input[name*="_method"]').val()
-	if (action == 'post') {
-		//console.log("registered new bet!")
-		if ($('#bets-feed').attr('data-id') == 'community' || $('#bets-feed').attr('data-id') == 'pending') {
+	var $allBettees = ($form.children('.bettee-drop-down-anchor').children('.bettee-block'));
+	$allBettees.each(function( index ) {
+		var betteeId = $(this).attr('data-id');
+		$form.append('<input name="bet_participation[user_id][]" value="' + betteeId + '">')
+	})
+	var url = $form.attr('action')
+	var data = $form.serialize();
+	
+    $.ajax ({
+      method: action,
+      url: url,
+      data: data,
+      dataType: "html",
+      success: function(data) {
+	  	if (action == 'post') {
+	  		//console.log("registered new bet!")
+	  		if ($('#bets-feed').attr('data-id') == 'community' || $('#bets-feed').attr('data-id') == 'pending') {
+	  			var $li = $(data).children('li');
+	  			$('#bets-feed').prepend($li);
+	  		}
+	  		$('.new-bet-form').addClass('hidden');
+	  		$('.dimmer').addClass('hidden');
 			$form[0].reset();
-			var $li = $(data).children('li');
-			$('#bets-feed').prepend($li);
-		}
-		$('.new-bet-form').addClass('hidden');
-		$('.dimmer').addClass('hidden');
-	} else if (action == 'put') {
-		var dataId = $form.attr('data-id')
-		var $li = $('#bets-feed').children('li[data-id*="' + dataId + '"]')
-		$li.remove();
-		$('#bets-feed').prepend($li.html(data));
-		$('.edit-bet-form').addClass('hidden');
-		$('.dimmer').addClass('hidden');
-	}
+	  	} else if (action == 'put') {
+	  		var dataId = $form.attr('data-id')
+	  		var $li = $('#bets-feed').children('li[data-id*="' + dataId + '"]')
+	  		$li.remove();
+	  		$('#bets-feed').prepend($li.html(data));
+	  		$('.edit-bet-form').addClass('hidden');
+	  		$('.dimmer').addClass('hidden');
+			$form[0].reset();
+	  	}
+      }
+  	})
+	
   });
   
   //
@@ -143,10 +160,13 @@ $(document).ready(function(event) {
   // Users drop-down list for main "Search Friends"
   $('.search-form input').focus( function() {	
     $('.trigger-search-query').keyup(function(event) {
+		console.log("Triggered keyup search in Index");
       var url = $(this).attr('action')
       url = url + "_friends"
       var data = $(this).children('input#search-query').val()
       var that = this
+	  console.log(url);
+	  console.log(data);
       $.ajax ({
         method: "GET",
         url: url,
@@ -175,6 +195,7 @@ $(document).ready(function(event) {
 
   $('.search-drop-down').on('ajax:success', 'a', function(event, data) {
     event.preventDefault();
+	console.log("Triggered search query in Index");
 	$('.search-drop-down').addClass('hidden');
     $('#user-show-content').html(data);
     $('.user-show-form').removeClass('hidden');
@@ -182,6 +203,7 @@ $(document).ready(function(event) {
   })
   
   $('.search-form').on('ajax:success', function(event, data){
+	console.log("Triggered select from dropdown in Index");
     $('#friendship-show-content').html(data);
     $('.friendship-show-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');

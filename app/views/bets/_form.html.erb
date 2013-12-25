@@ -13,7 +13,115 @@ $(document).ready(function(){
 			$('#bet-results-form').removeClass('hidden');
 		}
 	})
+	
+	$('.bettee-search-area').on('focus', function() {
+		console.log("bettee search focused!")
+		$('.bettee-search-area').keyup(function(event) {
+			console.log($(event.currentTarget).html());
+			var that = this
+			var url = $(event.currentTarget).attr('url');
+			var data = $(event.currentTarget).html();
+			
+			$.ajax ({
+				method: "GET",
+				url: url,
+				data: {"query": data},
+				success: function(data) {
+					if (!data) {
+						console.log("no matches!");
+						$('.bettee-drop-down').html("");
+						$('.bettee-drop-down').addClass('hidden');
+					} else {
+						console.log("this is the data!");
+						console.log(data);
+						$('.bettee-drop-down').html(data);
+						$('.bettee-drop-down').removeClass('hidden');
+					}
+					
+				}
+			})
+		})
+	})
+	
+	//to remove handler once focus is off
+	$('.bettee-search-area').on('blur', function() {
+		$('.bettee-search-area').off('keyup');
+	})
+	
+    $('.bettee-drop-down').on('click', 'li', function(event){
+		event.preventDefault();
+		event.stopPropagation();
+		var betteeId = $(event.currentTarget).children('a').attr('href').split("/").pop();
+		var betteeName = $(event.currentTarget).children('a').html().split(">").pop();
+		var $betteeBlock = $('<div></div>');
+		$betteeBlock.attr({ class: 'bettee-block', "data-id": betteeId });
+		$betteeBlock.html('<span>' + betteeName + '</span><div class="bettee-block-x">x</div>')
+		$('.bettee-search-area').before($betteeBlock);
+		//$('.bettee-drop-down').off('click');
+      // $('#friendship-show-content').html(data);
+     //  $('.friendship-show-form').removeClass('hidden');
+     //  $('.dimmer').removeClass('hidden');
+    })
+	
+	$('.bettee-drop-down-anchor').on('click', '.bettee-block-x', function(event) {
+		event.preventDefault();
+		console.log("triggered x!")
+		$(event.currentTarget).parent().remove();
+	})
+	
 });
+
+// <div class="bettee-drop-down-anchor">
+//  <div class="bettee-block" data-id="1">
+// 	 <span>Anthony Chien (antchien@gmail.com)</span>
+// 	 <div>x</div>
+//  </div>
+//  <div class="bettee-search-area" url="<%= search_friends_user_friendships_url(current_user.id) %>" contenteditable>
+// 	 
+//  </div>
+//    <div class="bettee-drop-down hidden"></div>
+// </div>
+// <br>
+// <br>
+
+
+// $('.bettee-search-area').focus( function() {	
+//   $('.bettee-search-area').keyup(function(event) {
+// 	  
+// 	console.log("Triggered keyup search in Bet Form");
+// 	console.log(event.currentTarget)
+//     var url = $(this).attr('action')
+//     url = url + "_friends"
+//     var data = $(this).children('input#search-query').val()
+//     var that = this
+    // $.ajax ({
+//       method: "GET",
+//       url: url,
+//       data: {"query": data},
+//       success: function(data) {
+// 	if (!data) {
+//         $(that).siblings('div').html(data)
+//         $(that).siblings('div').addClass('hidden');
+// 		} else {
+//         $(that).siblings('div').html(data)
+//         $(that).siblings('div').removeClass('hidden');
+// 		$(that).siblings('div').children('ul').children('li:first-child').addClass('selected')
+// // 	}
+// //       }
+// //     })
+//   })
+// })
+
+// $('.search-drop-down').on('ajax:success', 'a', function(event, data) {
+//   event.preventDefault();
+// $('.search-drop-down').addClass('hidden');
+//   $('#user-show-content').html(data);
+//   $('.user-show-form').removeClass('hidden');
+//   $('.dimmer').removeClass('hidden');
+// })
+
+
+
 </script>
 
 <% action = (bet.persisted? ? bet_url(bet) : user_bets_url(current_user)) %>
@@ -21,7 +129,7 @@ $(document).ready(function(){
 <% message = (bet.persisted? ? "Update Bet" : "Create Bet") %>
 
 
-<form class="trigger-submit-bet" action="<%= action %>" data-remote="true" data-id="<%= bet.id %>" method="post">
+<form class="trigger-submit-bet" action="<%= action %>" data-id="<%= bet.id %>" method="post">
   <input
      name="authenticity_token"
      type="hidden"
@@ -34,7 +142,7 @@ $(document).ready(function(){
   <%= current_user.abbrev_name%>. bets
   <br>
 
-  <input type="hidden" name="bet_participation[user_id][]" value="">
+<!--   <input type="hidden" name="bet_participation[user_id][]" value="">
    <% if bet.persisted? %>
    <% bet.participants.each do |participant| %>
      <input
@@ -46,9 +154,27 @@ $(document).ready(function(){
      <label for="bet_participant_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
      <br>
      <% end %>
-     <% end %>
+     <% end %> -->
+	 <div class="bettee-drop-down-anchor">
+		 <% if bet.persisted? %>
+		 <% bet.participants.each do |participant| %>
+		 <% unless participant == bet.author %>
+		 <div class="bettee-block" data-id="<%= participant.id %>">
+			 <span><%= participant.full_name %> (<%= participant.username %>)</span>
+			 <div class="bettee-block-x">x</div>
+		 </div>
+		 <% end %>
+		 <% end %>
+		 <% end %>
+		 <div class="bettee-search-area" url="<%= search_friends_user_friendships_url(current_user.id) %>" contenteditable>
+		 </div>
+		   <div class="bettee-drop-down hidden"></div>
+	 </div>
+	 <br>
+	 <br>
 
-  <% current_user.friends.each do |friend| %>
+
+  <!-- <% current_user.friends.each do |friend| %>
   <% next if bet.participants.include?(friend) %>
     <input
       <%= "checked" if bet.participants.include?(friend) %>
@@ -58,19 +184,19 @@ $(document).ready(function(){
       type="checkbox">
     <label for="bet_participant_id_<%= friend.id %>"><%= friend.first_name %> <%= friend.last_name %></label>
     <br>
-    <% end %>
+    <% end %> -->
     <label for="new_users">Invite other friends:</label><br>
     <textarea placeholder="example@gmail.com, example2@gmail.com, ..." id="new_users" name="new_user_emails"></textarea>
 
     <br>
     that...
     <br>
-  <textarea name="bet[terms]"><%= bet.persisted? ? bet.terms : "he can program chess faster" %></textarea>
+  <textarea name="bet[terms]" placeholder="something"><%= bet.terms if bet.persisted? %></textarea>
   <br>
   <br>
   Loser has to...
   <br>
-  <textarea name="bet[wager]"><%= bet.persisted? ? bet.wager : "eat everything in the App Academy mini-fridge" %></textarea>
+  <textarea name="bet[wager]" placeholder="something"><%= bet.persisted? ? bet.wager : "" %></textarea>
   <br>
   <input
     <%= "checked" if bet.private %>
@@ -84,10 +210,10 @@ $(document).ready(function(){
   <% if bet.persisted? %>
   <label for="bet_status">Status</label>
   <select id="bet_status" name="bet[status]">
-    <option value="pending">Pending</option>
-    <option value="in play">In Play</option>
-    <option value="completed">Completed</option>
-    <option value="cancelled">Cancelled</option>
+    <option value="pending" <%= "selected" if bet.status == "pending" %>>Pending</option>
+    <option value="in play" <%= "selected" if bet.status == "in play" %>>In Play</option>
+    <option value="completed" <%= "selected" if bet.status == "completed" %>>Completed</option>
+    <option value="cancelled" <%= "selected" if bet.status == "cancelled" %>>Cancelled</option>
   </select>
 
   <div id="bet-results-form">

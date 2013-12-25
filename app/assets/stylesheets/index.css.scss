@@ -550,9 +550,54 @@ ul.other-users-list > li:first-child {
   background-color: #FFFFFF;
   padding: 10px;
   border-radius: 5px;
-
 }
 
+//bettee search stuff!
+.bettee-search-area {
+	border: 1px solid black;
+	width: 350px;
+	overflow: scroll;
+}
 
+.bettee-drop-down-anchor {
+  position: relative;
+}
+
+.bettee-drop-down {
+  position: absolute;
+  left: 7px;
+  background-color: white;
+  padding: 2px;
+  border: 1px solid #323232;
+}
+
+.bettee-drop-down > ul > li {
+  margin: 2px;
+}
+
+.bettee-drop-down > ul > li:hover {
+  background-color: #B9C5EE;
+}
+
+.bettee-block {
+	float: left;
+	border: 1px solid #909090;
+	background-color: #E8E8E8;
+	margin: 2px
+}
+
+.bettee-block > span {
+	color: #323232;
+	font-size: 90%;
+}
+
+.bettee-block > div {
+	display: inline-block;
+	font-size: 80%;
+	color: #323232;
+	padding: 0 4px 4px 0px;
+	font-weight: bold;
+	cursor: pointer;
+}
 
 

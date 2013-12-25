@@ -38,11 +38,13 @@
      type="text">
   <br>
 
+  <% unless user.persisted? %>
   <label for="user_password">Password</label>
   <input
      id="user_password"
      name="user[password]"
      type="password">
+	 <% end %>
   <br>
   <br>
   Current Profile Picture:<br>
