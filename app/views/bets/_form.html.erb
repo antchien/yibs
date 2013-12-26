@@ -77,7 +77,14 @@ $(document).ready(function(){
 				$li = $(event.currentTarget).next().find('.selected');
 				$li.trigger('click');
 				break;
+			case 13:
+				console.log("enter pressed");
+				event.preventDefault();
+				$li = $(event.currentTarget).next().find('.selected');
+				$li.trigger('click');
+				break;
 			}
+			
 		})
 	})
 	

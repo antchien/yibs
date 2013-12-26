@@ -162,29 +162,72 @@ $(document).ready(function(event) {
   // Users drop-down list for main "Search Friends"
   $('.search-form input').focus( function() {	
     $('.trigger-search-query').keyup(function(event) {
-		console.log("Triggered keyup search in Index");
-      var url = $(this).attr('action')
-      url = url + "_friends"
-      var data = $(this).children('input#search-query').val()
-      var that = this
-	  console.log(url);
-	  console.log(data);
-      $.ajax ({
-        method: "GET",
-        url: url,
-        data: {"query": data},
-        success: function(data) {
-		if (!data) {
-	        $(that).siblings('div').html(data)
-	        $(that).siblings('div').addClass('hidden');
-			} else {
-	        $(that).siblings('div').html(data)
-	        $(that).siblings('div').removeClass('hidden');
-			$(that).siblings('div').children('ul').children('li:first-child').addClass('selected')
-		}
-        }
-      })
+		if( (event.which >= 48 && event.which <= 57) || (event.which >= 65 && event.which <= 90) || event.which == 8 || event.which == 32) {
+			console.log("Triggered keyup search in Index");
+	      var url = $(this).attr('action')
+	      url = url + "_friends"
+	      var data = $(this).children('input#search-query').val()
+	      var that = this
+		  console.log(url);
+		  console.log(data);
+	      $.ajax ({
+	        method: "GET",
+	        url: url,
+	        data: {"query": data},
+	        success: function(data) {
+			if (!data) {
+		        $(that).siblings('div').html(data)
+		        $(that).siblings('div').addClass('hidden');
+				} else {
+		        $(that).siblings('div').html(data)
+		        $(that).siblings('div').removeClass('hidden');
+				$(that).siblings('div').children('ul').children('li:first-child').addClass('selected')
+				
+				$('.search-drop-down ul li').hover(function(event) {
+					console.log(event.currentTarget);
+					$(event.currentTarget).siblings().removeClass('selected');
+					$(event.currentTarget).addClass('selected');
+				})
+			}
+	        }
+	      })
+	  }
     })
+	
+	$('.search-form input').keydown(function(event) {
+		switch (event.which) {
+		case 38:
+			console.log("up pressed");
+			event.preventDefault();
+			$li = $(event.currentTarget).parent().next().find('.selected');
+ 			if ($li.prev().length > 0) {
+ 				$li.removeClass('selected');
+ 				$li.prev().addClass('selected');
+ 			}
+			break;			
+		case 40:
+			console.log("down pressed");
+			event.preventDefault();
+			$li = $(event.currentTarget).parent().next().find('.selected');
+			if ($li.next().length > 0) {
+				$li.removeClass('selected');
+				$li.next().addClass('selected');
+			}
+			break;
+		case 9:
+			console.log("tab pressed");
+			event.preventDefault();
+			$li = $(event.currentTarget).parent().next().find('.selected');
+			$li.children('a').trigger('click');
+			break;
+		case 13:
+			console.log("enter pressed");
+			event.preventDefault();
+			$li = $(event.currentTarget).parent().next().find('.selected');
+			$li.children('a').trigger('click');
+			break;
+		}
+	})
   })
   
   //Users-drop-down list for Bet Page
