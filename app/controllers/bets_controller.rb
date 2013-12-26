@@ -39,6 +39,11 @@ class BetsController < ApplicationController
 
   def new
     @bet = Bet.new
+    if request.xhr?
+      render partial: 'bets/form', locals: {bet: @bet}
+    else
+      render partial: 'bets/form', locals: {bet: @bet}
+    end
   end
 
   def index

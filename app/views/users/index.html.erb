@@ -61,8 +61,10 @@ $(document).ready(function(event) {
   })
 
   //Trigger new-bet pop-up when relevant clicks made
-  $('.trigger-add-bet-form').on('click', function(event) {
+  $('body').on('ajax:success', '.trigger-add-bet-form', function(event, data) {
     event.preventDefault();
+	console.log("Triggered Add Bet Form (in index)")
+	$('#new-bet-content').html(data);
     $('.new-bet-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');
   });
@@ -197,13 +199,17 @@ $(document).ready(function(event) {
     event.preventDefault();
 	console.log("Triggered search query in Index");
 	$('.search-drop-down').addClass('hidden');
+	$form = $(this).closest('.search-friends-section').find('form');
+	$form[0].reset();
     $('#user-show-content').html(data);
     $('.user-show-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');
   })
   
   $('.search-form').on('ajax:success', function(event, data){
-	console.log("Triggered select from dropdown in Index");
+	$form = $(this);
+	$form[0].reset();
+	$('.search-drop-down').addClass('hidden');  
     $('#friendship-show-content').html(data);
     $('.friendship-show-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');
@@ -255,17 +261,6 @@ $(document).ready(function(event) {
     }
   })
 
-  // $('body').keypress(function(event) {
-//     console.log("key pressed");
-//     console.log(event.which);
-//     if( event.which == 27 ) {
-//       event.preventDefault();
-//       $('.light-box-form').addClass('hidden');
-//       $('.dimmer').addClass('hidden');
-//     }
-//
-//   })
-
 });
 
 </script>
@@ -300,7 +295,7 @@ $(document).ready(function(event) {
           </div>
         </li>
 
-        <li class="trigger-add-bet-form"><a href='<%= new_user_bet_url(current_user) %>'>+</a></li>
+        <li class="trigger-add-bet-form"><a href='<%= new_user_bet_url(current_user) %>' data-remote="true">+</a></li>
       </ul>
     </nav>
 
@@ -345,7 +340,7 @@ $(document).ready(function(event) {
           <div class="stat-header">Won</div>
         </li>
       </ul>
-      <div class="add-bet-button trigger-add-bet-form"><a href='<%= new_user_bet_url(current_user) %>'>Add New Bet</a></div>
+      <div class="add-bet-button trigger-add-bet-form"><a href='<%= new_user_bet_url(current_user) %>' data-remote="true">Add New Bet</a></div>
     </div>
   </section>
 

@@ -1,6 +1,6 @@
 <% if users && users.count > 0 %>
 <ul>
-  <% users.each do |user| %>
+  <% users.each_with_index do |user, index| %>
   <li><a href="<%= user_url(user) %>" data-remote="true"><%= image_tag user.profile_pic.url(:thumb), :class => "search-pic" %><%= user.full_name %> (<%= user.username %>)</a></li>
     <% end %>
 </ul>
