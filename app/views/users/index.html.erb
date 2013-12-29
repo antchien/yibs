@@ -11,21 +11,10 @@ $(document).ready(function(event) {
   });
 
   //Trigger logout
-  // $('.trigger-log-out').on('click', function(event) {
-  //   event.preventDefault();
-  //   console.log(event.currentTarget);
-  //   console.log(this)
-  //   var url = $(this).children('form').attr("action");
-  //   $.ajax ({
-  //     method: "delete",
-  //     url: url,
-  //     dataType: "html",
-  //     success: function() {
-  //       $(event.currentTarget).siblings('.comments-list').append(data)
-  //       $(event.currentTarget).children('form')[0].reset();
-  //     }
-  //   })
-  // })
+  $('.trigger-log-out').on('click', function(event) {
+	  console.log(this);
+	  $(this).find('form').trigger('submit');
+  })
 
   //Trigger edit-user pop-up when relevant clicks made
   $('.trigger-user-edit-form').on('click', 'a', function(event) {
@@ -34,14 +23,15 @@ $(document).ready(function(event) {
     $('.dimmer').removeClass('hidden');
   });
 
-  $('.link-name').on('ajax:success', 'a', function(event, data) {
+  $('body').on('ajax:success', '.link-name a', function(event, data) {
     event.preventDefault();
+	console.log("link-name clicked and success!");
     $('#user-show-content').html(data);
     $('.user-show-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');
   })
 
-  //Trigger pop-up for notification
+  //Trigger pop-up upon clicking on a notification link
   $('.notifications-link').on('ajax:success', 'a', function(event, data) {
     event.preventDefault();
     link = $(event.currentTarget).attr('href')
@@ -84,13 +74,14 @@ $(document).ready(function(event) {
     event.preventDefault();
 	var $form = $(event.currentTarget);
 	var action = $form.children('input[name*="_method"]').val()
-	var $allBettees = ($form.children('.bettee-drop-down-anchor').children('.bettee-block'));
+	var $allBettees = ($form.find('.bettee-drop-down-anchor').children('.bettee-block'));
 	$allBettees.each(function( index ) {
 		var betteeId = $(this).attr('data-id');
 		$form.append('<input name="bet_participation[user_id][]" value="' + betteeId + '">')
 	})
 	var url = $form.attr('action')
 	var data = $form.serialize();
+	console.log(data);
 	
     $.ajax ({
       method: action,
@@ -125,7 +116,7 @@ $(document).ready(function(event) {
   $('body').on('ajax:success', '.trigger-bet-invite-response', function(event, data) {
 	  event.preventDefault();
 	  console.log("Triggered Bet Invite Response")
-	  $div = $(event.currentTarget).parent()
+	  $div = $(event.currentTarget).closest('.bet-acceptance-section');
 	  $div.remove()
   })
 
@@ -307,6 +298,8 @@ $(document).ready(function(event) {
 });
 
 </script>
+<link rel="stylesheet" type="text/css" href="assets/index.css">
+
 <div class="dimmer hidden" id="dimmer"></div>
 <header class="header">
   <div class="header-wrap group">
@@ -333,7 +326,7 @@ $(document).ready(function(event) {
             <div class="uparrow"></div>
             <ul class="group">
               <li class="trigger-user-edit-form"><a href="<%= edit_user_url(current_user) %>">Account Settings</a></li>
-              <li class="sign-out-menu-item trigger-log-out"><%= button_to "Sign Out", session_url, method: :delete %></li>
+              <li class="sign-out-menu-item trigger-log-out">Log Out<%= button_to "Sign Out", session_url, method: :delete, class: "hidden"%></li>
             </ul>
           </div>
         </li>

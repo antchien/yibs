@@ -50,6 +50,7 @@ li.settings-label:hover > div.hover-menu {
   top: 40px;
   left: -80px;
   z-index: 5;
+  border: 1px solid #ACACAC;
 }
 
 li.notifications-label:hover > div.hover-menu {
@@ -58,6 +59,7 @@ li.notifications-label:hover > div.hover-menu {
   top: 40px;
   left: -129px;
   z-index: 5;
+  border: 1px solid #ACACAC;
 }
 
 div.menu-title {
@@ -321,6 +323,30 @@ div.add-bet-button {
   margin-top: 10px;
 }
 
+
+
+.bet-acceptance-section {
+	background-color: #D7DCE9;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 5px;
+}
+
+.bet-acceptance-content {
+	width: 190px;
+	margin: auto;
+}
+
+.bet-buttons {
+	width: 117px;
+	margin: auto;
+}
+
+.bet-buttons > div {
+	float: left;
+}
+
+
 .bet-content {
   margin-left: 60px;
   padding-right: 45px;
@@ -349,6 +375,7 @@ div.add-bet-button {
 .bet-options > ul > li:last-child {
   color: #ACACAC;
 }
+
 
 //COMMENTS SECTION
 
@@ -379,6 +406,10 @@ div.uparrow-comments {
   border-top: 0;
 }
 
+.comments-list > li:last-child {
+  border-bottom: 1px solid white;	
+}
+
 .comment-thumb {
   float: left;
 }
@@ -397,7 +428,6 @@ div.uparrow-comments {
 
 .new-comment {
   padding: 3px 0;
-  border-top: 1px solid white;
 }
 
 .new-comment-thumb {
@@ -457,6 +487,10 @@ div.uparrow-comments {
   color: #575757;
 }
 
+.form-content {
+  padding: 10px;
+}
+
 .light-box-form.hidden {
   display: none;
 }
@@ -480,18 +514,37 @@ div.uparrow-comments {
 
 .new-bet-form {
   width: 500px;
-  height: 500px;
   margin-left: -250px;
 }
 
 .edit-bet-form {
   width: 500px;
-  height: 500px;
   margin-left: -250px;
 }
 
-.user-edit-form .form-content {
-  padding: 10px;
+.trigger-submit-bet > div {
+	margin: 10px 0;
+}
+
+.winners-losers-section {
+	margin-top: 20px;
+	padding: 5px;
+	background-color: #F8F0D8;
+	line-height: 120%;
+}
+
+.winners-losers-section > span {
+	font-weight: bold;
+}
+
+.results-winners-table {
+	float: left;
+	margin: 5px;
+}
+
+.results-losers-table {
+	float: left;
+	margin: 5px;
 }
 
 .user-show-form {
@@ -554,10 +607,17 @@ ul.other-users-list > li:first-child {
 
 //bettee search stuff!
 .bettee-search-area {
-	border: 1px solid black;
+	border: 1px solid #ACACAC;
 	width: 200px;
-	overflow: scroll;
+	overflow: scroll;	
+	padding: 1px;
+	margin: 2px;
 }
+
+.bettee-search-area:focus {
+	outline: none;
+};
+
 
 .bettee-drop-down-anchor {
   position: relative;
@@ -583,19 +643,20 @@ ul > li.selected {
 	float: left;
 	border: 1px solid #909090;
 	background-color: #E8E8E8;
-	margin: 2px
+	margin: 1px 2px;
+	border-radius: 3px;
 }
 
 .bettee-block > span {
 	color: #323232;
-	font-size: 90%;
+	font-size: 85%;
 }
 
 .bettee-block > div {
 	display: inline-block;
 	font-size: 80%;
 	color: #323232;
-	padding: 0 4px 4px 0px;
+	padding: 0 2px 2px 2px;
 	font-weight: bold;
 	cursor: pointer;
 }

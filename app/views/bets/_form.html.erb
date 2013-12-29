@@ -141,21 +141,9 @@ $(document).ready(function(){
      value="<%= method %>">
 
   <%= current_user.abbrev_name%>. bets
-  <br>
 
-<!--   <input type="hidden" name="bet_participation[user_id][]" value="">
-   <% if bet.persisted? %>
-   <% bet.participants.each do |participant| %>
-     <input
-       checked
-       id="bet_participant_id_<%= participant.id %>"
-       name="bet_participation[user_id][]"
-       value="<%= participant.id %>"
-       type="checkbox">
-     <label for="bet_participant_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
-     <br>
-     <% end %>
-     <% end %> -->
+  <div class="bet-participants-section group">
+	 Participants: 
 	 <div class="bettee-drop-down-anchor">
 		 <% if bet.persisted? %>
 		 <% bet.participants.each do |participant| %>
@@ -171,9 +159,7 @@ $(document).ready(function(){
 		 </div>
 		   <div class="bettee-drop-down hidden"></div>
 	 </div>
-	 <br>
-	 <br>
-
+ </div>
 
   <!-- <% current_user.friends.each do |friend| %>
   <% next if bet.participants.include?(friend) %>
@@ -186,19 +172,21 @@ $(document).ready(function(){
     <label for="bet_participant_id_<%= friend.id %>"><%= friend.first_name %> <%= friend.last_name %></label>
     <br>
     <% end %> -->
-    <label for="new_users">Invite other friends:</label><br>
-    <textarea placeholder="example@gmail.com, example2@gmail.com, ..." id="new_users" name="new_user_emails"></textarea>
+	  
+    <!-- <label for="new_users">Invite other friends:</label><br>
+    <textarea placeholder="example@gmail.com, example2@gmail.com, ..." id="new_users" name="new_user_emails"></textarea> -->
 
-    <br>
-    that...
-    <br>
-  <textarea name="bet[terms]" placeholder="something"><%= bet.terms if bet.persisted? %></textarea>
-  <br>
-  <br>
-  Loser has to...
-  <br>
-  <textarea name="bet[wager]" placeholder="something"><%= bet.persisted? ? bet.wager : "" %></textarea>
-  <br>
+	<div class="bet-terms-section group">
+    that...<br>
+	  <textarea name="bet[terms]" placeholder="he/she can run more than 20 miles this week" rows="2" cols="50"><%= bet.terms if bet.persisted? %></textarea>
+	</div>
+	
+	<div class="bet-wager-section group">
+  	  Loser(s) has to...<br>
+	  <textarea name="bet[wager]" placeholder="wear a shirt of the winner's choosing next time we go out" rows="2" cols="50"><%= bet.persisted? ? bet.wager : "" %></textarea>
+	</div>
+  
+  <div class="bet-privacy-section group">
   <input
     <%= "checked" if bet.private %>
     id="bet_private"
@@ -206,42 +194,50 @@ $(document).ready(function(){
     value=true
     type="checkbox">
   <label for="bet_private">Private</label>
-  <br><br>
+  </div>
 
   <% if bet.persisted? %>
-  <label for="bet_status">Status</label>
+  <div class="bet-status-section group">
+  <label for="bet_status">Status: </label>
   <select id="bet_status" name="bet[status]">
     <option value="pending" <%= "selected" if bet.status == "pending" %>>Pending</option>
     <option value="in play" <%= "selected" if bet.status == "in play" %>>In Play</option>
     <option value="completed" <%= "selected" if bet.status == "completed" %>>Completed</option>
     <option value="cancelled" <%= "selected" if bet.status == "cancelled" %>>Cancelled</option>
   </select>
+  </div>
 
-  <div id="bet-results-form">
-  Results:<br>
-  Select Winner(s):<br>
-  <input type="hidden" name="bet_winner[user_id][]" value="">
-   <% bet.participants.each do |participant| %>
-     <input
-       id="bet_winner_id_<%= participant.id %>"
-       name="bet_winner[user_id][]"
-       value="<%= participant.id %>"
-       type="checkbox">
-     <label for="bet_winner_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
-     <br>
-     <% end %>
+  <div id="bet-results-form" class="group">
+	  <span class="group">Results:</span>
+	  <div class="results-winners-table">
+	  Select Winner(s):<br>
+	  <input type="hidden" name="bet_winner[user_id][]" value="">
+	   <% bet.participants.each do |participant| %>
+	     <input
+	       id="bet_winner_id_<%= participant.id %>"
+	       name="bet_winner[user_id][]"
+	       value="<%= participant.id %>"
+	       type="checkbox"
+		   <%= "checked" if bet.winners.include?(participant) %>>
+	     <label for="bet_winner_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
+	     <br>
+	     <% end %>
+ 	   </div>
 
-   Select Loser(s):<br>
-   <% bet.participants.each do |participant| %>
-   <input type="hidden" name="bet_loser[user_id][]" value="">
-     <input
-       id="bet_loser_id_<%= participant.id %>"
-       name="bet_loser[user_id][]"
-       value="<%= participant.id %>"
-       type="checkbox">
-     <label for="bet_loser_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
-     <br>
-     <% end %>
+	   <div class="results-losers-table">
+	   Select Loser(s):<br>
+	   <% bet.participants.each do |participant| %>
+	   <input type="hidden" name="bet_loser[user_id][]" value="">
+	     <input
+	       id="bet_loser_id_<%= participant.id %>"
+	       name="bet_loser[user_id][]"
+	       value="<%= participant.id %>"
+	       type="checkbox" 
+		   <%= "checked" if bet.losers.include?(participant) %>>
+	     <label for="bet_loser_id_<%= participant.id %>"><%= participant.first_name %> <%= participant.last_name %></label>
+	     <br>
+	     <% end %>
+	   </div>
  </div>
 
   <% end %>

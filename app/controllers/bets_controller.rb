@@ -82,6 +82,12 @@ class BetsController < ApplicationController
       update_participants(@bet, participant_ids)
       update_winners(@bet, winner_ids)
       update_losers(@bet, loser_ids)
+      
+      @bet.participants.each do |participant|
+        unless participant == current_user
+          Notification.create(user_id: participant.id, text: "#{current_user.abbrev_name}. has edited a bet that you're in", link: bet_url(@bet))
+        end
+      end
     else
       flash[:error] = "Unable to update bet"
     end
@@ -156,12 +162,6 @@ class BetsController < ApplicationController
         Notification.create(user_id: participant.id, text: "You have been removed from a bet", link: bet_url(@bet))
       end
     end
-    #send change notifications to existing participants
-    @bet.participants.each do |participant|
-      unless participant == current_user
-        Notification.create(user_id: participant.id, text: "#{current_user.abbrev_name}. has edited a bet that you're in", link: bet_url(@bet))
-      end
-    end
 
     #then make any more participations that aren't present in the database
     participant_ids.each do |new_participant_id|
@@ -175,19 +175,40 @@ class BetsController < ApplicationController
 
   def update_losers(bet, loser_ids)
     @bet = bet
-    loser_ids.each do |loser_id|
-      next if loser_id == ""
-      LoserEntry.create(user_id: loser_id.to_i, bet_id: @bet.id)
-      Notification.create(user_id: loser_id.to_i, text: 'You lost a bet!', link: bet_url(@bet) )
+    
+    #first delete removed losers
+    @bet.losers.each do |loser|
+      if !loser_ids.include?(loser.id.to_s)
+        LoserEntry.find_by_bet_id_and_user_id(@bet.id, loser.id).destroy
+        Notification.create(user_id: loser.id, text: "Vindication! You have been removed as a loser on a bet", link: bet_url(@bet))
+      end
+    end
+        
+    loser_ids.each do |new_loser_id|
+      next if new_loser_id == ""
+      if @bet.losers.select { |loser| loser.id == new_loser_id.to_i }.empty?
+        LoserEntry.create(user_id: new_loser_id.to_i, bet_id: @bet.id)
+        Notification.create(user_id: new_loser_id.to_i, text: "#{current_user.abbrev_name}. added you as a loser on a bet", link: bet_url(@bet) )
+      end
     end
   end
 
   def update_winners(bet, winner_ids)
     @bet = bet
-    winner_ids.each do |winner_id|
-      next if winner_id == ""
-      WinnerEntry.create(user_id: winner_id.to_i, bet_id: @bet.id)
-      Notification.create(user_id: winner_id.to_i, text: 'You lost a bet!', link: bet_url(@bet) )
+    
+    @bet.winners.each do |winner|
+      if !winner_ids.include?(winner.id.to_s)
+        WinnerEntry.find_by_bet_id_and_user_id(@bet.id, winner.id).destroy
+        Notification.create(user_id: winner.id, text: "Oh no! #{current_user.abbrev_name} removed you as a winner on a bet", link: bet_url(@bet))
+      end
+    end
+        
+    winner_ids.each do |new_winner_id|
+      next if new_winner_id == ""
+      if @bet.winners.select { |winner| winner.id == new_winner_id.to_i }.empty?
+        WinnerEntry.create(user_id: new_winner_id.to_i, bet_id: @bet.id)
+        Notification.create(user_id: new_winner_id.to_i, text: "#{current_user.abbrev_name}. added you as a winner to a bet", link: bet_url(@bet) )
+      end
     end
   end
 

@@ -1,23 +1,108 @@
-<h1>Sign In!</h1>
+<script>
+$(document).ready( function(event) {
+	$('.login-button').click( function() {
+		console.log('in login trigger');
+		$('.login-form').trigger('submit');
+	});
+	
+	$('.login-form input').focus( function() {
+		$(this).keyup( function(event) {
+			if (event.which == 13) {
+				$('.login-form').trigger('submit');
+			}
+		})
+	});
+	
+	
+	$('.signup-button').click( function() {
+		console.log('in sign up trigger');
+		$('.signup-form').trigger('submit');
+	});
+	
+	
+	
+});
 
-<form action="<%= session_url %>" method="post">
-  <input
-     name="authenticity_token"
-     type="hidden"
-     value="<%= form_authenticity_token %>">
+</script>
 
-  <label for="user_username">Username/Email</label>
-  <input
-     id="user_username"
-     name="user[username]"
-     type="text">
+<div class="login-container">
+	<div class="overhang">Because owning up to a bet shows more character than winning</div>
+	<section class="graphic">
+		<div class="login-pic group"><%= image_tag("index/polaroid-compressed.png") %></div>
+		<div class="graphic-content">
+			<div class="content-title">Welcome to <span>Yibs</span></div>
+			<div class="content-support">An app to facilitate social bets with your friends.  Issue challenges, talk some smack, and document results.  Share yours bets for others to see and weigh in!</div>
+		</div>
+	</section>
+	<section class="login-section">
+		<form class="login-form" action="<%= session_url %>" method="post">
+		  <input
+		     name="authenticity_token"
+		     type="hidden"
+		     value="<%= form_authenticity_token %>">
 
-  <label for="user_password">Password</label>
-  <input
-     id="user_password"
-     name="user[password]"
-     type="password">
-  <br>
+		  <label for="user_username"></label>
+		  <input
+		     id="user_username"
+		     name="user[username]"
+		     type="text"
+			 placeholder="Email">
 
-  <input type="submit" value="Log in">
-</form>
+		  <label for="user_password"></label>
+		  <input
+		     id="user_password"
+		     name="user[password]"
+		     type="password"
+			 placeholder="Password">
+
+		  <input class="hidden" type="submit" value="Log in">
+		  <div class="login-button">Log In</div>
+		</form>
+		<span class="login-seperator">or</span>
+		<div class="fb-login"><a href="/auth/facebook"><%= image_tag("index/login_with_facebook-150px.png") %></a></div>
+	</section>
+
+	<section class="signup-section">
+		<div class="signup-title">Create an Account</div>
+		<form class="signup-form" action="<%= users_url %>" enctype="multipart/form-data" method="post">
+		  <input
+		     name="authenticity_token"
+		     type="hidden"
+		     value="<%= form_authenticity_token %>">
+
+		  <label for="user_first_name"></label>
+		  <input
+		    id="user_first_name"
+		    name="user[first_name]"
+		    type="text"
+			placeholder="First Name">
+		  <br>
+
+		  <label for="user_last_name"></label>
+		  <input
+		    id="user_last_name"
+		    name="user[last_name]"
+		    type="text"
+			placeholder="Last Name">
+		  <br>
+
+		  <label for="user_username"></label>
+		  <input
+		     id="user_username"
+		     name="user[username]"
+		     type="text"
+			 placeholder="Email">
+			 
+	     <label for="user_password"></label>
+	     <input
+	        id="user_password"
+	        name="user[password]"
+	        type="password"
+			placeholder="Password">
+		 <div class="signup-button">Sign Up</div>
+		 <input class="hidden" type="submit" value="Sign Up">
+		 </form>
+	 </section>
+ 
+ </div>
+ 

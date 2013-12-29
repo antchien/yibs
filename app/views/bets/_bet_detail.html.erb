@@ -37,12 +37,12 @@
 
   <% if bet.status == 'completed' %>
   <div class="winners-losers-section">
-    <span class="winner_header">Winners:</span>
+    <span class="winner_header">Winner(s):</span>
       <% bet.winners.each_with_index do |winner, index| %>
         <%= winner.abbrev_name %>.<%= ", " unless index == bet.winners.count-1 %>
       <% end %>
       <br>
-    <span class="loser_header">Losers:</span>
+    <span class="loser_header">Loser(s):</span>
       <% bet.losers.each_with_index do |loser, index| %>
         <%= loser.abbrev_name %>.<%= ", " unless index == bet.losers.count-1 %>
       <% end %>
@@ -50,10 +50,16 @@
   <% end %>
 
   <% if current_user.inbound_pending_bets.include?(bet) %>
-    
-	<div class="bet-acceptance-buttons"><%= render "/bets/accept_button", :bet => bet %> <%= render "/bets/decline_button", :bet => bet %></div>
-    <br>
-    <% end %>
+  <div class="bet-acceptance-section group">
+	<div class="bet-acceptance-content group">
+		<span class="group">Do you accept this challenge?</span>
+		<div class="bet-buttons">
+			<div class="bet-accept-button"><%= render "/bets/accept_button", :bet => bet %></div>
+			<div class="bet-decine-button"><%= render "/bets/decline_button", :bet => bet %></div>
+	</div>
+</div>
+  </div>
+  <% end %>
 
   <div class="bet-options group">
     <ul>
