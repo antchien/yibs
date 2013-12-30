@@ -7,18 +7,19 @@ class BetsController < ApplicationController
     @bet = Bet.new(params[:bet])
     @bet.user_id = current_user.id
     if @bet.save
-      new_user_emails = parse_new_users(params[:new_user_emails])
-      new_user_emails.each do |new_user_email|
-        user = User.find_by_username(new_user_email)
-        if user
-          params[:bet_participation][:user_id] << user.id
-        else
-          new_user = User.create(username: new_user_email)
-          invite_email = UserMailer.invite_challenge_email(new_user, current_user)
-          invite_email.deliver!
-          params[:bet_participation][:user_id] << new_user.id
-        end
-      end
+      # Temporarily disabled inviting new users via email.
+      # new_user_emails = parse_new_users(params[:new_user_emails])
+#       new_user_emails.each do |new_user_email|
+#         user = User.find_by_username(new_user_email)
+#         if user
+#           params[:bet_participation][:user_id] << user.id
+#         else
+#           new_user = User.create(username: new_user_email)
+#           invite_email = UserMailer.invite_challenge_email(new_user, current_user)
+#           invite_email.deliver!
+#           params[:bet_participation][:user_id] << new_user.id
+#         end
+#       end
       BetParticipation.create(bet_id: @bet.id, user_id: current_user.id, status: "accepted")
       params[:bet_participation][:user_id].each do |participant_id|
         next if participant_id == ""
