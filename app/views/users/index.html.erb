@@ -49,7 +49,7 @@ $(document).ready( function(event) {
 					url = "<%= community_bets_url %>";
 				}
 			
-			if (currentPage < totalPages) 
+			if (currentPage < totalPages) {
 				$.ajax({
 					url: url,
 					dataType: "html",

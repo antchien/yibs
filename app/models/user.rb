@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validates :username, :presence => true
 
   after_initialize :ensure_session_token
-  before_save :set_default_pic
+  #before_save :set_default_pic
 
   pg_search_scope :search_by_name_and_email, against: [:first_name, :last_name, :username], :using => {:tsearch => {:prefix => true}}
 
@@ -19,8 +19,8 @@ class User < ActiveRecord::Base
     :large => "600x600#",
     :medium => "250x250#",
     :small => "50x50#",
-    :thumb => "30x30#"
-  }
+    :thumb => "30x30#"},
+    :default_url => ":style/missing.png"
 
   has_many(
   :outbound_friendships,
