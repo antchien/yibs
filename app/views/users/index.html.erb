@@ -1,6 +1,79 @@
 <script>
 
-$(document).ready(function(event) {
+$(document).ready( function(event) {
+
+	//pagination and infinite scroll
+	var requestingNextPage = false;
+	
+	var distanceFromBottom = function() {
+		var doc = $(document)
+		return doc.height() - (window.innerHeight + doc.scrollTop())
+	}
+	
+	var inLightBox = function() {
+		var isLightbox = false;
+		$('.light-box-form').each( function(index, element) {
+			if(!element.classList.contains("hidden")) {
+				isLightbox = true;
+			}
+		})
+		return isLightbox;
+	}
+	
+	$(window).scroll(function(event) {
+		console.log("registered hit bottom of page");
+		console.log("dist from bottom: " + distanceFromBottom());
+		console.log("requesting next page?" + requestingNextPage);
+		console.log("in lightbox?" + inLightBox());
+		if (distanceFromBottom() < 1 && !requestingNextPage && !inLightBox()) {
+			requestingNextPage = true;
+			$('.feed-loading-gif').removeClass("hidden");
+			console.log("scroll triggered!");
+			
+			var currentPage = parseInt($("#bets-feed .page-num").val());
+			var totalPages = parseInt($("#bets-feed .total-pages").val());
+			
+			var url = "<%= community_bets_url %>"
+			
+			switch ($('#bets-feed').attr('data-id')) {
+				case 'pending':
+					url = "<%= pending_bets_url %>";
+					break;
+				case 'inplay':
+					url = "<%= inplay_bets_url %>";
+					break;
+				case 'completed':
+					url = "<%= completed_bets_url %>";
+					break;
+				default:
+					url = "<%= community_bets_url %>";
+				}
+			
+			if (currentPage < totalPages) 
+				$.ajax({
+					url: url,
+					dataType: "html",
+					data: {
+						"page": currentPage + 1
+					},
+					success: function(data) {
+						console.log("successful ajax call!")
+						console.log(data)
+						console.log($('.bets-list'));
+						$('.feed-loading-gif').addClass("hidden");
+						$('.bets-list').append(data);
+						$('.page-num').val(currentPage + 1);
+						requestingNextPage = false;
+					}
+				})
+			} else {
+				console.log("currentPage > totalPages");
+				$('.feed-loading-gif').addClass("hidden");
+				requestingNextPage = false;
+			}
+		}
+	})
+	
 
   //changes feeds
   $('#feeds-list').on('ajax:success', 'a', function(event, data) {
@@ -8,6 +81,7 @@ $(document).ready(function(event) {
 	  var feedType = $(event.currentTarget).parent().attr('data-id')
 	  $('#bets-feed').attr('data-id', feedType)
       $('#bets-feed').html(data);
+
   });
 
   //Trigger logout
@@ -123,7 +197,8 @@ $(document).ready(function(event) {
   //Remove lightbox and pop-up when user hits 'x' or presses escape
   $('.form-header').on('click', '.x-button', function(event) {
     event.preventDefault();
-    $(this).parent().parent().addClass('hidden');
+	console.log($(this).closest('.light-box-form'));
+    $(this).closest('.light-box-form').addClass('hidden');
     $('.dimmer').addClass('hidden');
   })
 
@@ -396,10 +471,13 @@ $(document).ready(function(event) {
       <header class="group">
 
         <ul class="bets-list" id="bets-feed" data-id="community">
-          <%= render "bets/display_bets", :bets => @community_bets %>
+          <%= render "bets/display_bets" %>
         </ul>
 
       </header>
+	  <div class="feed-loading-gif hidden">
+		  <%= image_tag("index/loading-gif.gif") %>
+	  </div>
     </div>
   </div>
 

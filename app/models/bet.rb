@@ -5,7 +5,6 @@ class Bet < ActiveRecord::Base
   validates :private, :inclusion => {:in => [true, false]}
   before_save :set_default_status_pending
 
-
   belongs_to(
   :author,
   class_name: "User",

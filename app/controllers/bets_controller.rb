@@ -105,14 +105,11 @@ class BetsController < ApplicationController
   def community
     @user = current_user
     #@bets = current_user.bets.where( status: 'in play' )
-    @bets = @user.bets
-    @user.friends.each do |friend|
-      @bets = (@bets + friend.bets.where( private: false ) ).uniq
-    end
-    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+    @bets = @user.community_bets
+    @bets = Kaminari.paginate_array(@bets).page(params[:page]).per(5)
 
     if request.xhr?
-      render partial: 'bets/display_bets', locals: {bets: @bets}
+      render partial: 'bets/display_bets'
     else
       render :feed
     end
@@ -120,8 +117,8 @@ class BetsController < ApplicationController
 
   def pending
     @user = current_user
-    @bets = current_user.bets.where( status: 'pending' )
-    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+    @bets = current_user.pending_bets
+    @bets = Kaminari.paginate_array(@bets).page(params[:page]).per(5)
     if request.xhr?
       render partial: 'bets/display_bets', locals: {bets: @bets}
     else
@@ -131,8 +128,8 @@ class BetsController < ApplicationController
 
   def inplay
     @user = current_user
-    @bets = current_user.bets.where( status: 'in play' )
-    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+    @bets = current_user.inplay_bets
+    @bets = Kaminari.paginate_array(@bets).page(params[:page]).per(5)
     if request.xhr?
       render partial: 'bets/display_bets', locals: {bets: @bets}
     else
@@ -142,8 +139,8 @@ class BetsController < ApplicationController
 
   def completed
     @user = current_user
-    @bets = current_user.bets.where( status: 'completed' )
-    @bets.sort_by { |bet| Time.now()-bet.updated_at }
+    @bets = current_user.completed_bets
+    @bets = Kaminari.paginate_array(@bets).page(params[:page]).per(5)
     if request.xhr?
       render partial: 'bets/display_bets', locals: {bets: @bets}
     else

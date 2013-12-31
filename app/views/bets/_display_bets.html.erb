@@ -1,5 +1,9 @@
-<% bets.each do |bet| %>
+<% @bets.each do |bet| %>
+<% next if bet.nil? %>
     <li class="bets-list-item" data-id="<%= bet.id %>">
       <%= render "/bets/bet_detail", :bet => bet %>
     </li>
 <%end%>
+
+<input type="hidden" class="page-num" value="<%= params[:page] || 1 %>"></input>
+<input type="hidden" class="total-pages" value="<%= @bets.total_pages %>"></input>

@@ -62,6 +62,7 @@ class User < ActiveRecord::Base
   has_many :bets, through: :bet_participations, source: :bet
   has_many :inplay_bets, through: :bet_participations, source: :bet, :conditions => ['bets.status = ?', 'in play']
   has_many :inbound_pending_bets, through: :bet_participations, source: :bet, :conditions => ['bet_participations.status = ? AND bets.status = ?', 'pending', 'pending']
+  has_many :community_bets, through: :friends, source: :bets
 
   has_many(
   :authored_comments,

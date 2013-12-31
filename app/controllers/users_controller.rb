@@ -35,6 +35,7 @@ class UsersController < ApplicationController
     else
       @bets = (@user.bets.where(private: false) + @user.bets.select { |bet| bet.participants.include?(current_user) }).uniq
     end
+    @bets = Kaminari.paginate_array(@bets).page(params[:page]).per(5)
     if request.xhr?
       puts "request.xhr success"
       render partial: 'users/show_details_lightbox', locals: {user: @user, bets: @bets}
@@ -69,11 +70,13 @@ class UsersController < ApplicationController
   def index
     @user = current_user
     @bet = Bet.new
+    @bets = @user.community_bets
+    @bets = Kaminari.paginate_array(@bets).page(params[:page]).per(5)
     @notifications = @user.notifications
-    @community_bets = @user.community_bets
-    @pending_bets = @user.pending_bets
-    @inplay_bets = @user.inplay_bets
-    @completed_bets = @user.completed_bets
+    # @community_bets = @user.community_bets
+    # @pending_bets = @user.pending_bets
+    # @inplay_bets = @user.inplay_bets
+    # @completed_bets = @user.completed_bets
     @user_bet_count = @user.bets.count
     @user_inplay_count = @user.inplay_bets.count
     @user_win_count = @user.bets_won.count
