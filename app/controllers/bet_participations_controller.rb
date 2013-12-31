@@ -1,6 +1,7 @@
 class BetParticipationsController < ApplicationController
 
   def update
+    puts ("UPDATING PARTICIPATION!")
     @bet_participation = BetParticipation.find(params[:id])
     @bet_participation.update_attributes(params[:bet_participation])
     @bet_participation.save

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131216161808) do
+ActiveRecord::Schema.define(:version => 20131231184314) do
 
   create_table "bet_participations", :force => true do |t|
     t.integer  "bet_id",     :null => false
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20131216161808) do
     t.datetime "profile_pic_updated_at"
     t.string   "uid"
     t.string   "provider"
+    t.datetime "notification_checked_at"
   end
 
   add_index "users", ["session_token"], :name => "index_users_on_session_token", :unique => true

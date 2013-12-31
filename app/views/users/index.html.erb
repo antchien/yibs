@@ -21,10 +21,6 @@ $(document).ready( function(event) {
 	}
 	
 	$(window).scroll(function(event) {
-		console.log("registered hit bottom of page");
-		console.log("dist from bottom: " + distanceFromBottom());
-		console.log("requesting next page?" + requestingNextPage);
-		console.log("in lightbox?" + inLightBox());
 		if (distanceFromBottom() < 1 && !requestingNextPage && !inLightBox()) {
 			requestingNextPage = true;
 			$('.feed-loading-gif').removeClass("hidden");
@@ -74,11 +70,32 @@ $(document).ready( function(event) {
 		}
 	})
 	
+	//toggling new notifications
+	$('.notifications-label').mouseenter( function(event) {
+		$('.notifications-label').mouseleave( function(event) {
+			console.log(event)
+			console.log(event.currentTarget);
+			
+			$.ajax({
+				url: "<%= user_url(current_user) %>",
+				method: "PUT",
+				data: { "user[notification_checked_at]": "<%= Time.now() %>" },
+				success: function(data) {
+					$('.num-of-new-nots').html('');
+					$('.num-of-new-nots').addClass('hidden');
+					$('.notifications-list').find('li').removeClass('new-notification')
+				}
+			})
+		})
+	})
+	
 
   //changes feeds
   $('#feeds-list').on('ajax:success', 'a', function(event, data) {
-	  console.log($(event.currentTarget).parent().attr('data-id'));
-	  var feedType = $(event.currentTarget).parent().attr('data-id')
+	  console.log($(event.currentTarget).closest('li').attr('data-id'));
+	  $('.feeds-list-item').removeClass('current-feed');
+	  $(event.currentTarget).closest('li').addClass('current-feed');
+	  var feedType = $(event.currentTarget).closest('li').attr('data-id')
 	  $('#bets-feed').attr('data-id', feedType)
       $('#bets-feed').html(data);
 
@@ -101,10 +118,12 @@ $(document).ready( function(event) {
     event.preventDefault();
 	console.log("link-name clicked and success!");
     $('#user-show-content').html(data);
+	$('.light-box-form').addClass('hidden');
     $('.user-show-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');
   })
 
+	
   //Trigger pop-up upon clicking on a notification link
   $('.notifications-link').on('ajax:success', 'a', function(event, data) {
     event.preventDefault();
@@ -123,6 +142,7 @@ $(document).ready( function(event) {
       $('.dimmer').removeClass('hidden');
     }
   })
+ 
 
   //Trigger new-bet pop-up when relevant clicks made
   $('body').on('ajax:success', '.trigger-add-bet-form', function(event, data) {
@@ -384,11 +404,14 @@ $(document).ready( function(event) {
 
     <nav class="header-nav">
       <ul>
-        <li class="notifications-label"><a href='<%= notifications_user_url(current_user) %>'>Notifications</a>
+		  <% num_of_new = @notifications.select { |notification| notification.updated_at > current_user.notification_checked_at }.count %>
+        <li class="notifications-label"><a href='#'>Notifications<div class="num-of-new-nots <%= num_of_new > 0 ? "" : "hidden" %>">
+			<%= num_of_new > 0 ? num_of_new : '' %>
+		</div></a>
           <div class="hover-menu">
             <div class="uparrow"></div>
             <div class="menu-title">Notifications:</div>
-            <ul class="group">
+            <ul class="notifications-list group">
               <%= render '/users/notifications', :notifications =>
                @notifications %>
             </ul>
@@ -460,7 +483,7 @@ $(document).ready( function(event) {
     <header class="content-header group">
       <div class="pre-feeds-title">Bets: </div>
       <ul class="feeds-list" id="feeds-list">
-        <li class="feeds-list-item" data-id="community"><a href="<%= community_bets_url %>" data-remote="true">Community</a></li>
+        <li class="feeds-list-item current-feed" data-id="community"><a href="<%= community_bets_url %>" data-remote="true">Community</a></li>
         <li class="feeds-list-item" data-id="inplay"><a href="<%= inplay_bets_url %>" data-remote="true">In Play</a></li>
         <li class="feeds-list-item" data-id="pending"><a href="<%= pending_bets_url %>" data-remote="true">Pending</a></li>
         <li class="feeds-list-item" data-id="completed"><a href="<%= completed_bets_url %>" data-remote="true">Completed</a></li>

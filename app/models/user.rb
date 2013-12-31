@@ -3,7 +3,7 @@ require 'open-uri'
 class User < ActiveRecord::Base
   include PgSearch
 
-  attr_accessible :username, :password, :first_name, :last_name, :profile_pic, :provider, :uid
+  attr_accessible :username, :password, :first_name, :last_name, :profile_pic, :provider, :uid, :notification_checked_at
   attr_reader :password
 
   validates :password, :length => { :minimum => 6, :allow_nil => true }
@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   validates :username, :presence => true
 
   after_initialize :ensure_session_token
+  before_save :initialize_notification_checked_at
   #before_save :set_default_pic
 
   pg_search_scope :search_by_name_and_email, against: [:first_name, :last_name, :username], :using => {:tsearch => {:prefix => true}}
@@ -176,5 +177,8 @@ class User < ActiveRecord::Base
       self.profile_pic = open("http://www.tenniswood.co.uk/wp-content/uploads/2010/01/design-fetish-no-photo-facebook-1.jpg")
     end
   end
-
+  
+  def initialize_notification_checked_at
+    self.notification_checked_at ||= Time.now()
+  end
 end

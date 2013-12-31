@@ -2,7 +2,7 @@
   <li><%= "No Notifications" %></li>
 <% else %>
   <% notifications.each do |notification| %>
-  	<li class="notifications-link">
+  	<li class="notifications-link <%= 'new-notification' if notification.updated_at > current_user.notification_checked_at  %>">
   		<a href="<%= notification.link %>" data-remote="true"><%= notification.text %></a>
   	</li>
     <% end %>

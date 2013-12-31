@@ -35,6 +35,22 @@
   padding: 10px;
 }
 
+.notifications-label {
+	position: relative;
+}
+
+.num-of-new-nots {
+	position: absolute;
+	top: 3px;
+	left: -3px;
+	padding: 1px 3px;
+	font-size: 75%;
+	border-radius: 5px;
+	margin: 1px 0 0 3px;
+	color: white;
+	background-color: #EB2D2D;
+}
+
 .header-nav > ul > li > div.hover-menu {
   display: none;
   position: absolute;
@@ -60,6 +76,10 @@ li.notifications-label:hover > div.hover-menu {
   left: -129px;
   z-index: 5;
   border: 1px solid #ACACAC;
+}
+
+.new-notification {
+	background-color: #F8F0D8;
 }
 
 div.menu-title {
@@ -205,19 +225,31 @@ div.add-bet-button {
   padding-bottom: 5px;
 }
 
-.content-header > div.pre-feeds-title {
+.content-header > .pre-feeds-title {
   float: left;
-  padding: 5px;
+  padding: 2px 5px;
 }
 
 .content-header > ul.feeds-list > li {
   float: left;
-  padding: 5px;
+  padding: 2px 5px;
+  margin: 0 5px;
+  margin-top: 3px;
 }
 
 .content-header > ul.feeds-list > li:hover {
   color: #69A94C;
-  border-radius: 5px;
+}
+
+.current-feed {
+	border-radius: 7px;
+	background-color: #69A94C;
+	color: white;
+}
+
+.content-header > ul.feeds-list > li.current-feed:hover {
+	color: white;
+	border-radius: 7px;
 }
 
 .bet-pending{
