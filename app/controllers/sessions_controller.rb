@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
         end
 
       else
-        render :json => "Sorry, this provider is not supported yet."
+        flash.now[:error] = "Sorry, this provider is not supported yet."
       end
     else
       user = User.find_by_credentials(
@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
     end
 
     if user.nil?
-      flash.now[:error] = "Uh oh, Invalid Email/Password!  Please try again."
+      flash.now[:error] ||= "Uh oh, Invalid Email/Password!  Please try again."
       render :new
     else
       self.current_user = user

@@ -223,7 +223,8 @@ $(document).ready( function(event) {
   })
 
   // attach new comment upon pressing enter
-  $('.new-comment').keypress(function(event) {
+  // $('.new-comment').keypress(function(event) {
+		$('body').on('keypress', '.new-comment', function(event) {
     if ( event.which == 13 ) {
       event.preventDefault();
 
@@ -380,7 +381,11 @@ $(document).ready( function(event) {
  			$li.html(data)
  		}
   	})
-})
+	})
+	
+	
+	//flash-message fade	
+	$('.flash-message').delay(1500).fadeOut("slow");
 
   $(document).keyup(function(event) {
     if( event.which == 27 ) {
@@ -398,6 +403,12 @@ $(document).ready( function(event) {
 <div class="dimmer hidden" id="dimmer"></div>
 <header class="header">
   <div class="header-wrap group">
+		<% if flash[:notice] %>
+		<div class="flash-message notice"><span><%= flash[:notice]%></span></div>
+		<% end%>
+		<% if flash[:error] %>
+		<div class="flash-message error"><span><%= flash[:error]%></span></div>
+		<% end%>
     <h1 class="header-logo">
       <a href='#'>Yibs</a>
     </h1>

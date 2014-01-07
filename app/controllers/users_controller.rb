@@ -18,7 +18,8 @@ class UsersController < ApplicationController
         self.current_user = @user
         redirect_to root_url
       else
-        render :json => @user.errors.full_messages
+        flash[:error] = @user.errors.full_messages[0]
+        redirect_to new_session_url
       end
     end
   end
@@ -28,7 +29,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    puts "HEERRRRRRRRRRRRRRRRRRRRRRRRRREE"
     @user = User.find(params[:id])
     if @user == current_user
       @bets = @user.bets
@@ -37,10 +37,8 @@ class UsersController < ApplicationController
     end
     @bets = Kaminari.paginate_array(@bets).page(params[:page]).per(5)
     if request.xhr?
-      puts "request.xhr success"
       render partial: 'users/show_details_lightbox', locals: {user: @user, bets: @bets}
     else
-            puts "request.xhr failed"
       render partial: 'users/show_details_lightbox', locals: {user: @user, bets: @bets}
     end
   end
@@ -58,9 +56,11 @@ class UsersController < ApplicationController
       @user = current_user
       @user.update_attributes(params[:user])
       if @user.save
+        flash[:notice] = "User info saved!"
         redirect_to root_url
       else
-        render :json => @user.errors.full_messages
+        flash[:notice] = "Uh oh, user info could not be saved"
+        redirect_to root_url
       end
     else
       redirect_to edit_user_url(current_user)

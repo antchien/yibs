@@ -17,7 +17,6 @@ class User < ActiveRecord::Base
   pg_search_scope :search_by_name_and_email, against: [:first_name, :last_name, :username], :using => {:tsearch => {:prefix => true}}
 
   has_attached_file :profile_pic, :styles => {
-    :large => "600x600#",
     :medium => "250x250#",
     :small => "50x50#",
     :thumb => "30x30#"},

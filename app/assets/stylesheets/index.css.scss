@@ -9,6 +9,7 @@
   margin: auto;
   width: 900px;
   color: #ACACAC;
+	position: relative;
 }
 
 .header-logo {
@@ -147,6 +148,10 @@ div.hover-menu > ul > li:hover {
   margin-bottom: 3px;
 }
 
+.profile-picture > a > img {
+	border-radius: 3px;
+}
+
 div.profile-name {
   float: left;
   padding-left: 10px;
@@ -255,6 +260,7 @@ div.add-bet-button {
 .bet-pending{
   color: #707070;
   font-style: italic;
+	font-weight: bold;
 }
 
 .bet-cancelled{
@@ -355,8 +361,6 @@ div.add-bet-button {
   margin-top: 10px;
 }
 
-
-
 .bet-acceptance-section {
 	background-color: #D7DCE9;
 	margin-top: 20px;
@@ -377,7 +381,6 @@ div.add-bet-button {
 .bet-buttons > div {
 	float: left;
 }
-
 
 .bet-content {
   margin-left: 60px;
@@ -589,8 +592,77 @@ div.uparrow-comments {
   margin-left: -250px;
 }
 
+.user-show-form > .form-content {
+	padding: 0 0 10px 0;
+}
+
 .user-show-form .user-details {
   padding: 10px 0;
+	color: white;
+	/* IE10 Consumer Preview */ 
+	background-image: -ms-radial-gradient(center, ellipse farthest-corner, #757575 0%, #323232 100%);
+	/* Mozilla Firefox */ 
+	background-image: -moz-radial-gradient(center, ellipse farthest-corner, #757575 0%, #323232 100%);
+	/* Opera */ 
+	background-image: -o-radial-gradient(center, ellipse farthest-corner, #757575 0%, #323232 100%);
+	/* Webkit (Safari/Chrome 10) */ 
+	background-image: -webkit-gradient(radial, center center, 0, center center, 490, color-stop(0, #757575), color-stop(1, #323232));
+	/* Webkit (Chrome 11+) */ 
+	background-image: -webkit-radial-gradient(center, ellipse farthest-corner, #757575 0%, #323232 100%);
+	/* W3C Markup, IE10 Release Preview */ 
+	background-image: radial-gradient(ellipse farthest-corner at center, #757575 0%, #323232 100%);
+}
+
+.user-details-list > li {
+	margin-top: 3px;
+	text-align: center;
+	font-size: 125%;
+}
+
+.user-details-list > li:last-child {
+	font-size: 100%;
+}
+
+.user-show-pic {
+	width: 258px;
+	margin: auto;
+}
+
+.user-show-pic > img {
+	border: 4px solid white;
+	border-radius: 8px;
+}
+
+.user-show-form .bets {
+	padding: 10px 10px 0 10px;
+}
+
+.user-show-form .user-stats> li {
+  display: block;
+  float: left;
+  margin: 3px 0 3px 0;
+  padding: 0 3px 0 3px;
+  width: 63px;
+  text-align: center;
+  border-left: 1px solid #ACACAC;
+}
+
+.user-show-form .user-stats > li:first-child {
+  border-left: 0;
+}
+
+.user-show-form .user-stats {
+	width: 209px;
+	margin: auto;
+}
+
+.user-show-form .stat-value {
+  font-size: 90%;
+}
+
+.user-show-form .stat-header {
+  font-size: 75%;
+  color: #ACACAC;
 }
 
 .bet-show-form {

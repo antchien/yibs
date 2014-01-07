@@ -47,6 +47,28 @@ body {
   margin: 2px;
 }
 
+.flash-message {
+	position: absolute;
+	top: 0px;
+	width: 400px;
+	margin: auto;
+	padding: 5px 0;
+	text-align: center;
+}
+
+
+
+.flash-message.error {
+	color: white;
+	border: 1px solid #952020;
+	background-color: #A26F6F;
+}
+
+.flash-message.notice {
+	color: white;
+	border: 1px solid #287B26;
+	background-color: #8FAB8E;
+}
 
 
 
