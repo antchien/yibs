@@ -7,7 +7,7 @@
 
 .header-wrap {
   margin: auto;
-  width: 900px;
+  width: 850px;
   color: #ACACAC;
 	position: relative;
 }
@@ -126,7 +126,7 @@ div.hover-menu > ul > li:hover {
 
 //GENERAL CONTENT  AKA-AFTER HEADER
 .content {
-  width: 870px;
+  width: 820px;
   margin: auto;
   padding: 15px;
   background-color: rgba(255, 255, 255, 0.2);
@@ -218,7 +218,7 @@ div.add-bet-button {
 
 .content-main {
   float: left;
-  width: 600px;
+  width: 550px;
   background-color: #FFFFFF;
   padding: 10px;
   margin-left: 20px;
@@ -387,6 +387,10 @@ div.add-bet-button {
   padding-right: 45px;
 }
 
+.bet-terms {
+	line-height: 1.15;
+}
+
 .pre-feeds-title {
   font-weight: bold;
 }
@@ -473,6 +477,10 @@ div.uparrow-comments {
   margin-left: 35px;
 }
 
+.comment-text {
+	line-height: 1.15;
+}
+
 .feed-loading-gif {
 	width: 30px;
 	margin: auto;
@@ -481,7 +489,7 @@ div.uparrow-comments {
 //Bet show page
 .bet-show {
   float: left;
-  width: 600px;
+  width: 550px;
   background-color: #FFFFFF;
   padding: 10px;
   margin-left: 20px;
@@ -588,8 +596,8 @@ div.uparrow-comments {
 }
 
 .user-show-form {
-  width: 600px;
-  margin-left: -250px;
+  width: 550px;
+  margin-left: -225px;
 }
 
 .user-show-form > .form-content {

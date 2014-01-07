@@ -187,11 +187,16 @@ background-image: radial-gradient(circle farthest-corner at center, #7CC759 0%, 
 	font-size: 120%;
 	float: left;
 	padding: 10px 15px;
-	background-color: #193B8B;
+	background-color: #536da7;
 	color: white;
 	margin-top: 8px;
 	margin-left: 140px;
 	border-radius: 3px;
+}
+
+.trial-button:hover {
+	cursor: pointer;
+	background-color: #425787;
 }
 
 

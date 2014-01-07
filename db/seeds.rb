@@ -55,6 +55,8 @@ User.create(username:"scherbatsky@fakemail.ca", password:"123456", first_name:"R
 User.create(username:"schwarly@fakemail.com", password:"123456", first_name:"Barney", last_name: "Stinson", profile_pic: open("http://cdn.pastemagazine.com/www/system/images/thumbs/www/blogs_lists/barney_300x300.jpg?1273891196"))
 User.create(username:"yourdreamgirl@fakemail.com", password:"123456", first_name:"Cristin", last_name: "Milioti", profile_pic: open("http://www.eonline.com/eol_images/Entire_Site/2013413/rs_300x300-130513174034-600.CMilioti.ms.051313..jpg"))
 User.create(username:"dougthebartender@fakemail.ca", password:"123456", first_name:"Doug", last_name: "Bartender", profile_pic: open("http://have-you-met-ted.com/wp-content/uploads/the-fight-doug.jpg"))
+User.create(first_name: "Anthony", last_name: "Chien", username: "antchien@gmail.com", password: "123456", profile_pic: open("https://scontent-a.xx.fbcdn.net/hphotos-ash2/398405_10101052802172813_1360791293_n.jpg"))
+
 Friendship.create(out_friend_id: 1, in_friend_id: 2, pending_flag: false)
 Friendship.create(out_friend_id: 1, in_friend_id: 3, pending_flag: false)
 Friendship.create(out_friend_id: 1, in_friend_id: 4, pending_flag: false)
