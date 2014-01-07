@@ -1,7 +1,6 @@
 class BetParticipationsController < ApplicationController
 
   def update
-    puts ("UPDATING PARTICIPATION!")
     @bet_participation = BetParticipation.find(params[:id])
     @bet_participation.update_attributes(params[:bet_participation])
     @bet_participation.save
@@ -20,9 +19,9 @@ class BetParticipationsController < ApplicationController
     @bet_participation.bet.save
 
     if request.xhr?
-      render partial: 'bets/show_details_lightbox', locals: {bet: @bet_participation.bet}
+      render partial: 'bets/bet_detail', locals: {bet: @bet_participation.bet}
     else
-      render partial: 'bets/show_details_lightbox', locals: {bet: @bet_participation.bet}
+      render partial: 'bets/bet_detail', locals: {bet: @bet_participation.bet}
     end
   end
 

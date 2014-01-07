@@ -48,13 +48,14 @@ body {
 }
 
 .flash-message {
-	position: absolute;
-	top: 0px;
-	left: 200px;
+	position: fixed;
+	top: 0;
+	left: 50%;
+	margin-left: -200px;
 	width: 400px;
-	margin: auto;
 	padding: 5px 0;
 	text-align: center;
+	z-index: 20;
 }
 
 .flash-message.error {

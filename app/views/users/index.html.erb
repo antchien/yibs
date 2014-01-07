@@ -209,9 +209,14 @@ $(document).ready( function(event) {
   //
   $('body').on('ajax:success', '.trigger-bet-invite-response', function(event, data) {
 	  event.preventDefault();
-	  console.log("Triggered Bet Invite Response")
-	  $div = $(event.currentTarget).closest('.bet-acceptance-section');
-	  $div.remove()
+	  $li = $(event.currentTarget).closest('li');
+		$li.html(data);
+		var flash = "<div class='flash-message notice index-page'><span>Bet Invitation Reponse Logged!</span></div>";
+		
+		console.log(flash);
+		console.log($('.header-wrap'));
+		$('.header-wrap').prepend(flash);
+		$('.flash-message').delay(1500).fadeOut("slow");
   })
 
   //Remove lightbox and pop-up when user hits 'x' or presses escape
