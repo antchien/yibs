@@ -167,11 +167,12 @@ $(document).ready( function(event) {
   $('body').on('submit', '.trigger-submit-bet', function(event) {
     event.preventDefault();
 	var $form = $(event.currentTarget);
+	$form.find('input[type=submit]').attr('disabled', 'disabled');
 	var action = $form.children('input[name*="_method"]').val()
 	var $allBettees = ($form.find('.bettee-drop-down-anchor').children('.bettee-block'));
 	$allBettees.each(function( index ) {
 		var betteeId = $(this).attr('data-id');
-		$form.append('<input name="bet_participation[user_id][]" value="' + betteeId + '">')
+		$form.append('<input class="hidden" name="bet_participation[user_id][]" value="' + betteeId + '">')
 	})
 	var url = $form.attr('action')
 	var data = $form.serialize();
