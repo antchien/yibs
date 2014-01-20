@@ -6,6 +6,7 @@ class BetsController < ApplicationController
   def create
     @bet = Bet.new(params[:bet])
     @bet.user_id = current_user.id
+    @bet.status = "in play" if !params[:challenge]
     if @bet.save
       # Temporarily disabled inviting new users via email.
       # new_user_emails = parse_new_users(params[:new_user_emails])
@@ -20,12 +21,20 @@ class BetsController < ApplicationController
 #           params[:bet_participation][:user_id] << new_user.id
 #         end
 #       end
+
+    
       BetParticipation.create(bet_id: @bet.id, user_id: current_user.id, status: "accepted")
       params[:bet_participation][:user_id].each do |participant_id|
         next if participant_id == ""
-        BetParticipation.create(bet_id: @bet.id, user_id: participant_id.to_i, status: "pending")
-        Notification.create(user_id: participant_id.to_i, text: "#{@bet.author.abbrev_name}. has challenged you to a bet!", link: bet_url(@bet))
+        if params[:challenge]
+          BetParticipation.create(bet_id: @bet.id, user_id: participant_id.to_i, status: "pending")
+          Notification.create(user_id: participant_id.to_i, text: "#{@bet.author.abbrev_name}. has challenged you to a bet! (action needed)", link: bet_url(@bet))
+        else
+          BetParticipation.create(bet_id: @bet.id, user_id: participant_id.to_i, status: "accepted")
+          Notification.create(user_id: participant_id.to_i, text: "#{@bet.author.abbrev_name}. has added you to a bet!", link: bet_url(@bet))
+        end
       end
+      
     else
       render :json => "Unable to save bet"
     end

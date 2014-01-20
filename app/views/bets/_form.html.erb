@@ -73,9 +73,12 @@ $(document).ready(function(){
 				break;
 			case 9:
 				console.log("tab pressed");
-				event.preventDefault();
-				$li = $(event.currentTarget).next().find('.selected');
-				$li.trigger('click');
+				//if search box is not empty, find selected.  if it is, tab to next field.
+				if ( !($.trim($(event.currentTarget).html()) == "") ) {
+					event.preventDefault();
+					$li = $(event.currentTarget).next().find('.selected');
+					$li.trigger('click');
+				}
 				break;
 			case 13:
 				console.log("enter pressed");
@@ -161,21 +164,6 @@ $(document).ready(function(){
 	 </div>
  </div>
 
-  <!-- <% current_user.friends.each do |friend| %>
-  <% next if bet.participants.include?(friend) %>
-    <input
-      <%= "checked" if bet.participants.include?(friend) %>
-      id="bet_participant_id_<%= friend.id %>"
-      name="bet_participation[user_id][]"
-      value="<%= friend.id %>"
-      type="checkbox">
-    <label for="bet_participant_id_<%= friend.id %>"><%= friend.first_name %> <%= friend.last_name %></label>
-    <br>
-    <% end %> -->
-	  
-    <!-- <label for="new_users">Invite other friends:</label><br>
-    <textarea placeholder="example@gmail.com, example2@gmail.com, ..." id="new_users" name="new_user_emails"></textarea> -->
-
 	<div class="bet-terms-section group">
     that...<br>
 	  <textarea name="bet[terms]" placeholder="he/she can run more than 20 miles this week" rows="2" cols="50"><%= bet.terms if bet.persisted? %></textarea>
@@ -195,6 +183,19 @@ $(document).ready(function(){
     type="checkbox">
   <label for="bet_private">Private</label>
   </div>
+
+	<% if !bet.persisted? %>
+	  <div class="bet-challenging-section group">
+	  <input
+	    <%= "checked" if bet.private %>
+	    id="bet_challenge"
+	    name="challenge"
+	    value=true
+	    type="checkbox">
+	  <label for="bet_challenge">Require participants to accept/decline bet</label>
+	  </div>
+	<% end %>
+
 
   <% if bet.persisted? %>
   <div class="bet-status-section group">
