@@ -169,7 +169,15 @@ background-image: radial-gradient(circle farthest-corner at center, #7CC759 0%, 
 	color: white;
 }
 
-//Trial button
+
+//Trial button and white arrow
+.arrow-pic {
+	float: left;
+	margin: 10px 10px 0 75px;
+	margin-top: 10px;
+	margin-right: 10px;
+}
+
 .trial-section {
 	padding-top: 30px;
 	width: 400px;
@@ -190,7 +198,6 @@ background-image: radial-gradient(circle farthest-corner at center, #7CC759 0%, 
 	background-color: #536da7;
 	color: white;
 	margin-top: 8px;
-	margin-left: 140px;
 	border-radius: 3px;
 }
 

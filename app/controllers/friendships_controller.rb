@@ -2,23 +2,22 @@ class FriendshipsController < ApplicationController
     before_filter :require_admin_access!, :only => [:create, :destroy]
 
   def index
-    @users = User.all
-    @friends = current_user.friends
-    @outbound_pending_friends = current_user.outbound_pending_friends
-    @inbound_pending_friends = current_user.inbound_pending_friends
+    @users = current_user.friends
+    @users += current_user.outbound_pending_friends
+    @users += current_user.inbound_pending_friends
+    if request.xhr?
+      render partial: 'friendships/show_details_lightbox', locals: {users: @users}
+    else
+      render partial: 'friendships/show_details_lightbox', locals: {users: @users}
+    end
   end
 
   def search
-    puts "********************************************************"
     @user = current_user
     @users = User.search_by_name_and_email(params[:query])
     if request.xhr?
-      puts "++++++++++++++++++++++++++++++++++++++++++++"
-      puts "XHR SUCCESS"
       render partial: 'friendships/show_details_lightbox', locals: {users: @users}
     else
-      puts "---------------------------------------------"
-      puts "XHR FAIL"
       render partial: 'friendships/show_details_lightbox', locals: {users: @users}
     end
   end
@@ -29,10 +28,8 @@ class FriendshipsController < ApplicationController
     if @friendship.save
       check_recip_friendship_and_send_notifications(@friendship)
       if request.xhr?
-        puts "XHR SUCCESS"
         render partial: 'friendships/friendship_detail', locals: {user: @friendship.in_friend}
       else
-        puts "XHR FAIL"
         redirect_to user_friendships_url(current_user)
       end
 
@@ -42,17 +39,14 @@ class FriendshipsController < ApplicationController
   end
 
   def destroy
-    puts "HELLOOOO????????????????"
     @friendship = Friendship.find(params[:id])
     if @friendship
       @other_user = @friendship.in_friend
       @friendship.find_recip_friendship.destroy
       @friendship.destroy
       if request.xhr?
-        puts "XHR SUCCESS"
         render partial: 'friendships/friendship_detail', locals: {user: @other_user}
       else
-        puts "XHR FAIL"
         redirect_to user_friendships_url(current_user)
       end
     else
@@ -67,27 +61,18 @@ class FriendshipsController < ApplicationController
   def search_friends
     @user = current_user
     @users = current_user.friends.search_by_name_and_email(params[:query])
-    puts "XXXXXXXXXXXXXX  Friendship_controller#search_friends XXXXXXXXXXXXX"
-    puts params
     if request.xhr?
-      puts "XHR SUCCESS"
       render partial: 'friendships/drop_down_list', locals: {users: @users}
     else
-      puts "XHR FAIL"
       render partial: 'friendships/drop_down_list', locals: {users: @users}
     end
   end
   
   def pendings
-    puts "XXXXXXXXXXXXXX  Friendship_controller#show_pendings XXXXXXXXXXXXX"
     @pendings = current_user.inbound_pending_friends
     if request.xhr?
-      puts "++++++++++++++++++++++++++++++++++++++++++++"
-      puts "XHR SUCCESS"
       render partial: 'friendships/show_details_lightbox', locals: {users: @pendings}
     else
-      puts "---------------------------------------------"
-      puts "XHR FAIL"
       render partial: 'friendships/show_details_lightbox', locals: {users: @pendings}
     end
   end

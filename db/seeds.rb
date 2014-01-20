@@ -83,6 +83,9 @@ Friendship.create(out_friend_id: 7, in_friend_id: 3, pending_flag: true)
 Friendship.create(out_friend_id: 7, in_friend_id: 4, pending_flag: true)
 Friendship.create(out_friend_id: 7, in_friend_id: 5, pending_flag: true)
 
+Notification.create(user_id: 2, text: "Doug Bartender sent you a friend request!", link: "/users/2/friendships/pendings")
+
+
 
 Bet.create(user_id:2, terms:"Robin got married at the mall. Barney thinks that Robin did porn in canada", wager:"issues winner 5 slap bets, which can be redeemed at ANY time", status:"completed", private:false)
 BetParticipation.create(bet_id:1, user_id:2, status:'accepted')

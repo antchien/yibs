@@ -24,7 +24,6 @@ $(document).ready( function(event) {
 		if (distanceFromBottom() < 1 && !requestingNextPage && !inLightBox()) {
 			requestingNextPage = true;
 			$('.feed-loading-gif').removeClass("hidden");
-			console.log("scroll triggered!");
 			
 			var currentPage = parseInt($("#bets-feed .page-num").val());
 			var totalPages = parseInt($("#bets-feed .total-pages").val());
@@ -53,9 +52,6 @@ $(document).ready( function(event) {
 						"page": currentPage + 1
 					},
 					success: function(data) {
-						console.log("successful ajax call!")
-						console.log(data)
-						console.log($('.bets-list'));
 						$('.feed-loading-gif').addClass("hidden");
 						$('.bets-list').append(data);
 						$('.page-num').val(currentPage + 1);
@@ -63,7 +59,6 @@ $(document).ready( function(event) {
 					}
 				})
 			} else {
-				console.log("currentPage > totalPages");
 				$('.feed-loading-gif').addClass("hidden");
 				requestingNextPage = false;
 			}
@@ -73,8 +68,6 @@ $(document).ready( function(event) {
 	//toggling new notifications
 	$('.notifications-label').mouseenter( function(event) {
 		$('.notifications-label').mouseleave( function(event) {
-			console.log(event)
-			console.log(event.currentTarget);
 			
 			$.ajax({
 				url: "<%= user_url(current_user) %>",
@@ -92,7 +85,6 @@ $(document).ready( function(event) {
 
   //changes feeds
   $('#feeds-list').on('ajax:success', 'a', function(event, data) {
-	  console.log($(event.currentTarget).closest('li').attr('data-id'));
 	  $('.feeds-list-item').removeClass('current-feed');
 	  $(event.currentTarget).closest('li').addClass('current-feed');
 	  var feedType = $(event.currentTarget).closest('li').attr('data-id')
@@ -103,7 +95,6 @@ $(document).ready( function(event) {
 
   //Trigger logout
   $('.trigger-log-out').on('click', function(event) {
-	  console.log(this);
 	  $(this).find('form').trigger('submit');
   })
 
@@ -116,9 +107,8 @@ $(document).ready( function(event) {
 
   $('body').on('ajax:success', '.link-name a', function(event, data) {
     event.preventDefault();
-	console.log("link-name clicked and success!");
     $('#user-show-content').html(data);
-	$('.light-box-form').addClass('hidden');
+		$('.light-box-form').addClass('hidden');
     $('.user-show-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');
   })
@@ -134,21 +124,28 @@ $(document).ready( function(event) {
       $('.dimmer').removeClass('hidden');
 	} else if ( link.indexOf('pending') != -1 ) {
       $('#friendship-show-content').html(data);
-	  $('.friendship-show-form').removeClass('hidden');
-	  $('.dimmer').removeClass('hidden');
+		  $('.friendship-show-form').removeClass('hidden');
+		  $('.dimmer').removeClass('hidden');
 	} else if ( link.indexOf('user') != -1 ) {
       $('#user-show-content').html(data);
       $('.user-show-form').removeClass('hidden');
       $('.dimmer').removeClass('hidden');
     }
   })
+	
+	//Trigger pop-up for Users Friendships
+	$('.trigger-friendship-show-form').on('ajax:success', 'a', function(event, data) {
+		event.preventDefault();
+    $('#friendship-show-content').html(data);
+	  $('.friendship-show-form').removeClass('hidden');
+	  $('.dimmer').removeClass('hidden');
+	})
  
 
   //Trigger new-bet pop-up when relevant clicks made
   $('body').on('ajax:success', '.trigger-add-bet-form', function(event, data) {
     event.preventDefault();
-	console.log("Triggered Add Bet Form (in index)")
-	$('#new-bet-content').html(data);
+		$('#new-bet-content').html(data);
     $('.new-bet-form').removeClass('hidden');
     $('.dimmer').removeClass('hidden');
   });
@@ -156,27 +153,24 @@ $(document).ready( function(event) {
   //Trigger new-bet pop-up when relevant clicks made
   $('body').on('ajax:success', '.trigger-edit-bet-form', function(event, data) {
     event.preventDefault();
-	console.log("Triggered Edit Bet Form (in index)")
-	//console.log(data);
-	$('#edit-bet-content').html(data);
-	$('.edit-bet-form').removeClass('hidden');
-	$('.dimmer').removeClass('hidden');
+		$('#edit-bet-content').html(data);
+		$('.edit-bet-form').removeClass('hidden');
+		$('.dimmer').removeClass('hidden');
   });
   
   //Submit edit and update feed if relevant
   $('body').on('submit', '.trigger-submit-bet', function(event) {
     event.preventDefault();
-	var $form = $(event.currentTarget);
-	$form.find('input[type=submit]').attr('disabled', 'disabled');
-	var action = $form.children('input[name*="_method"]').val()
-	var $allBettees = ($form.find('.bettee-drop-down-anchor').children('.bettee-block'));
-	$allBettees.each(function( index ) {
-		var betteeId = $(this).attr('data-id');
-		$form.append('<input class="hidden" name="bet_participation[user_id][]" value="' + betteeId + '">')
-	})
-	var url = $form.attr('action')
-	var data = $form.serialize();
-	console.log(data);
+		var $form = $(event.currentTarget);
+		$form.find('input[type=submit]').attr('disabled', 'disabled');
+		var action = $form.children('input[name*="_method"]').val()
+		var $allBettees = ($form.find('.bettee-drop-down-anchor').children('.bettee-block'));
+		$allBettees.each(function( index ) {
+			var betteeId = $(this).attr('data-id');
+			$form.append('<input class="hidden" name="bet_participation[user_id][]" value="' + betteeId + '">')
+		})
+		var url = $form.attr('action')
+		var data = $form.serialize();
 	
     $.ajax ({
       method: action,
@@ -213,9 +207,6 @@ $(document).ready( function(event) {
 	  $li = $(event.currentTarget).closest('li');
 		$li.html(data);
 		var flash = "<div class='flash-message notice index-page'><span>Bet Invitation Reponse Logged!</span></div>";
-		
-		console.log(flash);
-		console.log($('.header-wrap'));	
 		$('.header-wrap').prepend(flash);
 		$('.flash-message').delay(5000).fadeOut("slow");
   })
@@ -223,7 +214,6 @@ $(document).ready( function(event) {
   //Remove lightbox and pop-up when user hits 'x' or presses escape
   $('.form-header').on('click', '.x-button', function(event) {
     event.preventDefault();
-	console.log($(this).closest('.light-box-form'));
     $(this).closest('.light-box-form').addClass('hidden');
     $('.dimmer').addClass('hidden');
   })
@@ -256,13 +246,10 @@ $(document).ready( function(event) {
   $('.search-form input').focus( function() {	
     $('.trigger-search-query').keyup(function(event) {
 		if( (event.which >= 48 && event.which <= 57) || (event.which >= 65 && event.which <= 90) || event.which == 8 || event.which == 32) {
-			console.log("Triggered keyup search in Index");
 	      var url = $(this).attr('action')
 	      url = url + "_friends"
 	      var data = $(this).children('input#search-query').val()
 	      var that = this
-		  console.log(url);
-		  console.log(data);
 	      $.ajax ({
 	        method: "GET",
 	        url: url,
@@ -290,7 +277,6 @@ $(document).ready( function(event) {
 	$('.search-form input').keydown(function(event) {
 		switch (event.which) {
 		case 38:
-			console.log("up pressed");
 			event.preventDefault();
 			$li = $(event.currentTarget).parent().next().find('.selected');
  			if ($li.prev().length > 0) {
@@ -299,7 +285,6 @@ $(document).ready( function(event) {
  			}
 			break;			
 		case 40:
-			console.log("down pressed");
 			event.preventDefault();
 			$li = $(event.currentTarget).parent().next().find('.selected');
 			if ($li.next().length > 0) {
@@ -308,13 +293,11 @@ $(document).ready( function(event) {
 			}
 			break;
 		case 9:
-			console.log("tab pressed");
 			event.preventDefault();
 			$li = $(event.currentTarget).parent().next().find('.selected');
 			$li.children('a').trigger('click');
 			break;
 		case 13:
-			console.log("enter pressed");
 			event.preventDefault();
 			$li = $(event.currentTarget).parent().next().find('.selected');
 			$li.children('a').trigger('click');
@@ -324,16 +307,8 @@ $(document).ready( function(event) {
   })
   
   //Users-drop-down list for Bet Page
-  
-
-  // $('.search-friends-section').focusout( function(event) {
-  //   $(this).children('div.search-drop-down').addClass('hidden')
-  //   // $(this).parent().siblings('div').addClass('hidden');
-  // })
-
   $('.search-drop-down').on('ajax:success', 'a', function(event, data) {
     event.preventDefault();
-	console.log("Triggered search query in Index");
 	$('.search-drop-down').addClass('hidden');
 	$form = $(this).closest('.search-friends-section').find('form');
 	$form[0].reset();
@@ -353,32 +328,25 @@ $(document).ready( function(event) {
 
 //  handle add/delete friend buttons
   $('#friendship-show-content').on('submit', '.add-friend-button', function(event) {
-  	  event.preventDefault();
-  	  console.log(event.currentTarget);
-  	  console.log("triggered friend request");
-			  console.log($(event.currentTarget).children('input:nth-child(2)').attr('name'))
-  	  var url = $(event.currentTarget).attr('action');
+  	event.preventDefault();
+  	var url = $(event.currentTarget).attr('action');
 	  var dataVal = $(event.currentTarget).children('input:nth-child(2)').attr('value')
 	  var dataName = $(event.currentTarget).children('input:nth-child(2)').attr('name')
 	  $.ajax ({
-  		  method: "post",
-  		  data: { "friendship[in_friend_id]": dataVal },
-  		  url: url,
-  		  success: function(data) {
-  			  var $li = $(event.currentTarget).closest('li')
-  			  $li.html(data)
-  		  }
-  	  })
+		  method: "post",
+		  data: { "friendship[in_friend_id]": dataVal },
+		  url: url,
+		  success: function(data) {
+			  var $li = $(event.currentTarget).closest('li')
+			  $li.html(data)
+		  }
+	  })
   })
 
   $('#friendship-show-content').on('submit', '.unfriend-button', function(event) {
 	  event.preventDefault();
-	  //console.log(data);
 	  var that = this;
-	  console.log("triggered unfriend request");
 	  url = $(event.currentTarget).attr('action');
-	  console.log(event.currentTarget)
-	  console.log($(event.currentTarget).closest('li'))
       $.ajax ({
         method: "delete",
         url: url,
@@ -392,7 +360,6 @@ $(document).ready( function(event) {
 	
 	//flash-message fade	
 	$('.flash-message').delay(8000).fadeOut("slow");
-
   $(document).keyup(function(event) {
     if( event.which == 27 ) {
       event.preventDefault();
@@ -435,12 +402,13 @@ $(document).ready( function(event) {
           </div>
         </li>
 
-        <li class="settings-label trigger-user-edit-form">
+        <li class="settings-label">
           <a href='<%= edit_user_url(current_user) %>'>Settings</a>
           <div class="hover-menu">
             <div class="uparrow"></div>
             <ul class="group">
               <li class="trigger-user-edit-form"><a href="<%= edit_user_url(current_user) %>">Account Settings</a></li>
+							<li class="trigger-friendship-show-form"><a href="<%= user_friendships_url(current_user) %>" data-remote="true">See All Friendships</a></li>
               <li class="sign-out-menu-item trigger-log-out">Log Out<%= button_to "Sign Out", session_url, method: :delete, class: "hidden"%></li>
             </ul>
           </div>
@@ -524,7 +492,7 @@ $(document).ready( function(event) {
   <section class="friendship-dashboard">
 
     <div class="search-friends-section">
-      Search Friends:
+      Search All Users:
       <%= render '/friendships/drop_down_form' %>
     </div>
 
