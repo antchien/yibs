@@ -73,10 +73,6 @@ class UsersController < ApplicationController
     @bets = @user.community_bets
     @bets = Kaminari.paginate_array(@bets).page(params[:page]).per(5)
     @notifications = @user.notifications
-    # @community_bets = @user.community_bets
-    # @pending_bets = @user.pending_bets
-    # @inplay_bets = @user.inplay_bets
-    # @completed_bets = @user.completed_bets
     @user_bet_count = @user.bets.count
     @user_inplay_count = @user.inplay_bets.count
     @user_win_count = @user.bets_won.count
@@ -88,15 +84,16 @@ class UsersController < ApplicationController
     render :notifications
   end
 
-  def refresh
-    #can be optimized to utilize only 1 or 2 passes into the database rather than 4-5
-    @user = current_user
-    @notifications = @user.notifications
-    @community_bets = @user.community_bets
-    @pending_bets = @user.pending_bets
-    @inplay_bets = @user.in_play_bets
-    @completed_bets = @user.completed_bets
-  end
+  # This action would be used to set up auto-refresh of page to check for updates
+  # def refresh
+  #   #can be optimized to utilize only 1 or 2 passes into the database rather than 4-5
+  #   @user = current_user
+  #   @notifications = @user.notifications
+  #   @community_bets = @user.community_bets
+  #   @pending_bets = @user.pending_bets
+  #   @inplay_bets = @user.in_play_bets
+  #   @completed_bets = @user.completed_bets
+  # end
 
 
 

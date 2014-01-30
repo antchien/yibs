@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
       flash.now[:error] ||= "Uh oh, Invalid Email/Password!  Please try again."
       render :new
     else
-      if params[:user][:username] == "marshmallow@fakemail.com"
+      if user.username == "marshmallow@fakemail.com"
         flash[:notice] = "This is a demo account.  Feel free to make comments, add bets, etc as changes will be reset regularly.  ENJOY!"
       end
       self.current_user = user

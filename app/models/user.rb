@@ -112,7 +112,7 @@ class User < ActiveRecord::Base
   end
 
   def is_password?(password)
-    #this line was inserted to account for users that login via 3rd party FB/Twitter accts, for which they dont' have a yibs pw
+    #to account for users that login via 3rd party FB/Twitter accts, for which they dont' have a yibs pw
     return false if !self.password_digest
     BCrypt::Password.new(self.password_digest).is_password?(password)
   end
