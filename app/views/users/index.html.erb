@@ -357,9 +357,35 @@ $(document).ready( function(event) {
   	})
 	})
 	
+  $('body').on('ajax:success', '.share-bet-fb', function(event, data) {
+		console.log("clicked on share!");
+		console.log(event)
+		var caption = data;
+		console.log(data)
+		FB.ui(
+		       {
+		        method: 'feed',
+		        name: 'YIBS',
+		        caption: 'Make bets with your friends',
+		        description: caption,
+		        link: 'http://www.yibs.co',
+		        picture: 'http://www.fbrell.com/public/f8.jpg'
+		       },
+		       function(response) {
+		         if (response && response.post_id) {
+		           $('.flash-message.notice').toggle().find('span').html("Bet successfully shared!");
+					 $('.flash-message.notice').delay(5000).fadeOut("slow");
+		         } else {
+		           $('.flash-message.error').toggle().find('span').html("Bet was not shared.");
+					 $('.flash-message.error').delay(5000).fadeOut("slow");
+		         }
+		       }
+		     );
+	});
 	
 	//flash-message fade	
 	$('.flash-message').delay(8000).fadeOut("slow");
+	
   $(document).keyup(function(event) {
     if( event.which == 27 ) {
       event.preventDefault();
@@ -367,21 +393,41 @@ $(document).ready( function(event) {
       $('.dimmer').addClass('hidden');
     }
   })
+	
+	
+	//facebook initializations
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '<%= ENV['FACEBOOK_APP_ID_DEV'] %>',
+      status     : true,
+      xfbml      : true
+    });
+
+		console.log("FB Initialized");
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
 
 });
 
 </script>
+
 <link rel="stylesheet" type="text/css" href="assets/index.css">
+
+<!-- facebook stuff -->
+<div id="fb-root"></div>
 
 <div class="dimmer hidden" id="dimmer"></div>
 <header class="header">
   <div class="header-wrap group">
-		<% if flash[:notice] %>
-		<div class="flash-message notice index-page"><span><%= flash[:notice]%></span></div>
-		<% end%>
-		<% if flash[:error] %>
-		<div class="flash-message error index-page"><span><%= flash[:error]%></span></div>
-		<% end%>
+		<div class="flash-message notice index-page" <%= "style=display:none" if flash[:notice].nil? %>><span><%= flash[:notice] if flash[:notice]%></span></div>
+		<div class="flash-message error index-page" <%= "style=display:none" if flash[:error].nil? %>><span><%= flash[:error] if flash[:error]%></span></div>
     <h1 class="header-logo">
       <a href='#'>Yibs</a>
     </h1>

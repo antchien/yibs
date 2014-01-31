@@ -67,7 +67,6 @@ class BetsController < ApplicationController
     else
       render partial: 'bets/show_details_lightbox', locals: {bet: @bet}
     end
-
   end
 
   def edit
@@ -110,6 +109,13 @@ class BetsController < ApplicationController
 
   end
 
+  def summary
+    @bet = Bet.find(params[:id])
+    require_bet_participant! if @bet.private
+    puts @bet.bet_summary
+    
+    render :json => @bet.bet_summary.to_json
+  end
 
   def community
     @user = current_user

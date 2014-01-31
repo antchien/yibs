@@ -12,12 +12,15 @@ NewAuthDemo::Application.routes.draw do
         post 'invite'
       end
     end
-    resources :bets, :only => [:create, :new, :index]
+    resources :bets, :only => [:create, :new, :index] 
     resources :bet_participations, :only => [:update, :destroy]
   end
   resource :session, :only => [:create, :destroy, :new]
   resources :bets, :only => [:show, :edit, :update] do
     resources :comments, only: [:create, :new, :show]
+    member do
+      get 'summary'
+    end
     get 'community', on: :collection
     get 'pending', on: :collection
     get 'inplay', on: :collection
